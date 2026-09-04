@@ -1,0 +1,27 @@
+{
+  "name": "@flo/tests",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/client": "^2.0.0",
+    "@flo/adapters": "workspace:*",
+    "@flo/agent": "workspace:*",
+    "@flo/domain": "workspace:*",
+    "@flo/mock-customer-api": "workspace:*",
+    "@flo/mock-inventory-api": "workspace:*",
+    "@flo/mcp": "workspace:*",
+    "@flo/mock-shop-api": "workspace:*",
+    "@flo/mock-supplier-api": "workspace:*",
+    "@flo/shared-types": "workspace:*",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "typescript": "^6.0.3"
+  }
+}

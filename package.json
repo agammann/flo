@@ -1,0 +1,34 @@
+{
+  "name": "flo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "build": "node scripts/compile-workspaces.mjs",
+    "dev": "concurrently -n shop,inventory,supplier,customer,mcp,simulator -c blue,green,magenta,cyan,yellow,white \"pnpm --filter @flo/mock-shop-api dev\" \"pnpm --filter @flo/mock-inventory-api dev\" \"pnpm --filter @flo/mock-supplier-api dev\" \"pnpm --filter @flo/mock-customer-api dev\" \"pnpm --filter @flo/mcp dev\" \"pnpm --filter @flo/alexa-simulator dev\"",
+    "dev:services": "concurrently -n shop,inventory,supplier,customer,mcp -c blue,green,magenta,cyan,yellow \"pnpm --filter @flo/mock-shop-api dev\" \"pnpm --filter @flo/mock-inventory-api dev\" \"pnpm --filter @flo/mock-supplier-api dev\" \"pnpm --filter @flo/mock-customer-api dev\" \"pnpm --filter @flo/mcp dev\"",
+    "test": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs",
+    "test:unit": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs packages",
+    "test:integration": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs tests/integration",
+    "test:e2e": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs tests/e2e",
+    "typecheck": "node scripts/compile-workspaces.mjs --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "demo:reset": "node scripts/reset-demo.mjs",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@modelcontextprotocol/client": "^2.0.0",
+    "@types/node": "^24.10.0",
+    "concurrently": "^9.2.1",
+    "eslint": "^9.39.1",
+    "tsx": "^4.23.13",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.48.0"
+  }
+}

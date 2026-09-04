@@ -1,0 +1,61 @@
+x-flo-service: &flo-service
+  build:
+    context: .
+  restart: unless-stopped
+  networks: [flo]
+
+services:
+  shop:
+    <<: *flo-service
+    command: ["node", "services/mock-shop-api/dist/index.js"]
+    environment:
+      SHOP_API_HOST: 0.0.0.0
+    ports: ["4101:4101"]
+
+  inventory:
+    <<: *flo-service
+    command: ["node", "services/mock-inventory-api/dist/index.js"]
+    environment:
+      INVENTORY_API_HOST: 0.0.0.0
+    ports: ["4102:4102"]
+
+  supplier:
+    <<: *flo-service
+    command: ["node", "services/mock-supplier-api/dist/index.js"]
+    environment:
+      SUPPLIER_API_HOST: 0.0.0.0
+    ports: ["4103:4103"]
+
+  customer:
+    <<: *flo-service
+    command: ["node", "services/mock-customer-api/dist/index.js"]
+    environment:
+      CUSTOMER_API_HOST: 0.0.0.0
+    ports: ["4104:4104"]
+
+  mcp:
+    <<: *flo-service
+    command: ["node", "services/flo-mcp/dist/index.js"]
+    depends_on: [shop, inventory, supplier, customer]
+    environment:
+      MCP_HOST: 0.0.0.0
+      SHOP_API_URL: http://shop:4101
+      INVENTORY_API_URL: http://inventory:4102
+      SUPPLIER_API_URL: http://supplier:4103
+      CUSTOMER_API_URL: http://customer:4104
+      ALLOWED_HOSTNAMES: mcp,localhost,127.0.0.1
+      ALLOWED_ORIGIN_HOSTNAMES: simulator,localhost,127.0.0.1
+    ports: ["4100:4100"]
+
+  simulator:
+    <<: *flo-service
+    command: ["node", "apps/alexa-simulator/dist/server.js"]
+    depends_on: [mcp]
+    environment:
+      SIMULATOR_HOST: 0.0.0.0
+      MCP_URL: http://mcp:4100/mcp
+    ports: ["4200:4200"]
+
+networks:
+  flo:
+    driver: bridge

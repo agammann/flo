@@ -1,0 +1,106 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Flo Amazon Bedrock narration adapter for the AWS Builder mini challenge.
+
+Parameters:
+  ModelId:
+    Type: String
+    Default: amazon.nova-lite-v1:0
+    Description: Bedrock model or inference-profile ID used for short, non-authoritative narration leads.
+
+Resources:
+  NarratorRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: InvokeFloNarrationModel
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - bedrock:InvokeModel
+                Resource: "*"
+
+  NarratorFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: flo-bedrock-narrator
+      Description: Uses Amazon Bedrock only for a short narration lead; deterministic Flo code owns all operational facts.
+      Runtime: nodejs22.x
+      Handler: index.handler
+      Role: !GetAtt NarratorRole.Arn
+      Timeout: 8
+      MemorySize: 256
+      Environment:
+        Variables:
+          MODEL_ID: !Ref ModelId
+      Code:
+        ZipFile: |
+          const { BedrockRuntimeClient, ConverseCommand } = require("@aws-sdk/client-bedrock-runtime");
+          const client = new BedrockRuntimeClient({});
+          exports.handler = async (event) => {
+            const headers = { "content-type": "application/json", "cache-control": "no-store" };
+            try {
+              if ((event.headers?.["x-flo-build"] || event.headers?.["X-Flo-Build"]) !== "flo-hackathon-2026") {
+                return { statusCode: 403, headers, body: JSON.stringify({ error: "Forbidden" }) };
+              }
+              const body = JSON.parse(event.body || "{}");
+              if (body.task !== "part-comparison-lead" || !Number.isInteger(body.optionCount) || body.optionCount < 1 || body.optionCount > 10) {
+                return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid narration request" }) };
+              }
+              const qualityTier = typeof body.qualityTier === "string" ? body.qualityTier.replace(/[^a-z -]/gi, "").slice(0, 30) : "quality";
+              const prompt = `Write one calm sentence of at most twelve words explaining that comparing ${body.optionCount} ${qualityTier} service-part options helps a technician choose confidently. Do not use digits, prices, dates, supplier names, part numbers, claims of completion, or markdown.`;
+              const command = new ConverseCommand({
+                modelId: process.env.MODEL_ID,
+                messages: [{ role: "user", content: [{ text: prompt }] }],
+                inferenceConfig: { maxTokens: 60, temperature: 0.2, topP: 0.8 }
+              });
+              const result = await client.send(command);
+              const lead = result.output?.message?.content?.find((item) => typeof item.text === "string")?.text?.trim();
+              if (!lead || lead.length > 160 || /[$\d]/.test(lead)) throw new Error("Model response failed the narration contract");
+              return { statusCode: 200, headers, body: JSON.stringify({ lead, modelId: process.env.MODEL_ID }) };
+            } catch (error) {
+              console.error(JSON.stringify({ event: "flo.narration.failed", message: error instanceof Error ? error.message : String(error) }));
+              return { statusCode: 502, headers, body: JSON.stringify({ error: "Narration unavailable" }) };
+            }
+          };
+
+  NarratorUrl:
+    Type: AWS::Lambda::Url
+    Properties:
+      TargetFunctionArn: !GetAtt NarratorFunction.Arn
+      AuthType: NONE
+
+  NarratorUrlPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref NarratorFunction
+      Action: lambda:InvokeFunctionUrl
+      Principal: "*"
+      FunctionUrlAuthType: NONE
+
+  NarratorInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref NarratorFunction
+      Action: lambda:InvokeFunction
+      Principal: "*"
+      InvokedViaFunctionUrl: true
+
+Outputs:
+  NarratorFunctionUrl:
+    Description: Set this as BEDROCK_NARRATOR_URL only in the deployment environment. Do not commit it.
+    Value: !GetAtt NarratorUrl.FunctionUrl
+  NarratorFunctionName:
+    Value: !Ref NarratorFunction
+  BedrockModelId:
+    Value: !Ref ModelId
