@@ -21,8 +21,8 @@ This checklist uses the current Devpost requirements as the source of truth and 
 | Requirement | Current evidence | Status before submission |
 | --- | --- | --- |
 | Text description | `docs/hackathon/devpost-submission.md` | Draft ready; insert only verified public links |
-| Public GitHub repository | No Git remote is configured in this checkout | Blocked on repository creation/push |
-| Open-source license visible at top/About | MIT `LICENSE` exists locally | Add license metadata to the public GitHub About panel |
+| Public GitHub repository | `https://github.com/agammann/flo` opened anonymously with the complete source | Verified public |
+| Open-source license visible at top/About | GitHub detects the repository's MIT license | Verified public |
 | Public English demo under 3 minutes | `docs/demo/demo-script.md` exists | Blocked on recording, upload, and playback verification |
 | Product feedback for tools used | `docs/hackathon/product-feedback.md` covers Alexa+ guidance, MCP, the simulator, CloudFormation, Lambda, and Bedrock | Ready |
 | Track selection | Alexa+ | Select on Devpost |
@@ -32,9 +32,7 @@ This checklist uses the current Devpost requirements as the source of truth and 
 
 ### Open Source
 
-Locally prepared: MIT license, README, contribution guide, security policy, code of conduct, CI workflow, and source archive.
-
-Still required: publish during the hackathon window, provide the public repository/contribution URL, GitHub username, and a short explanation of what was built, how it works, and why it matters.
+Eligible. The new public repository is `https://github.com/agammann/flo`, GitHub username `agammann`, and GitHub detects the MIT license. The repository includes its README, contribution guide, security policy, code of conduct, CI workflow, and reproducible source. The same repository URL is the Open Source contribution URL; the contribution description is ready in `devpost-submission.md`.
 
 ### AWS Builder
 

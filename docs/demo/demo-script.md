@@ -22,7 +22,7 @@ Show the Work Order Card and briefly reveal the `get_work_order` invocation.
 
 Show `record_diagnostic`, `get_asset`, compatibility checks, parallel supplier searches, the `AWS · amazon_bedrock_narration` trace, and the comparison panel.
 
-**Expected voice response:** “I found three compatible options. Supplier B’s premium alternator is the best balance at $219 shop cost, next-day delivery, and a three-year warranty.”
+**Expected voice response:** “I found four compatible supplier offers. ProMotion Supply’s premium alternator is the best balance at $219 shop cost, next-day delivery, and a three-year warranty.”
 
 ## 1:00–1:25 — Compare margin
 

@@ -17,7 +17,9 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # Type-aware ESLint resolves workspace packages through their generated
+      # declaration files, so a clean runner must build before lint/typecheck.
+      - run: pnpm build
       - run: pnpm lint
       - run: pnpm typecheck
-      - run: pnpm build
       - run: pnpm test
