@@ -16,7 +16,7 @@ The hackathon rules are intentionally broader than production Alexa+ add-on cert
 
 The general Alexa developer page describes Alexa as a cloud voice service and points developers to Skills Kit, device, and enterprise paths. That page supports Flo’s hands-free premise, but it does not replace the hackathon’s Alexa+ MCP requirements or the newer Alexa+ add-on documentation.
 
-Release eligibility still depends on external artifacts that are not present in this checkout: a public GitHub repository with the MIT license visible, a public English YouTube or Vimeo demo under three minutes, complete product feedback, track selections, and—if entered—the Open Source contribution fields. AWS Builder must remain unselected until the code actually calls and documents a qualifying AWS service.
+Release evidence now includes the public MIT-licensed repository at <https://github.com/agammann/flo>, complete product feedback, and a 2:41 English YouTube demo at <https://youtu.be/ZjROvjL2smo>. The video is playable by link but remains unlisted, so it is not yet final public-video evidence. Flo also has a documented, live-invocation-tested Lambda-to-Amazon-Bedrock integration for the AWS Builder mini challenge. Final eligibility still depends on uploading the reviewed captions, explicitly publishing the video, saving the selected tracks and Open Source fields, and completing the Devpost submission without adding unverified claims.
 
 ## Verified alignment
 

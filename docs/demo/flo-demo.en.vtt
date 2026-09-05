@@ -1,0 +1,135 @@
+WEBVTT
+
+00:00:00.200 --> 00:00:05.800
+Technicians should not have to stop
+working just to search
+across business systems.
+
+00:00:05.800 --> 00:00:11.900
+Flo turns Alexa+ into a hands-free
+operating layer, grounded in real tools.
+
+00:00:12.333 --> 00:00:17.500
+This custom Alexa+ simulation exposes
+Flo's live MCP connection,
+
+00:00:17.500 --> 00:00:22.850
+persistent job context, transaction guard,
+and optional tool trace.
+
+00:00:23.367 --> 00:00:25.700
+Open work order 1842.
+
+00:00:25.700 --> 00:00:29.700
+Flo retrieves the assigned Ford F-150
+
+00:00:29.700 --> 00:00:33.300
+and its complaint through structured
+MCP tools.
+
+00:00:33.833 --> 00:00:36.000
+The alternator failed.
+
+00:00:36.000 --> 00:00:39.900
+Flo records the diagnosis,
+checks deterministic fitment,
+
+00:00:39.900 --> 00:00:43.600
+searches three simulated suppliers,
+and displays compatible offers.
+
+00:00:43.600 --> 00:00:50.100
+The trace also shows
+a live Amazon Bedrock narration call.
+
+00:00:50.667 --> 00:00:55.900
+Bedrock contributes only
+a concise qualitative lead.
+
+00:00:55.900 --> 00:01:00.300
+Deterministic code still ranks
+every option and calculates
+the exact shop cost,
+
+00:01:00.300 --> 00:01:04.300
+customer price, warranty, delivery,
+and margin.
+
+00:01:04.833 --> 00:01:09.300
+Add the recommended part to the estimate
+and request approval.
+
+00:01:09.300 --> 00:01:16.300
+Flo calculates $459.03, then stores
+the customer request as pending.
+
+00:01:16.835 --> 00:01:20.200
+A demo control simulates
+the customer response.
+
+00:01:20.200 --> 00:01:26.800
+Approval is now stored,
+but no supplier order or schedule change
+has been executed.
+
+00:01:27.335 --> 00:01:31.400
+In a fresh conversation,
+ask what happened with the Ford.
+
+00:01:31.400 --> 00:01:38.250
+Flo resolves the recent job
+and reports the approval,
+without inventing new transaction state.
+
+00:01:38.809 --> 00:01:42.000
+Now order the alternator
+and schedule Bay 2 tomorrow morning.
+
+00:01:42.000 --> 00:01:46.200
+Flo rechecks approval,
+supplier availability, and the bay,
+
+00:01:46.200 --> 00:01:49.300
+then presents the exact action.
+
+00:01:49.300 --> 00:01:52.600
+Nothing happens yet.
+
+00:01:53.142 --> 00:01:57.100
+Only after a separate Confirm
+does the server place the order,
+
+00:01:57.100 --> 00:02:00.500
+reserve Bay 2, update the work order,
+and write audit records.
+
+00:02:00.500 --> 00:02:06.900
+Single-use tokens and idempotency
+prevent accidental repeats.
+
+00:02:07.424 --> 00:02:11.900
+Flo uses MCP 2025-11-25
+over Streamable HTTP,
+
+00:02:11.900 --> 00:02:16.700
+with thin handlers, an orchestrator,
+deterministic engines,
+and replaceable adapters.
+
+00:02:16.700 --> 00:02:21.500
+The verified Lambda-to-Bedrock
+path is live;
+
+00:02:21.500 --> 00:02:27.600
+AgentCore and DynamoDB remain
+clearly labeled roadmap items.
+
+00:02:28.124 --> 00:02:33.100
+Flo is MIT licensed,
+publicly available, and built to extend
+beyond automotive repair.
+
+00:02:33.100 --> 00:02:40.750
+Hands-free service operations,
+with every important action
+inspectable and safe.

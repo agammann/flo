@@ -4,7 +4,7 @@
 
 Flo turns an Alexa+ conversation into a safe, resumable workflow across work orders, diagnostics, compatible parts, supplier availability, estimates, customer approvals, purchasing, and scheduling. The initial demonstration is an automotive repair shop, while the domain and adapter boundaries are intentionally usable by HVAC, plumbing, electrical, appliance repair, facilities, and industrial maintenance teams.
 
-> Project status: the deterministic domain layer, four simulated service APIs, HTTP adapters, persistent job-context abstraction, transaction controls, Streamable HTTP MCP server, polished MCP-backed web simulator, and a narrow Amazon Bedrock narration adapter are implemented. Fourteen automated tests pass. Development mode exposes 28 tools; production omits the three demo-only controls. The Bedrock adapter is deployed through AWS CloudFormation and was live-invocation tested with Amazon Nova Lite on September 4, 2026. The official Alexa+ add-on connection, MCP App package, AgentCore runtime, and durable AWS state remain future work and are not claimed as live.
+> Project status: the deterministic domain layer, four simulated service APIs, HTTP adapters, persistent job-context abstraction, transaction controls, Streamable HTTP MCP server, polished MCP-backed web simulator, and a narrow Amazon Bedrock narration adapter are implemented. Twenty-seven automated tests pass. Development mode exposes 28 tools; production omits the three demo-only controls. The Bedrock adapter is deployed through AWS CloudFormation and was live-invocation tested with Amazon Nova Lite on September 4, 2026. The official Alexa+ add-on connection, MCP App package, AgentCore runtime, and durable AWS state remain future work and are not claimed as live.
 
 For the current competition evidence and remaining external release gates, see [`docs/hackathon/submission-readiness.md`](docs/hackathon/submission-readiness.md).
 
@@ -213,9 +213,11 @@ Read `SECURITY.md` and `docs/architecture/security.md`. The current local mode i
 ## Hackathon material
 
 - `docs/demo/demo-script.md` — under-three-minute walkthrough
+- `docs/demo/flo-demo.en.vtt` — reviewed English captions for the [2:41 demo video](https://youtu.be/ZjROvjL2smo)
 - `docs/hackathon/devpost-submission.md` — evidence-conscious submission draft
 - `docs/hackathon/friction-log.md` — constructive development friction log
 - `docs/hackathon/product-feedback.md` — completion feedback draft
+- [Public source repository](https://github.com/agammann/flo)
 
 ## Roadmap
 

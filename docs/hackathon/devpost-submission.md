@@ -1,6 +1,6 @@
 # Devpost submission draft
 
-> Evidence status: this draft describes the verified local implementation and the live Amazon Bedrock narration adapter. Replace the video placeholder only after public playback is verified. The official Alexa+ add-on connection and MCP App package remain explicitly unclaimed.
+> Evidence status: this draft describes the verified implementation, public source repository, and live Amazon Bedrock narration adapter. The 2:41 English demo is uploaded and playable by link, but remains unlisted until the entrant gives separate final publication confirmation. The official Alexa+ add-on connection and MCP App package remain explicitly unclaimed.
 
 ## Project name
 
@@ -53,7 +53,7 @@ The `flo-bedrock-narrator` stack was verified `CREATE_COMPLETE` in `us-west-2`; 
 - Exact integer-cent estimates and deterministic fitment explanations.
 - Role checks, approval state machine, single-use confirmation, idempotency, schedule conflict detection, and audit records.
 - Long-term job reference resolution with explicit ambiguity errors.
-- Fourteen passing automated tests, including permissions, safety failures, rollback, end-to-end, MCP transport, voice-safe fallback, and production tool-surface coverage.
+- Twenty-seven passing automated tests, including permissions, fitment-data completeness, immutable approval/SKU binding, cross-job approval isolation, supplier-response validation, single-flight confirmations, cancelled-order retry safety, rollback, end-to-end, MCP transport, and production tool-surface coverage.
 
 ## What we learned
 
@@ -75,7 +75,9 @@ Open Source contribution URL: https://github.com/agammann/flo
 
 Open Source contribution description: Flo is a new MIT-licensed TypeScript project built during the hackathon. It implements a self-hosted MCP operating layer that connects conversational commands to structured service-business systems. Deterministic engines protect compatibility, pricing, permissions, approvals, idempotency, and transactional execution, while adapters make the same architecture extensible beyond automotive repair.
 
-Demo: `[PUBLIC VIDEO URL — pending]`
+Demo video: https://youtu.be/ZjROvjL2smo
+
+Reviewed English captions: [`docs/demo/flo-demo.en.vtt`](../demo/flo-demo.en.vtt)
 
 ## Technologies used
 

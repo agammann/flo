@@ -20,10 +20,10 @@ This checklist uses the current Devpost requirements as the source of truth and 
 
 | Requirement | Current evidence | Status before submission |
 | --- | --- | --- |
-| Text description | `docs/hackathon/devpost-submission.md` | Draft ready; insert only verified public links |
+| Text description | `docs/hackathon/devpost-submission.md` | Draft ready with verified repository and video URLs |
 | Public GitHub repository | `https://github.com/agammann/flo` opened anonymously with the complete source | Verified public |
 | Open-source license visible at top/About | GitHub detects the repository's MIT license | Verified public |
-| Public English demo under 3 minutes | `docs/demo/demo-script.md` exists | Blocked on recording, upload, and playback verification |
+| Public English demo under 3 minutes | The 2:41 video at `https://youtu.be/ZjROvjL2smo` is uploaded and playable by link; reviewed English WebVTT captions are in `docs/demo/flo-demo.en.vtt` | Uploaded but still unlisted; upload captions and obtain separate confirmation before making it public |
 | Product feedback for tools used | `docs/hackathon/product-feedback.md` covers Alexa+ guidance, MCP, the simulator, CloudFormation, Lambda, and Bedrock | Ready |
 | Track selection | Alexa+ | Select on Devpost |
 | Prior-project disclosure | Flo was created for this hackathon unless the entrant states otherwise | Entrant must confirm before final submission |

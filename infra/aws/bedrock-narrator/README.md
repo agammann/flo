@@ -22,13 +22,13 @@ Read the endpoint without printing credentials:
 aws cloudformation describe-stacks \
   --region us-west-2 \
   --stack-name flo-bedrock-narrator \
-  --query 'Stacks[0].Outputs[?OutputKey==`NarratorFunctionUrl`].OutputValue' \
+  --query 'Stacks[0].Outputs[?OutputKey==`NarratorEndpointUrl`].OutputValue' \
   --output text
 ```
 
-Set the returned value as `BEDROCK_NARRATOR_URL` in the simulator deployment environment. The demo endpoint accepts only the fixed, non-secret build marker and a tightly validated, non-personal payload. The marker is routing metadata, **not authentication**: `AuthType: NONE` makes the Function URL publicly invokable by anyone who knows it. Do not publish the URL. For a shared or production deployment, use `AWS_IAM` with a SigV4-signed server-side caller, or place the function behind an authenticated, rate-limited gateway.
+Set the returned value as `BEDROCK_NARRATOR_URL` in the simulator deployment environment. The demo endpoint accepts only `POST /narrate`, the fixed non-secret build marker, and a tightly validated, non-personal payload. The marker is routing metadata, **not authentication**: the HTTP API remains publicly invokable by anyone who knows it. Do not publish the URL. API Gateway caps the demo at one request per second with a burst of two by default; `ThrottlingRateLimit` and `ThrottlingBurstLimit` can lower those limits at deployment. For a shared or production deployment, require authenticated ingress such as IAM-authorized API Gateway with a SigV4-signed server-side caller.
 
-The Lambda role has only basic logging permission and `bedrock:InvokeModel` for the configured foundation-model ARN. The deployment does not reserve concurrency because low account concurrency quotas can reject even a value of one. Apply account-level budgets/alarms and an authenticated rate limit before sharing the endpoint.
+The Lambda role has only basic logging permission and `bedrock:InvokeModel` for the configured foundation-model ARN. The API Gateway throttle, Lambda's eight-second timeout, 256 MB memory limit, and the sixty-token Bedrock cap form the demo's rate and per-request cost boundary. Apply account-level budgets/alarms and authenticated ingress before sharing the endpoint beyond judging.
 
 ## Verify
 

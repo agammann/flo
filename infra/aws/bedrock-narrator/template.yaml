@@ -6,6 +6,18 @@ Parameters:
     Type: String
     Default: amazon.nova-lite-v1:0
     Description: Bedrock foundation-model ID used for short, non-authoritative narration leads.
+  ThrottlingRateLimit:
+    Type: Number
+    Default: 1
+    MinValue: 0.1
+    MaxValue: 10
+    Description: Maximum steady-state narration requests per second at the public demo boundary.
+  ThrottlingBurstLimit:
+    Type: Number
+    Default: 2
+    MinValue: 1
+    MaxValue: 20
+    Description: Maximum narration-request burst accepted by the public demo boundary.
 
 Resources:
   NarratorRole:
@@ -81,35 +93,55 @@ Resources:
             }
           };
 
-  NarratorUrl:
-    Type: AWS::Lambda::Url
+  NarratorApi:
+    Type: AWS::ApiGatewayV2::Api
     Properties:
-      TargetFunctionArn: !GetAtt NarratorFunction.Arn
-      # Demo-only public ingress. The fixed x-flo-build marker is request routing,
-      # not authentication. Use AWS_IAM or an authenticated gateway in production.
-      AuthType: NONE
+      Name: flo-bedrock-narrator
+      Description: Rate-limited public demo ingress for the Flo Bedrock narrator.
+      ProtocolType: HTTP
 
-  NarratorUrlPermission:
-    Type: AWS::Lambda::Permission
+  NarratorIntegration:
+    Type: AWS::ApiGatewayV2::Integration
     Properties:
-      FunctionName: !Ref NarratorFunction
-      Action: lambda:InvokeFunctionUrl
-      Principal: "*"
-      FunctionUrlAuthType: NONE
+      ApiId: !Ref NarratorApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt NarratorFunction.Arn
+      IntegrationMethod: POST
+      PayloadFormatVersion: "2.0"
 
-  NarratorInvokePermission:
+  NarratorRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref NarratorApi
+      RouteKey: POST /narrate
+      Target: !Join ["/", [integrations, !Ref NarratorIntegration]]
+
+  NarratorStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref NarratorApi
+      StageName: $default
+      AutoDeploy: true
+      DefaultRouteSettings:
+        ThrottlingRateLimit: !Ref ThrottlingRateLimit
+        ThrottlingBurstLimit: !Ref ThrottlingBurstLimit
+
+  NarratorApiPermission:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !Ref NarratorFunction
       Action: lambda:InvokeFunction
-      Principal: "*"
-      InvokedViaFunctionUrl: true
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${NarratorApi}/*/*/narrate
 
 Outputs:
-  NarratorFunctionUrl:
-    Description: Demo-only unauthenticated URL. Set as BEDROCK_NARRATOR_URL without committing it; use authenticated ingress in production.
-    Value: !GetAtt NarratorUrl.FunctionUrl
+  NarratorEndpointUrl:
+    Description: Rate-limited demo endpoint. Set as BEDROCK_NARRATOR_URL without committing it; use authenticated ingress in production.
+    Value: !Sub https://${NarratorApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/narrate
   NarratorFunctionName:
     Value: !Ref NarratorFunction
   BedrockModelId:
     Value: !Ref ModelId
+  NarratorThrottle:
+    Description: API Gateway steady-state and burst request limits.
+    Value: !Sub ${ThrottlingRateLimit} requests/second; burst ${ThrottlingBurstLimit}
