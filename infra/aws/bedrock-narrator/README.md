@@ -26,7 +26,9 @@ aws cloudformation describe-stacks \
   --output text
 ```
 
-Set the returned value as `BEDROCK_NARRATOR_URL` in the simulator deployment environment. The endpoint accepts only the fixed, non-secret build marker and a tightly validated, non-personal payload; concurrency is capped at one. For a production release, replace this hackathon boundary with IAM or OAuth authentication and remove the unauthenticated Function URL.
+Set the returned value as `BEDROCK_NARRATOR_URL` in the simulator deployment environment. The demo endpoint accepts only the fixed, non-secret build marker and a tightly validated, non-personal payload. The marker is routing metadata, **not authentication**: `AuthType: NONE` makes the Function URL publicly invokable by anyone who knows it. Do not publish the URL. For a shared or production deployment, use `AWS_IAM` with a SigV4-signed server-side caller, or place the function behind an authenticated, rate-limited gateway.
+
+The Lambda role has only basic logging permission and `bedrock:InvokeModel` for the configured foundation-model ARN. The deployment does not reserve concurrency because low account concurrency quotas can reject even a value of one. Apply account-level budgets/alarms and an authenticated rate limit before sharing the endpoint.
 
 ## Verify
 
@@ -36,7 +38,14 @@ Run a parts comparison and open the Agent execution trace. A successful call is 
 AWS · amazon_bedrock_narration
 ```
 
-CloudWatch retains only Lambda platform logs and a redacted failure message. No customer, vehicle, work-order, price, supplier, part number, or free-form technician text is sent to Bedrock.
+CloudWatch receives only Lambda platform logs and a redacted failure message. No customer, vehicle, work-order, price, supplier, part number, or free-form technician text is sent to Bedrock. Set an explicit retention period after deployment (the example keeps seven days):
+
+```bash
+aws logs put-retention-policy \
+  --region us-west-2 \
+  --log-group-name /aws/lambda/flo-bedrock-narrator \
+  --retention-in-days 7
+```
 
 ## Remove
 

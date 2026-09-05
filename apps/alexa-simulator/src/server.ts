@@ -136,7 +136,10 @@ const bedrockNarrationLead = async (comparison: ComparisonResult, invocations: I
     if (!response.ok) throw new Error(`Amazon Bedrock narrator returned HTTP ${response.status}.`);
     const value = await response.json() as { lead?: unknown; modelId?: unknown };
     const lead = typeof value.lead === "string" ? value.lead.trim() : "";
-    if (lead.length < 8 || lead.length > 160 || /[$\d]/.test(lead)) throw new Error("Amazon Bedrock returned a narration lead outside the safe display contract.");
+    const wordCount = lead.split(/\s+/).length;
+    if (lead.length < 8 || lead.length > 160 || wordCount > 16 || /[$\d\n\r*#`]/.test(lead)) {
+      throw new Error("Amazon Bedrock returned a narration lead outside the safe display contract.");
+    }
     invocations.push({ tool: "amazon_bedrock_narration", arguments: { task: "part-comparison-lead" }, durationMs: Math.round((performance.now() - started) * 10) / 10, ok: true, kind: "aws" });
     return lead;
   } catch {

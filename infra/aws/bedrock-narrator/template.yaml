@@ -5,7 +5,7 @@ Parameters:
   ModelId:
     Type: String
     Default: amazon.nova-lite-v1:0
-    Description: Bedrock model or inference-profile ID used for short, non-authoritative narration leads.
+    Description: Bedrock foundation-model ID used for short, non-authoritative narration leads.
 
 Resources:
   NarratorRole:
@@ -28,7 +28,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - bedrock:InvokeModel
-                Resource: "*"
+                Resource: !Sub arn:${AWS::Partition}:bedrock:${AWS::Region}::foundation-model/${ModelId}
 
   NarratorFunction:
     Type: AWS::Lambda::Function
@@ -53,11 +53,15 @@ Resources:
               if ((event.headers?.["x-flo-build"] || event.headers?.["X-Flo-Build"]) !== "flo-hackathon-2026") {
                 return { statusCode: 403, headers, body: JSON.stringify({ error: "Forbidden" }) };
               }
+              if (typeof event.body !== "string" || event.body.length > 512) {
+                return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid narration request" }) };
+              }
               const body = JSON.parse(event.body || "{}");
               if (body.task !== "part-comparison-lead" || !Number.isInteger(body.optionCount) || body.optionCount < 1 || body.optionCount > 10) {
                 return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid narration request" }) };
               }
-              const qualityTier = typeof body.qualityTier === "string" ? body.qualityTier.replace(/[^a-z -]/gi, "").slice(0, 30) : "quality";
+              const sanitizedQualityTier = typeof body.qualityTier === "string" ? body.qualityTier.replace(/[^a-z -]/gi, "").slice(0, 30).trim() : "";
+              const qualityTier = sanitizedQualityTier || "quality";
               const prompt = `Write one calm sentence of at most twelve words explaining that comparing ${body.optionCount} ${qualityTier} service-part options helps a technician choose confidently. Do not use digits, prices, dates, supplier names, part numbers, claims of completion, or markdown.`;
               const command = new ConverseCommand({
                 modelId: process.env.MODEL_ID,
@@ -66,7 +70,10 @@ Resources:
               });
               const result = await client.send(command);
               const lead = result.output?.message?.content?.find((item) => typeof item.text === "string")?.text?.trim();
-              if (!lead || lead.length > 160 || /[$\d]/.test(lead)) throw new Error("Model response failed the narration contract");
+              const wordCount = lead?.split(/\s+/).length ?? 0;
+              if (!lead || lead.length < 8 || lead.length > 160 || wordCount > 16 || /[$\d\n\r*#`]/.test(lead)) {
+                throw new Error("Model response failed the narration contract");
+              }
               return { statusCode: 200, headers, body: JSON.stringify({ lead, modelId: process.env.MODEL_ID }) };
             } catch (error) {
               console.error(JSON.stringify({ event: "flo.narration.failed", message: error instanceof Error ? error.message : String(error) }));
@@ -78,6 +85,8 @@ Resources:
     Type: AWS::Lambda::Url
     Properties:
       TargetFunctionArn: !GetAtt NarratorFunction.Arn
+      # Demo-only public ingress. The fixed x-flo-build marker is request routing,
+      # not authentication. Use AWS_IAM or an authenticated gateway in production.
       AuthType: NONE
 
   NarratorUrlPermission:
@@ -98,7 +107,7 @@ Resources:
 
 Outputs:
   NarratorFunctionUrl:
-    Description: Set this as BEDROCK_NARRATOR_URL only in the deployment environment. Do not commit it.
+    Description: Demo-only unauthenticated URL. Set as BEDROCK_NARRATOR_URL without committing it; use authenticated ingress in production.
     Value: !GetAtt NarratorUrl.FunctionUrl
   NarratorFunctionName:
     Value: !Ref NarratorFunction
