@@ -60,7 +60,7 @@ describe("Flo MCP Streamable HTTP transport", () => {
       supplier: supplier.url,
       customer: customer.url
     });
-    mcp = createFloHttpServer({ adapters, clock: () => new Date(fixedNow) });
+    mcp = createFloHttpServer({ adapters, clock: () => new Date(fixedNow), demoMode: true });
     mcpUrl = await listenNode(mcp.server);
   });
 
@@ -83,9 +83,50 @@ describe("Flo MCP Streamable HTTP transport", () => {
       assert.equal(transport.protocolVersion, "2025-11-25");
 
       const listed = await client.listTools();
-      assert.ok(listed.tools.length >= 25);
+      assert.equal(listed.tools.length, 28);
       assert.ok(listed.tools.some((tool) => tool.name === "get_work_order"));
       assert.ok(listed.tools.some((tool) => tool.name === "confirm_transaction"));
+
+      const representativeFields: Record<string, string> = {
+        get_work_order: "workOrderNumber",
+        list_open_work_orders: "workOrderNumber",
+        search_work_orders: "workOrderNumber",
+        add_work_order_note: "notes",
+        get_asset: "make",
+        record_diagnostic: "finding",
+        get_diagnostic_history: "finding",
+        search_parts: "partNumber",
+        check_part_compatibility: "reasonCode",
+        search_inventory: "available",
+        search_suppliers: "offers",
+        compare_parts: "recommendation",
+        calculate_estimate: "totalCents",
+        create_estimate: "totalCents",
+        get_estimate: "totalCents",
+        get_customer: "preferredContactMethod",
+        send_customer_message: "sentAt",
+        request_customer_approval: "requestedAt",
+        get_customer_approval_status: "requestedAt",
+        simulate_customer_approval: "requestedAt",
+        get_schedule: "bayId",
+        find_available_slot: "conflicts",
+        prepare_purchase_and_schedule: "confirmationToken",
+        confirm_transaction: "scheduleSlot",
+        get_order_status: "idempotencyKey",
+        get_job_status: "purchaseOrder",
+        get_demo_time_window: "start",
+        reset_demo: "reset"
+      };
+      for (const [name, field] of Object.entries(representativeFields)) {
+        const tool = listed.tools.find((candidate) => candidate.name === name);
+        assert.ok(tool !== undefined, `${name} should be registered.`);
+        assert.equal((tool.outputSchema as { type?: unknown }).type, "object", `${name} should advertise an object-root output schema.`);
+        assert.ok(JSON.stringify(tool.outputSchema).includes(`"${field}"`), `${name} should advertise its ${field} output field.`);
+      }
+
+      const workOrderTool = listed.tools.find((tool) => tool.name === "get_work_order");
+      const estimateTool = listed.tools.find((tool) => tool.name === "create_estimate");
+      assert.notDeepEqual(workOrderTool?.outputSchema, estimateTool?.outputSchema);
 
       const result = await client.callTool({
         name: "get_work_order",

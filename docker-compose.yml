@@ -43,6 +43,7 @@ services:
       INVENTORY_API_URL: http://inventory:4102
       SUPPLIER_API_URL: http://supplier:4103
       CUSTOMER_API_URL: http://customer:4104
+      FLO_DEMO_MODE: "true"
       ALLOWED_HOSTNAMES: mcp,localhost,127.0.0.1
       ALLOWED_ORIGIN_HOSTNAMES: simulator,localhost,127.0.0.1
     ports: ["4100:4100"]

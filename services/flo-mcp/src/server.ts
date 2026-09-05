@@ -5,7 +5,10 @@ import { FloOrchestrator, InMemoryJobMemoryStore } from "@flo/agent";
 import { createHttpAdapters, type AdapterSet } from "@flo/adapters";
 import { demoActors } from "@flo/domain";
 import type { Actor, Role } from "@flo/shared-types";
+import { isDemoModeEnabled } from "./runtime-config.js";
 import { createFloMcpServer } from "./tools.js";
+
+export { isDemoModeEnabled } from "./runtime-config.js";
 
 export interface FloServerOptions {
   adapters?: AdapterSet;
@@ -45,7 +48,7 @@ export const createFloHttpServer = (options: FloServerOptions = {}): { server: H
   const host = options.host ?? "127.0.0.1";
   const adapters = options.adapters ?? defaultAdapters();
   const orchestrator = new FloOrchestrator(adapters, new InMemoryJobMemoryStore(), options.clock);
-  const demoMode = options.demoMode ?? process.env.NODE_ENV !== "production";
+  const demoMode = options.demoMode ?? isDemoModeEnabled();
   const handler = createMcpHandler(({ requestInfo }) => createFloMcpServer(orchestrator, actorFromRequest(requestInfo), { demoMode }), { legacy: "stateless" });
   const nodeHandler = toNodeHandler(handler);
   const validateHost = options.allowedHostnames === undefined ? localhostHostValidation() : hostHeaderValidation(options.allowedHostnames);
