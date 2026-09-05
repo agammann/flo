@@ -11,15 +11,32 @@ Parameters:
     Default: 1
     MinValue: 0.1
     MaxValue: 10
-    Description: Maximum steady-state narration requests per second at the public demo boundary.
+    Description: Best-effort steady-state narration requests per second at the authenticated boundary.
   ThrottlingBurstLimit:
     Type: Number
     Default: 2
     MinValue: 1
     MaxValue: 20
-    Description: Maximum narration-request burst accepted by the public demo boundary.
+    Description: Best-effort narration-request burst target at the authenticated boundary.
 
 Resources:
+  NarrationAllowance:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: flo-narration-allowance
+      BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: true
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      SSESpecification:
+        SSEEnabled: true
+
   NarratorRole:
     Type: AWS::IAM::Role
     Properties:
@@ -41,6 +58,12 @@ Resources:
                 Action:
                   - bedrock:InvokeModel
                 Resource: !Sub arn:${AWS::Partition}:bedrock:${AWS::Region}::foundation-model/${ModelId}
+              - Effect: Allow
+                Action: dynamodb:UpdateItem
+                Resource: !GetAtt NarrationAllowance.Arn
+                Condition:
+                  ForAllValues:StringEquals:
+                    dynamodb:LeadingKeys: [flo-lifetime-v1]
 
   NarratorFunction:
     Type: AWS::Lambda::Function
@@ -55,25 +78,48 @@ Resources:
       Environment:
         Variables:
           MODEL_ID: !Ref ModelId
+          ALLOWANCE_TABLE: !Ref NarrationAllowance
       Code:
         ZipFile: |
           const { BedrockRuntimeClient, ConverseCommand } = require("@aws-sdk/client-bedrock-runtime");
-          const client = new BedrockRuntimeClient({});
+          const { DynamoDBClient, UpdateItemCommand } = require("@aws-sdk/client-dynamodb");
+          const client = new BedrockRuntimeClient({ maxAttempts: 1 });
+          const ledger = new DynamoDBClient({ maxAttempts: 1 });
           exports.handler = async (event) => {
             const headers = { "content-type": "application/json", "cache-control": "no-store" };
             try {
-              if ((event.headers?.["x-flo-build"] || event.headers?.["X-Flo-Build"]) !== "flo-hackathon-2026") {
+              // API Gateway validates SigV4 before invocation. No public marker is trusted.
+              if (!event.requestContext?.authorizer?.iam?.userArn) {
                 return { statusCode: 403, headers, body: JSON.stringify({ error: "Forbidden" }) };
               }
-              if (typeof event.body !== "string" || event.body.length > 512) {
+              if (event.isBase64Encoded || typeof event.body !== "string" || event.body.length > 512) {
                 return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid narration request" }) };
               }
-              const body = JSON.parse(event.body || "{}");
-              if (body.task !== "part-comparison-lead" || !Number.isInteger(body.optionCount) || body.optionCount < 1 || body.optionCount > 10) {
+              let body;
+              try { body = JSON.parse(event.body); } catch {
                 return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid narration request" }) };
               }
-              const sanitizedQualityTier = typeof body.qualityTier === "string" ? body.qualityTier.replace(/[^a-z -]/gi, "").slice(0, 30).trim() : "";
-              const qualityTier = sanitizedQualityTier || "quality";
+              if (!body || body.task !== "part-comparison-lead" || !Number.isInteger(body.optionCount) || body.optionCount < 1 || body.optionCount > 10 || !["budget", "standard", "premium", "oem"].includes(body.qualityTier)) {
+                return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid narration request" }) };
+              }
+              if (!process.env.ALLOWANCE_TABLE) throw new Error("Allowance configuration missing");
+              // Reserve atomically BEFORE sending. Never refund uncertain/failed calls.
+              // Missing rows fail closed: only an operator may initialize once.
+              try {
+                await ledger.send(new UpdateItemCommand({
+                  TableName: process.env.ALLOWANCE_TABLE,
+                  Key: { id: { S: "flo-lifetime-v1" } },
+                  UpdateExpression: "SET remaining = remaining - :one ADD used :one",
+                  ConditionExpression: "attribute_exists(id) AND schemaVersion = :version AND remaining BETWEEN :one AND :limit",
+                  ExpressionAttributeValues: { ":one": { N: "1" }, ":limit": { N: "100" }, ":version": { N: "1" } }
+                }));
+              } catch (error) {
+                if (error.name === "ConditionalCheckFailedException") {
+                  return { statusCode: 429, headers, body: JSON.stringify({ error: "Narration allowance unavailable or exhausted" }) };
+                }
+                throw new Error("Narration allowance unavailable");
+              }
+              const qualityTier = body.qualityTier;
               const prompt = `Write one calm sentence of at most twelve words explaining that comparing ${body.optionCount} ${qualityTier} service-part options helps a technician choose confidently. Do not use digits, prices, dates, supplier names, part numbers, claims of completion, or markdown.`;
               const command = new ConverseCommand({
                 modelId: process.env.MODEL_ID,
@@ -88,7 +134,7 @@ Resources:
               }
               return { statusCode: 200, headers, body: JSON.stringify({ lead, modelId: process.env.MODEL_ID }) };
             } catch (error) {
-              console.error(JSON.stringify({ event: "flo.narration.failed", message: error instanceof Error ? error.message : String(error) }));
+              console.error(JSON.stringify({ event: "flo.narration.failed" }));
               return { statusCode: 502, headers, body: JSON.stringify({ error: "Narration unavailable" }) };
             }
           };
@@ -97,7 +143,7 @@ Resources:
     Type: AWS::ApiGatewayV2::Api
     Properties:
       Name: flo-bedrock-narrator
-      Description: Rate-limited public demo ingress for the Flo Bedrock narrator.
+      Description: IAM-authenticated ingress for the Flo Bedrock narrator.
       ProtocolType: HTTP
 
   NarratorIntegration:
@@ -114,6 +160,7 @@ Resources:
     Properties:
       ApiId: !Ref NarratorApi
       RouteKey: POST /narrate
+      AuthorizationType: AWS_IAM
       Target: !Join ["/", [integrations, !Ref NarratorIntegration]]
 
   NarratorStage:
@@ -136,10 +183,15 @@ Resources:
 
 Outputs:
   NarratorEndpointUrl:
-    Description: Rate-limited demo endpoint. Set as BEDROCK_NARRATOR_URL without committing it; use authenticated ingress in production.
+    Description: IAM-authenticated endpoint. Server caller must SigV4-sign requests and have execute-api:Invoke permission.
     Value: !Sub https://${NarratorApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/narrate
   NarratorFunctionName:
     Value: !Ref NarratorFunction
+  NarratorInvokeArn:
+    Description: Grant execute-api:Invoke on only this ARN to the simulator server role.
+    Value: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${NarratorApi}/$default/POST/narrate
+  AllowanceTableName:
+    Value: !Ref NarrationAllowance
   BedrockModelId:
     Value: !Ref ModelId
   NarratorThrottle:

@@ -20,6 +20,7 @@ If private vulnerability reporting is not available, open a minimal issue at <ht
 - Money, compatibility, inventory, and schedule checks use deterministic code.
 - Streamable HTTP deployments validate `Host` and `Origin`, authenticate remote callers, rate-limit requests, and avoid customer PII in logs.
 - Secrets are supplied through environment variables or AWS Secrets Manager.
+- The AWS narrator requires IAM/SigV4, not a public build marker. Its retained DynamoDB allowance reserves every model attempt atomically before execution, never refunds uncertain failures, and fails closed on missing/exhausted/unavailable state. The runtime cannot refill the allowance. This bounds model attempts, not all AWS charges.
 
 ## Threat assumptions
 

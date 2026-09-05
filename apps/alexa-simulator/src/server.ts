@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import express from "express";
 import { Client, StreamableHTTPClientTransport } from "@modelcontextprotocol/client";
+import { signNarratorRequest } from "./aws-narrator-auth.js";
 
 interface ToolEnvelope {
   ok: boolean;
@@ -123,14 +124,17 @@ const bedrockNarrationLead = async (comparison: ComparisonResult, invocations: I
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 2500);
   try {
+    const body = JSON.stringify({
+      task: "part-comparison-lead",
+      optionCount: comparison.ranked.length,
+      qualityTier: comparison.recommendation.part.qualityTier
+    });
+    const headers = await signNarratorRequest(endpoint, body, controller.signal);
     const response = await fetch(endpoint, {
       method: "POST",
-      headers: { "content-type": "application/json", "x-flo-build": "flo-hackathon-2026" },
-      body: JSON.stringify({
-        task: "part-comparison-lead",
-        optionCount: comparison.ranked.length,
-        qualityTier: comparison.recommendation.part.qualityTier
-      }),
+      headers,
+      body,
+      redirect: "error",
       signal: controller.signal
     });
     if (!response.ok) throw new Error(`Amazon Bedrock narrator returned HTTP ${response.status}.`);

@@ -40,7 +40,11 @@ Eligible. Flo's deployed Lambda function calls Amazon Bedrock through the Conver
 
 ## Hardened release verification
 
-The published source tree matches the locally verified source exactly. [CI run 3](https://github.com/agammann/flo/actions/runs/33944222960) passed on commit `c3afe01ba274b8c7e126997871efd23313c3727f`, covering the hardened runtime, typed MCP outputs, and regression suite. Local build, typecheck, lint, and all 27 tests passed. Docker demo configuration was repaired and its production-mode environment was smoke-tested, but Docker itself was unavailable on the development host; a successful Docker Compose launch is not claimed.
+The hardened transaction source passed [CI run 3](https://github.com/agammann/flo/actions/runs/33944222960). A subsequent [real Docker Compose CI run](https://github.com/agammann/flo/actions/runs/33944682177) built the image, started all six services, completed approval, resumed context, purchase and scheduling through MCP, rejected duplicate confirmation, and shut down successfully. Docker/WSL remain absent from the Windows development host, but the Linux-runner Compose launch is now verified. Demo ports bind to loopback only.
+
+The next AWS source revision replaces public-marker access with IAM/SigV4 and adds a retained, atomically reserved lifetime model allowance. Its seven new boundary tests bring the suite to 34 passing tests. This revision is not yet deployed: execution and allowance initialization await approval. Do not treat the previous stack's successful 200/403/400 checks as proof of the new IAM/ledger deployment.
+
+An Alexa+ MCP Toolkit partner-onboarding support case was submitted via the official developer support portal. Access, an assigned Solutions Architect, and official add-on/device validation are still pending Amazon's response. A read-only AgentCore check in us-west-2 returned no deployed runtimes. AgentCore deployment remains incomplete; the working Lambda narrator is not an AgentCore runtime.
 
 YouTube Studio reports the reviewed English track as Published, the custom thumbnail is saved, and the description accurately distinguishes the custom simulator from live Alexa+ device integration. Video visibility remains Unlisted pending the entrant's separate final confirmation. Publishing captions did not change video visibility.
 
