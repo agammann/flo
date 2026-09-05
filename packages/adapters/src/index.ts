@@ -172,7 +172,7 @@ export class HttpSupplierAdapter implements SupplierAdapter {
 export interface CustomerAdapter {
   getCustomer(id: string): Promise<Customer>;
   sendMessage(input: { customerId: string; channel: "sms" | "email" | "phone"; body: string }): Promise<{ id: string; sentAt: string }>;
-  requestApproval(input: { workOrderId: string; estimateId: string; customerId: string; summary: string }): Promise<Approval>;
+  requestApproval(input: { workOrderId: string; estimateId: string; estimateFingerprint: string; customerId: string; summary: string }): Promise<Approval>;
   getApprovalStatus(idOrReference: string): Promise<Approval>;
   simulateApproval(id: string, status: "approved" | "denied"): Promise<Approval>;
   reset(): Promise<void>;
@@ -184,7 +184,7 @@ export class HttpCustomerAdapter implements CustomerAdapter {
   constructor(baseUrl: string) { this.http = new JsonHttpClient(baseUrl); }
   getCustomer(id: string): Promise<Customer> { return this.http.request(`/customers/${encodeURIComponent(id)}`, customerSchema); }
   sendMessage(input: { customerId: string; channel: "sms" | "email" | "phone"; body: string }): Promise<{ id: string; sentAt: string }> { return this.http.request("/messages", messageResultSchema, { method: "POST", body: JSON.stringify(input) }); }
-  requestApproval(input: { workOrderId: string; estimateId: string; customerId: string; summary: string }): Promise<Approval> { return this.http.request("/approvals", approvalSchema, { method: "POST", body: JSON.stringify(input) }); }
+  requestApproval(input: { workOrderId: string; estimateId: string; estimateFingerprint: string; customerId: string; summary: string }): Promise<Approval> { return this.http.request("/approvals", approvalSchema, { method: "POST", body: JSON.stringify(input) }); }
   getApprovalStatus(idOrReference: string): Promise<Approval> { return this.http.request(`/approvals/${encodeURIComponent(idOrReference)}`, approvalSchema); }
   simulateApproval(id: string, status: "approved" | "denied"): Promise<Approval> { return this.http.request(`/approvals/${encodeURIComponent(id)}/simulate`, approvalSchema, { method: "POST", body: JSON.stringify({ status, actor: "demo-customer" }) }); }
   async reset(): Promise<void> { await this.http.request("/demo/reset", z.object({ ok: z.literal(true) }), { method: "POST" }); }

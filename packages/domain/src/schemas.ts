@@ -168,6 +168,7 @@ export const approvalSchema = z.object({
   id,
   workOrderId: id,
   estimateId: id,
+  estimateFingerprint: z.string().regex(/^[a-f0-9]{64}$/),
   customerId: id,
   status: approvalStatusSchema,
   requestedAt: isoDateTime,

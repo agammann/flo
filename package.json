@@ -13,7 +13,7 @@
     "dev:services": "concurrently -n shop,inventory,supplier,customer,mcp -c blue,green,magenta,cyan,yellow \"pnpm --filter @flo/mock-shop-api dev\" \"pnpm --filter @flo/mock-inventory-api dev\" \"pnpm --filter @flo/mock-supplier-api dev\" \"pnpm --filter @flo/mock-customer-api dev\" \"pnpm --filter @flo/mcp dev\"",
     "test": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs",
     "test:unit": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs packages",
-    "test:integration": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs tests/integration",
+    "test:integration": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs tests",
     "test:e2e": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs tests/e2e",
     "typecheck": "node scripts/compile-workspaces.mjs --noEmit",
     "lint": "eslint . --max-warnings=0",

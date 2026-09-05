@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import type { AdapterSet, SupplierSearchResult } from "@flo/adapters";
 import { checkCompatibility, rankSupplierOptions, type CompatibilityResult, type RankedSupplierPart } from "@flo/compatibility-engine";
 import {
@@ -11,6 +11,7 @@ import {
   type ContextMemory,
   type DiagnosticRecord,
   type Estimate,
+  type EstimatePartItem,
   type Part,
   type PurchaseOrder,
   type ScheduleSlot,
@@ -37,10 +38,13 @@ interface PendingOperation {
   token: string;
   actorId: string;
   workOrderId: string;
+  approvalId: string;
+  estimateId: string;
   supplierPart: SupplierPart;
   schedule: Omit<ScheduleSlot, "id">;
   idempotencyKey: string;
   expiresAt: string;
+  executionAttemptedAt: string | null;
   consumedAt: string | null;
 }
 
@@ -84,9 +88,25 @@ export interface TransactionResult {
   summary: string;
 }
 
+const fingerprintEstimate = (estimate: Estimate): string => createHash("sha256").update(JSON.stringify({
+  workOrderId: estimate.workOrderId,
+  laborItems: estimate.laborItems,
+  partItems: estimate.partItems,
+  subtotalCents: estimate.subtotalCents,
+  taxableSubtotalCents: estimate.taxableSubtotalCents,
+  taxCents: estimate.taxCents,
+  feesCents: estimate.feesCents,
+  discountCents: estimate.discountCents,
+  totalCents: estimate.totalCents,
+  shopCostCents: estimate.shopCostCents,
+  grossMarginCents: estimate.grossMarginCents
+})).digest("hex");
+
 export class FloOrchestrator {
   private readonly pending = new Map<string, PendingOperation>();
   private readonly ordersByWorkOrder = new Map<string, PurchaseOrder>();
+  private readonly estimateMutationTails = new Map<string, Promise<void>>();
+  private readonly confirmationsInFlight = new Set<string>();
 
   constructor(
     private readonly adapters: AdapterSet,
@@ -124,6 +144,160 @@ export class FloOrchestrator {
       metadata
     };
     return this.adapters.shop.writeAudit(log);
+  }
+
+  private async withEstimateMutationLock<Result>(workOrderId: string, operation: () => Promise<Result>): Promise<Result> {
+    const previous = this.estimateMutationTails.get(workOrderId) ?? Promise.resolve();
+    let release = (): void => undefined;
+    const gate = new Promise<void>((resolve) => { release = resolve; });
+    const tail = previous.then(() => gate);
+    this.estimateMutationTails.set(workOrderId, tail);
+    await previous;
+    try {
+      return await operation();
+    } finally {
+      release();
+      if (this.estimateMutationTails.get(workOrderId) === tail) this.estimateMutationTails.delete(workOrderId);
+    }
+  }
+
+  private async requireCompatiblePart(workOrder: WorkOrder, offer: SupplierPart): Promise<Part> {
+    const [asset, part] = await Promise.all([
+      this.adapters.shop.getAsset(workOrder.assetId),
+      this.adapters.inventory.getPart(offer.partId)
+    ]);
+    if (part.id !== offer.partId) {
+      throw new FloError({
+        code: "UPSTREAM_DATA_MISMATCH",
+        message: "The inventory provider returned a different part than the supplier offer references.",
+        retryable: false,
+        details: { expectedPartId: offer.partId, actualPartId: part.id, supplierSku: offer.supplierSku }
+      });
+    }
+    const compatibility = checkCompatibility(asset, part);
+    if (compatibility.compatible !== true) {
+      throw new FloError({
+        code: compatibility.compatible === false ? "PART_INCOMPATIBLE" : "PART_COMPATIBILITY_UNKNOWN",
+        message: compatibility.compatible === false
+          ? `${part.partNumber} is not compatible with the asset on work order ${workOrder.workOrderNumber}.`
+          : `Compatibility for ${part.partNumber} cannot be determined from the asset data on work order ${workOrder.workOrderNumber}.`,
+        retryable: false,
+        recovery: compatibility.compatible === false
+          ? ["Search and compare compatible parts for this work order."]
+          : ["Complete the asset fitment data, then check compatibility again."],
+        details: { workOrderId: workOrder.id, partId: part.id, reasonCode: compatibility.reasonCode }
+      });
+    }
+    return part;
+  }
+
+  private async resolveEstimateSelection(
+    actor: Actor,
+    workOrder: WorkOrder,
+    supplierSku: string | undefined,
+    missingMessage: string
+  ): Promise<{ offer: SupplierPart; part: Part }> {
+    const memory = await this.memory.get(actor.id);
+    let offer = memory?.selectedSupplierPart ?? null;
+    if (supplierSku !== undefined && offer?.supplierSku !== supplierSku) {
+      const parts = await this.adapters.inventory.searchParts({});
+      const result = parts.length === 0
+        ? null
+        : await this.adapters.supplier.searchParts({ partIds: parts.map((part) => part.id) });
+      offer = result?.offers.find((candidate) => candidate.supplierSku === supplierSku) ?? null;
+    }
+    if (offer === null) {
+      throw new FloError({
+        code: "NO_SELECTED_PART",
+        message: missingMessage,
+        retryable: false,
+        recovery: ["Search and compare compatible parts first."]
+      });
+    }
+    const part = await this.requireCompatiblePart(workOrder, offer);
+    await this.remember(actor, { activeWorkOrderId: workOrder.id, recentAssetId: workOrder.assetId, selectedSupplierPart: offer });
+    return { offer, part };
+  }
+
+  private async resolveApprovedEstimateSelection(
+    workOrder: WorkOrder,
+    approval: Approval,
+    requestedSupplierSku?: string
+  ): Promise<{ estimate: Estimate; partItem: EstimatePartItem; offer: SupplierPart }> {
+    if (approval.workOrderId !== workOrder.id || approval.customerId !== workOrder.customerId) {
+      throw new FloError({
+        code: "APPROVAL_SCOPE_MISMATCH",
+        message: "The approval does not belong to the requested work order and customer.",
+        retryable: false
+      });
+    }
+    const estimate = await this.adapters.shop.getEstimate(approval.estimateId);
+    if (estimate.workOrderId !== workOrder.id) {
+      throw new FloError({
+        code: "APPROVAL_SCOPE_MISMATCH",
+        message: "The approved estimate does not belong to the requested work order.",
+        retryable: false
+      });
+    }
+    if (approval.estimateFingerprint !== fingerprintEstimate(estimate)) {
+      throw new FloError({
+        code: "APPROVED_ESTIMATE_CHANGED",
+        message: "The estimate contents changed after the customer approval was created.",
+        retryable: false,
+        recovery: ["Create an immutable estimate revision and request customer approval again."],
+        details: { approvalId: approval.id, estimateId: estimate.id }
+      });
+    }
+    if (estimate.status !== "approved" || estimate.approvalStatus !== "approved") {
+      throw new FloError({
+        code: "APPROVAL_REQUIRED",
+        message: "The estimate is not in an approved state.",
+        retryable: false,
+        recovery: ["Request approval for the current estimate."]
+      });
+    }
+    if (estimate.partItems.length !== 1 || estimate.partItems[0]?.quantity !== 1) {
+      throw new FloError({
+        code: "APPROVED_ESTIMATE_UNSUPPORTED",
+        message: "This transaction requires exactly one approved part item with quantity one.",
+        retryable: false,
+        recovery: ["Review the approved estimate before preparing the transaction."]
+      });
+    }
+    const partItem = estimate.partItems[0];
+    if (requestedSupplierSku !== undefined && requestedSupplierSku !== partItem.supplierSku) {
+      throw new FloError({
+        code: "APPROVED_ESTIMATE_MISMATCH",
+        message: `Supplier SKU ${requestedSupplierSku} is not the SKU approved on estimate ${estimate.id}.`,
+        retryable: false,
+        recovery: [`Use approved supplier SKU ${partItem.supplierSku}.`, "Create and request approval for a revised estimate."]
+      });
+    }
+    const search = await this.adapters.supplier.searchParts({ partIds: [partItem.partId] });
+    const offer = search.offers.find((candidate) =>
+      candidate.partId === partItem.partId &&
+      candidate.supplierId === partItem.supplierId &&
+      candidate.supplierSku === partItem.supplierSku
+    );
+    if (offer === undefined) {
+      throw new FloError({
+        code: "INVENTORY_CHANGED",
+        message: "The supplier offer approved on the estimate is no longer available.",
+        retryable: true,
+        recovery: ["Search suppliers again and request approval for an updated estimate."]
+      });
+    }
+    if (offer.priceCents !== partItem.unitCostCents || offer.priceCents + offer.shippingCostCents !== partItem.lineCostCents) {
+      throw new FloError({
+        code: "APPROVED_ESTIMATE_STALE",
+        message: "The supplier cost changed after the estimate was approved.",
+        retryable: true,
+        recovery: ["Create and request approval for an updated estimate."],
+        details: { estimateId: estimate.id, supplierSku: partItem.supplierSku }
+      });
+    }
+    await this.requireCompatiblePart(workOrder, offer);
+    return { estimate, partItem, offer };
   }
 
   async getWorkOrder(actor: Actor, idOrNumber: string): Promise<WorkOrder> {
@@ -250,35 +424,33 @@ export class FloOrchestrator {
 
   async createEstimate(actor: Actor, input: { workOrderIdOrNumber?: string; supplierSku?: string; laborHours?: number }): Promise<Estimate> {
     requirePermission(actor, "estimate:write");
-    const workOrder = input.workOrderIdOrNumber === undefined ? await this.resolveWorkOrder(actor, "active job") : await this.getWorkOrder(actor, input.workOrderIdOrNumber);
-    const memory = await this.memory.get(actor.id);
-    let selected = memory?.selectedSupplierPart ?? null;
-    if (input.supplierSku !== undefined && selected?.supplierSku !== input.supplierSku) {
-      const parts = await this.adapters.inventory.searchParts({ category: "alternator" });
-      const search = await this.adapters.supplier.searchParts({ partIds: parts.map((part) => part.id) });
-      selected = search.offers.find((offer) => offer.supplierSku === input.supplierSku) ?? null;
-    }
-    if (selected === null) throw new FloError({ code: "NO_SELECTED_PART", message: "No supplier part has been selected for the estimate.", retryable: false, recovery: ["Search and compare compatible parts first."] });
-    const part = await this.adapters.inventory.getPart(selected.partId);
-    const estimate = calculateEstimate({ id: workOrder.estimateId ?? `estimate-${randomUUID()}`, workOrderId: workOrder.id, part, offer: selected, ...(input.laborHours === undefined ? {} : { laborHours: input.laborHours }), now: this.clock() });
-    const saved = await this.adapters.shop.saveEstimate(estimate);
-    await this.audit(actor, "estimate.created", "estimate", saved.id, { workOrderId: workOrder.id, totalCents: saved.totalCents });
-    return saved;
+    const selectedWorkOrder = input.workOrderIdOrNumber === undefined ? await this.resolveWorkOrder(actor, "active job") : await this.getWorkOrder(actor, input.workOrderIdOrNumber);
+    return this.withEstimateMutationLock(selectedWorkOrder.id, async () => {
+      const workOrder = await this.adapters.shop.getWorkOrder(selectedWorkOrder.id);
+      if (workOrder.estimateId !== null) {
+        const existing = await this.adapters.shop.getEstimate(workOrder.estimateId);
+        if (existing.status !== "draft" || existing.approvalStatus !== "not_requested") {
+          throw new FloError({
+            code: "ESTIMATE_LOCKED",
+            message: `Estimate ${existing.id} cannot be replaced after customer approval has been requested.`,
+            retryable: false,
+            recovery: ["Keep the approved estimate unchanged.", "Add estimate revision support before requesting a different approval."]
+          });
+        }
+      }
+      const { offer, part } = await this.resolveEstimateSelection(actor, workOrder, input.supplierSku, "No supplier part has been selected for the estimate.");
+      const estimate = calculateEstimate({ id: workOrder.estimateId ?? `estimate-${randomUUID()}`, workOrderId: workOrder.id, part, offer, ...(input.laborHours === undefined ? {} : { laborHours: input.laborHours }), now: this.clock() });
+      const saved = await this.adapters.shop.saveEstimate(estimate);
+      await this.audit(actor, "estimate.created", "estimate", saved.id, { workOrderId: workOrder.id, totalCents: saved.totalCents });
+      return saved;
+    });
   }
 
   async calculateEstimatePreview(actor: Actor, input: { workOrderIdOrNumber?: string; supplierSku?: string; laborHours?: number }): Promise<Estimate> {
     requirePermission(actor, "estimate:read");
     const workOrder = input.workOrderIdOrNumber === undefined ? await this.resolveWorkOrder(actor, "active job") : await this.getWorkOrder(actor, input.workOrderIdOrNumber);
-    const memory = await this.memory.get(actor.id);
-    let selected = memory?.selectedSupplierPart ?? null;
-    if (input.supplierSku !== undefined && selected?.supplierSku !== input.supplierSku) {
-      const parts = await this.adapters.inventory.searchParts({});
-      const result = await this.adapters.supplier.searchParts({ partIds: parts.map((part) => part.id) });
-      selected = result.offers.find((offer) => offer.supplierSku === input.supplierSku) ?? null;
-    }
-    if (selected === null) throw new FloError({ code: "NO_SELECTED_PART", message: "No supplier part has been selected for an estimate preview.", retryable: false, recovery: ["Search and compare compatible parts first."] });
-    const part = await this.adapters.inventory.getPart(selected.partId);
-    return calculateEstimate({ id: `preview-${randomUUID()}`, workOrderId: workOrder.id, part, offer: selected, ...(input.laborHours === undefined ? {} : { laborHours: input.laborHours }), now: this.clock() });
+    const { offer, part } = await this.resolveEstimateSelection(actor, workOrder, input.supplierSku, "No supplier part has been selected for an estimate preview.");
+    return calculateEstimate({ id: `preview-${randomUUID()}`, workOrderId: workOrder.id, part, offer, ...(input.laborHours === undefined ? {} : { laborHours: input.laborHours }), now: this.clock() });
   }
 
   async getEstimate(actor: Actor, idOrWorkOrderId?: string): Promise<Estimate> {
@@ -292,22 +464,58 @@ export class FloOrchestrator {
   async requestCustomerApproval(actor: Actor, workOrderIdOrNumber?: string): Promise<Approval> {
     requirePermission(actor, "approval:request");
     requirePermission(actor, "customer:message");
-    const workOrder = workOrderIdOrNumber === undefined ? await this.resolveWorkOrder(actor, "active job") : await this.getWorkOrder(actor, workOrderIdOrNumber);
-    const estimate = await this.adapters.shop.getEstimate(workOrder.id);
-    const customer = await this.adapters.customer.getCustomer(workOrder.customerId);
-    const approval = await this.adapters.customer.requestApproval({
-      workOrderId: workOrder.id,
-      estimateId: estimate.id,
-      customerId: customer.id,
-      summary: `Please approve estimate ${estimate.id} for ${formatCurrency(estimate.totalCents)} on work order ${workOrder.workOrderNumber}.`
+    const selectedWorkOrder = workOrderIdOrNumber === undefined ? await this.resolveWorkOrder(actor, "active job") : await this.getWorkOrder(actor, workOrderIdOrNumber);
+    return this.withEstimateMutationLock(selectedWorkOrder.id, async () => {
+      const workOrder = await this.adapters.shop.getWorkOrder(selectedWorkOrder.id);
+      const estimate = await this.adapters.shop.getEstimate(workOrder.id);
+      const estimateFingerprint = fingerprintEstimate(estimate);
+      if (estimate.status !== "draft" || estimate.approvalStatus !== "not_requested") {
+        const existing = await this.adapters.customer.getApprovalStatus(workOrder.id);
+        if (
+          existing.workOrderId !== workOrder.id ||
+          existing.customerId !== workOrder.customerId ||
+          existing.estimateId !== estimate.id ||
+          existing.estimateFingerprint !== estimateFingerprint
+        ) {
+          throw new FloError({ code: "APPROVAL_SCOPE_MISMATCH", message: "The current approval does not match this work order and estimate.", retryable: false });
+        }
+        await this.remember(actor, { activeWorkOrderId: workOrder.id, pendingApprovalId: existing.id });
+        return existing;
+      }
+
+      await Promise.all([
+        this.adapters.shop.updateEstimate(estimate.id, { status: "sent", approvalStatus: "pending" }),
+        this.adapters.shop.updateWorkOrder(workOrder.id, { status: "awaiting_approval" })
+      ]);
+      let approval: Approval;
+      try {
+        const customer = await this.adapters.customer.getCustomer(workOrder.customerId);
+        approval = await this.adapters.customer.requestApproval({
+          workOrderId: workOrder.id,
+          estimateId: estimate.id,
+          estimateFingerprint,
+          customerId: customer.id,
+          summary: `Please approve estimate ${estimate.id} for ${formatCurrency(estimate.totalCents)} on work order ${workOrder.workOrderNumber}.`
+        });
+        if (
+          approval.workOrderId !== workOrder.id ||
+          approval.customerId !== customer.id ||
+          approval.estimateId !== estimate.id ||
+          approval.estimateFingerprint !== estimateFingerprint
+        ) {
+          throw new FloError({ code: "APPROVAL_SCOPE_MISMATCH", message: "The approval provider returned a record for a different estimate or customer.", retryable: false });
+        }
+      } catch (error) {
+        await Promise.all([
+          this.adapters.shop.updateEstimate(estimate.id, { status: "draft", approvalStatus: "not_requested" }),
+          this.adapters.shop.updateWorkOrder(workOrder.id, { status: workOrder.status })
+        ]);
+        throw error;
+      }
+      await this.remember(actor, { activeWorkOrderId: workOrder.id, pendingApprovalId: approval.id });
+      await this.audit(actor, "approval.requested", "approval", approval.id, { workOrderId: workOrder.id, channel: approval.channel, estimateFingerprint });
+      return approval;
     });
-    await Promise.all([
-      this.adapters.shop.updateEstimate(estimate.id, { status: "sent", approvalStatus: "pending" }),
-      this.adapters.shop.updateWorkOrder(workOrder.id, { status: "awaiting_approval" })
-    ]);
-    await this.remember(actor, { activeWorkOrderId: workOrder.id, pendingApprovalId: approval.id });
-    await this.audit(actor, "approval.requested", "approval", approval.id, { workOrderId: workOrder.id, channel: approval.channel });
-    return approval;
   }
 
   async getCustomer(actor: Actor, workOrderIdOrNumber?: string) {
@@ -327,22 +535,43 @@ export class FloOrchestrator {
 
   async getCustomerApprovalStatus(actor: Actor, reference?: string): Promise<Approval> {
     const workOrder = await this.resolveWorkOrder(actor, reference ?? "active job");
-    const memory = await this.memory.get(actor.id);
-    const approval = await this.adapters.customer.getApprovalStatus(memory?.pendingApprovalId ?? workOrder.id);
+    const approval = await this.adapters.customer.getApprovalStatus(workOrder.id);
+    if (approval.workOrderId !== workOrder.id || approval.customerId !== workOrder.customerId) {
+      throw new FloError({ code: "APPROVAL_SCOPE_MISMATCH", message: "The approval service returned an approval for a different work order or customer.", retryable: false });
+    }
+    const estimate = await this.adapters.shop.getEstimate(approval.estimateId);
+    if (estimate.workOrderId !== workOrder.id) {
+      throw new FloError({ code: "APPROVAL_SCOPE_MISMATCH", message: "The approval service returned an estimate for a different work order.", retryable: false });
+    }
+    if (approval.estimateFingerprint !== fingerprintEstimate(estimate)) {
+      throw new FloError({ code: "APPROVED_ESTIMATE_CHANGED", message: "The estimate contents no longer match the customer approval.", retryable: false, recovery: ["Create an immutable estimate revision and request approval again."] });
+    }
     if (approval.status === "approved" || approval.status === "denied") {
       await Promise.all([
         this.adapters.shop.updateEstimate(approval.estimateId, { status: approval.status === "approved" ? "approved" : "declined", approvalStatus: approval.status }),
         this.adapters.shop.updateWorkOrder(workOrder.id, { status: approval.status === "approved" ? "approved" : "estimating" })
       ]);
     }
+    await this.remember(actor, { activeWorkOrderId: workOrder.id, pendingApprovalId: approval.id });
     return approval;
   }
 
   async simulateCustomerApproval(actor: Actor, status: "approved" | "denied", approvalId?: string): Promise<Approval> {
-    if (process.env.NODE_ENV === "production") throw new FloError({ code: "DEMO_ONLY", message: "Customer approval simulation is disabled in production.", retryable: false });
+    if (process.env.NODE_ENV === "production" && process.env.FLO_DEMO_MODE !== "true") throw new FloError({ code: "DEMO_ONLY", message: "Customer approval simulation is disabled in production.", retryable: false });
     const memory = await this.memory.get(actor.id);
     const id = approvalId ?? memory?.pendingApprovalId;
     if (id === undefined || id === null) throw new FloError({ code: "APPROVAL_NOT_FOUND", message: "No pending approval is in context.", retryable: false });
+    const candidate = await this.adapters.customer.getApprovalStatus(id);
+    const workOrder = await this.getWorkOrder(actor, candidate.workOrderId);
+    const estimate = await this.adapters.shop.getEstimate(candidate.estimateId);
+    if (
+      candidate.workOrderId !== workOrder.id ||
+      candidate.customerId !== workOrder.customerId ||
+      estimate.workOrderId !== workOrder.id ||
+      candidate.estimateFingerprint !== fingerprintEstimate(estimate)
+    ) {
+      throw new FloError({ code: "APPROVAL_SCOPE_MISMATCH", message: "The approval cannot be simulated because it does not match the authorized work order and estimate.", retryable: false });
+    }
     const approval = await this.adapters.customer.simulateApproval(id, status);
     await this.getCustomerApprovalStatus(actor, approval.workOrderId);
     await this.audit({ ...actor, id: "demo-customer", role: actor.role }, `approval.${status}`, "approval", approval.id, { simulated: true });
@@ -372,11 +601,7 @@ export class FloOrchestrator {
       throw new FloError({ code: "APPROVAL_REQUIRED", message: "Customer approval has not been requested; purchase cannot be prepared.", retryable: false, recovery: ["Create an estimate and request customer approval."] });
     }
     if (approval.status !== "approved") throw new FloError({ code: "APPROVAL_REQUIRED", message: `Customer approval is ${approval.status}; purchase cannot be prepared.`, retryable: false, recovery: ["Wait for customer approval."] });
-    const memory = await this.memory.get(actor.id);
-    const supplierPart = memory?.selectedSupplierPart;
-    if (supplierPart === undefined || supplierPart === null || (input.supplierSku !== undefined && supplierPart.supplierSku !== input.supplierSku)) {
-      throw new FloError({ code: "NO_SELECTED_PART", message: "The selected supplier offer is missing or changed.", retryable: false, recovery: ["Search and compare parts again."] });
-    }
+    const { estimate, offer: supplierPart } = await this.resolveApprovedEstimateSelection(workOrder, approval, input.supplierSku);
     const availability = await this.findAvailableSlot(actor, { bayId: input.bayId, start: input.start, end: input.end });
     if (!availability.available) throw new FloError({ code: "BAY_CONFLICT", message: `${input.bayId} is occupied during the requested time.`, retryable: true, recovery: ["Choose another bay.", "Choose another time."], details: { conflicts: availability.conflicts } });
     const token = randomUUID();
@@ -385,10 +610,13 @@ export class FloOrchestrator {
       token,
       actorId: actor.id,
       workOrderId: workOrder.id,
+      approvalId: approval.id,
+      estimateId: estimate.id,
       supplierPart,
       schedule: { bayId: input.bayId, start: input.start, end: input.end, workOrderId: workOrder.id, technicianId: workOrder.assignedTechnicianId ?? actor.id },
-      idempotencyKey: input.idempotencyKey ?? `flo-${workOrder.id}-${supplierPart.supplierSku}`,
+      idempotencyKey: input.idempotencyKey ?? `flo-${workOrder.id}-${supplierPart.supplierSku}-${randomUUID()}`,
       expiresAt,
+      executionAttemptedAt: null,
       consumedAt: null
     };
     this.pending.set(token, pending);
@@ -406,14 +634,44 @@ export class FloOrchestrator {
     requirePermission(actor, "schedule:write");
     const pending = this.pending.get(confirmationToken);
     if (pending === undefined || pending.actorId !== actor.id) throw new FloError({ code: "CONFIRMATION_INVALID", message: "The confirmation token is invalid for this actor.", retryable: false });
+    if (this.confirmationsInFlight.has(confirmationToken)) {
+      throw new FloError({ code: "CONFIRMATION_IN_PROGRESS", message: "This confirmation is already being executed.", retryable: true, recovery: ["Wait for the current confirmation attempt to finish."] });
+    }
+    this.confirmationsInFlight.add(confirmationToken);
+    try {
+      return await this.confirmTransactionExclusive(actor, confirmationToken);
+    } finally {
+      this.confirmationsInFlight.delete(confirmationToken);
+    }
+  }
+
+  private async confirmTransactionExclusive(actor: Actor, confirmationToken: string): Promise<TransactionResult> {
+    requirePermission(actor, "purchase:execute");
+    requirePermission(actor, "schedule:write");
+    const pending = this.pending.get(confirmationToken);
+    if (pending === undefined || pending.actorId !== actor.id) throw new FloError({ code: "CONFIRMATION_INVALID", message: "The confirmation token is invalid for this actor.", retryable: false });
     if (pending.consumedAt !== null) throw new FloError({ code: "CONFIRMATION_ALREADY_USED", message: "This confirmation has already been used.", retryable: false });
     if (new Date(pending.expiresAt).getTime() <= this.clock().getTime()) throw new FloError({ code: "CONFIRMATION_EXPIRED", message: "The confirmation expired before execution.", retryable: false, recovery: ["Prepare the transaction again."] });
     const workOrder = await this.getWorkOrder(actor, pending.workOrderId);
     const approval = await this.getCustomerApprovalStatus(actor, workOrder.id);
     if (approval.status !== "approved") throw new FloError({ code: "APPROVAL_REQUIRED", message: "Customer approval is no longer valid.", retryable: false });
+    if (approval.id !== pending.approvalId || approval.estimateId !== pending.estimateId) {
+      throw new FloError({ code: "APPROVAL_CHANGED", message: "The customer approval changed after this transaction was prepared.", retryable: false, recovery: ["Prepare the transaction again from the current approved estimate."] });
+    }
+    const currentSelection = await this.resolveApprovedEstimateSelection(workOrder, approval, pending.supplierPart.supplierSku);
+    if (
+      currentSelection.offer.partId !== pending.supplierPart.partId ||
+      currentSelection.offer.supplierId !== pending.supplierPart.supplierId ||
+      currentSelection.offer.priceCents !== pending.supplierPart.priceCents ||
+      currentSelection.offer.shippingCostCents !== pending.supplierPart.shippingCostCents
+    ) {
+      throw new FloError({ code: "APPROVED_ESTIMATE_STALE", message: "The approved supplier offer changed after this transaction was prepared.", retryable: true, recovery: ["Prepare the transaction again from a current approved estimate."] });
+    }
     const availability = await this.findAvailableSlot(actor, { bayId: pending.schedule.bayId, start: pending.schedule.start, end: pending.schedule.end });
     if (!availability.available) throw new FloError({ code: "BAY_CONFLICT", message: "The requested bay became unavailable before confirmation.", retryable: true, recovery: ["Prepare the transaction with another slot."] });
 
+    const isPlaceOrderRetry = pending.executionAttemptedAt !== null;
+    pending.executionAttemptedAt ??= this.clock().toISOString();
     const orderResult = await this.adapters.supplier.placeOrder({
       supplierId: pending.supplierPart.supplierId,
       workOrderId: workOrder.id,
@@ -421,6 +679,35 @@ export class FloOrchestrator {
       quantity: 1,
       idempotencyKey: pending.idempotencyKey
     });
+    const orderItem = orderResult.order.items[0];
+    const responseMatchesApprovedPurchase =
+      orderResult.order.idempotencyKey === pending.idempotencyKey &&
+      orderResult.order.supplierId === pending.supplierPart.supplierId &&
+      orderResult.order.workOrderId === workOrder.id &&
+      orderResult.order.items.length === 1 &&
+      orderItem?.partId === pending.supplierPart.partId &&
+      orderItem.supplierSku === pending.supplierPart.supplierSku &&
+      orderItem.quantity === 1 &&
+      orderItem.unitCostCents === pending.supplierPart.priceCents &&
+      orderResult.order.totalCents === pending.supplierPart.priceCents + pending.supplierPart.shippingCostCents;
+    if (!responseMatchesApprovedPurchase) {
+      pending.consumedAt = this.clock().toISOString();
+      throw new FloError({
+        code: "UPSTREAM_DATA_MISMATCH",
+        message: "The supplier returned an order that does not match the approved purchase.",
+        retryable: false,
+        recovery: ["Do not schedule the work; reconcile the supplier order manually."],
+        details: { expectedWorkOrderId: workOrder.id, returnedOrderId: orderResult.order.id }
+      });
+    }
+    if (orderResult.idempotentReplay && !isPlaceOrderRetry) {
+      pending.consumedAt = this.clock().toISOString();
+      throw new FloError({ code: "IDEMPOTENCY_KEY_ALREADY_USED", message: "This idempotency key belongs to an earlier purchase attempt.", retryable: false, recovery: ["Prepare the transaction again with a new idempotency key."] });
+    }
+    if (orderResult.order.status === "cancelled") {
+      throw new FloError({ code: "ORDER_CANCELLED", message: "A cancelled purchase order cannot satisfy this transaction.", retryable: false, recovery: ["Prepare the transaction again with a new idempotency key."] });
+    }
+    pending.consumedAt = this.clock().toISOString();
     let slot: ScheduleSlot;
     try {
       slot = await this.adapters.shop.schedule({ id: `slot-${randomUUID()}`, ...pending.schedule });
@@ -453,7 +740,6 @@ export class FloOrchestrator {
       });
     }
     const updatedWorkOrder = await this.adapters.shop.updateWorkOrder(workOrder.id, { status: "scheduled", bayId: slot.bayId, scheduledStart: slot.start, scheduledEnd: slot.end });
-    pending.consumedAt = this.clock().toISOString();
     this.ordersByWorkOrder.set(workOrder.id, orderResult.order);
     const purchaseAudit = await this.audit(actor, "purchase_order.placed", "purchase_order", orderResult.order.id, { workOrderId: workOrder.id, idempotencyKey: pending.idempotencyKey });
     const scheduleAudit = await this.audit(actor, "work.scheduled", "schedule_slot", slot.id, { workOrderId: workOrder.id, bayId: slot.bayId });

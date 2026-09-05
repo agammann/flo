@@ -47,6 +47,18 @@ export const createSupplierApi = (now = new Date()): SupplierApi => {
     const input = placeOrderSchema.parse(request.body);
     const existing = state.orders.find((order) => order.idempotencyKey === input.idempotencyKey);
     if (existing !== undefined) {
+      const item = existing.items[0];
+      const sameOperation = existing.supplierId === input.supplierId &&
+        existing.workOrderId === input.workOrderId &&
+        existing.items.length === 1 &&
+        item?.supplierSku === input.supplierSku &&
+        item?.quantity === input.quantity;
+      if (!sameOperation) {
+        throw new FloError({ code: "IDEMPOTENCY_KEY_CONFLICT", message: "The idempotency key belongs to a different purchase operation.", retryable: false, recovery: ["Use a new idempotency key for this purchase."] });
+      }
+      if (existing.status === "cancelled") {
+        throw new FloError({ code: "IDEMPOTENCY_KEY_RETIRED", message: "The idempotency key belongs to a cancelled order and cannot be reused.", retryable: false, recovery: ["Use a new idempotency key for the replacement order."] });
+      }
       response.json({ order: existing, idempotentReplay: true });
       return;
     }
@@ -76,6 +88,15 @@ export const createSupplierApi = (now = new Date()): SupplierApi => {
     const order = state.orders.find((item) => item.id === request.params.id);
     if (order === undefined) throw new FloError({ code: "ORDER_NOT_FOUND", message: "Purchase order was not found.", retryable: false });
     if (order.status === "delivered") throw new FloError({ code: "ORDER_NOT_CANCELLABLE", message: "A delivered order cannot be cancelled.", retryable: false });
+    if (order.status === "cancelled") {
+      response.json(order);
+      return;
+    }
+    for (const item of order.items) {
+      const offer = state.offers.find((candidate) => candidate.supplierId === order.supplierId && candidate.supplierSku === item.supplierSku && candidate.partId === item.partId);
+      if (offer === undefined) throw new FloError({ code: "OFFER_NOT_FOUND", message: "The supplier offer for this order no longer exists.", retryable: false });
+      offer.inventory += item.quantity;
+    }
     order.status = "cancelled";
     response.json(order);
   });

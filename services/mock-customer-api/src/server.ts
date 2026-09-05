@@ -18,6 +18,7 @@ export interface CustomerApi { app: Express; snapshot(): CustomerState; reset(no
 const requestApprovalSchema = z.object({
   workOrderId: z.string().min(1),
   estimateId: z.string().min(1),
+  estimateFingerprint: z.string().regex(/^[a-f0-9]{64}$/),
   customerId: z.string().min(1),
   summary: z.string().min(1).max(2000)
 });
@@ -63,6 +64,7 @@ export const createCustomerApi = (now = new Date()): CustomerApi => {
       id: `approval-${randomUUID()}`,
       workOrderId: input.workOrderId,
       estimateId: input.estimateId,
+      estimateFingerprint: input.estimateFingerprint,
       customerId: input.customerId,
       status: "pending",
       requestedAt: new Date().toISOString(),
@@ -74,7 +76,8 @@ export const createCustomerApi = (now = new Date()): CustomerApi => {
     response.status(201).json(approval);
   });
   app.get("/approvals/:id", (request, response) => {
-    const approval = state.approvals.find((item) => item.id === request.params.id || item.workOrderId === request.params.id || item.estimateId === request.params.id);
+    const exact = state.approvals.find((item) => item.id === request.params.id);
+    const approval = exact ?? [...state.approvals].reverse().find((item) => item.workOrderId === request.params.id || item.estimateId === request.params.id);
     if (approval === undefined) throw new FloError({ code: "APPROVAL_NOT_FOUND", message: "Customer approval was not found.", retryable: false });
     response.json(approval);
   });

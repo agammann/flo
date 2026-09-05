@@ -12,9 +12,11 @@
 
 - Role/permission checks before protected orchestrator operations.
 - Server-side customer-approval checks.
-- Actor-bound, five-minute, single-use confirmation tokens.
+- Actor-bound, five-minute, single-use and single-flight confirmation tokens.
 - State revalidation at confirmation time.
-- Idempotency keys for purchase execution.
+- Estimate fingerprints that bind approval to the exact part, pricing, labor, tax, fees, and total presented to the customer.
+- Idempotency keys for purchase execution, with request-equivalence checks and retirement after cancellation.
+- Exact supplier-response validation before any scheduling mutation.
 - Exact schedule conflict checking.
 - Structured errors without unnecessary customer PII.
 - Structured audit events for purchase and schedule mutations.
@@ -37,4 +39,3 @@ Local mode uses demo identities selected by request headers, in-memory state, an
 ## Transaction invariant
 
 A purchase/schedule operation may execute only when the same authenticated actor confirms a current prepared action, the linked estimate remains approved, the token is unexpired and unused, the supplier offer remains valid, and the schedule remains available. The confirmation tool checks these facts again. A model response cannot bypass this invariant.
-

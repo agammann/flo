@@ -37,4 +37,26 @@ describe("compatibility engine", () => {
     assert.equal(ranked[0]?.offer.supplierId, "supplier-b");
     assert.equal(ranked[0]?.part.partNumber, "ALT-7842");
   });
+
+  it("returns unknown when a potentially matching rule requires a missing trim", () => {
+    const state = createDemoState(new Date("2026-09-03T12:00:00.000Z"));
+    const asset = state.assets.find((item) => item.id === "asset-f150-2019");
+    const part = state.parts.find((item) => item.id === "part-alt-premium-219");
+    const unrestrictedPart = state.parts.find((item) => item.id === "part-alt-budget-159");
+    assert.ok(asset);
+    assert.ok(part);
+    assert.ok(unrestrictedPart);
+
+    const result = checkCompatibility({ ...asset, trim: undefined }, part);
+
+    assert.deepEqual({ status: result.status, compatible: result.compatible, reasonCode: result.reasonCode }, {
+      status: "unknown",
+      compatible: null,
+      reasonCode: "ASSET_DATA_INCOMPLETE"
+    });
+    assert.equal(checkCompatibility({ ...asset, trim: undefined }, unrestrictedPart).status, "compatible");
+    assert.equal(checkCompatibility({ ...asset, trim: "" }, part).status, "unknown");
+    assert.equal(checkCompatibility({ ...asset, trim: "   " }, part).status, "unknown");
+    assert.equal(checkCompatibility({ ...asset, trim: "Raptor" }, part).status, "incompatible");
+  });
 });

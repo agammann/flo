@@ -41,13 +41,28 @@ export const checkCompatibility = (asset: Asset, part: Part): CompatibilityResul
     };
   }
 
-  const matches = part.compatibilityRules.some((rule) =>
+  const baseMatches = part.compatibilityRules.filter((rule) =>
     rule.years.includes(asset.year as number) &&
     includesNormalized(rule.makes, asset.make) &&
     includesNormalized(rule.models, asset.model) &&
-    (rule.trims === undefined || asset.trim === undefined || includesNormalized(rule.trims, asset.trim)) &&
     (rule.engines === undefined || includesNormalized(rule.engines, asset.engine as string))
   );
+  const normalizedTrim = asset.trim?.trim();
+  const matches = baseMatches.some((rule) =>
+    rule.trims === undefined || (normalizedTrim !== undefined && normalizedTrim.length > 0 && includesNormalized(rule.trims, normalizedTrim))
+  );
+
+  if (!matches && (normalizedTrim === undefined || normalizedTrim.length === 0) && baseMatches.some((rule) => rule.trims !== undefined)) {
+    return {
+      assetId: asset.id,
+      partId: part.id,
+      partNumber: part.partNumber,
+      status: "unknown",
+      compatible: null,
+      reasonCode: "ASSET_DATA_INCOMPLETE",
+      reason: `The vehicle trim is required to determine whether ${part.partNumber} is compatible.`
+    };
+  }
 
   if (!matches) {
     return {
