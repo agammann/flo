@@ -23,7 +23,7 @@ This checklist uses the current Devpost requirements as the source of truth and 
 | Text description | `docs/hackathon/devpost-submission.md` | Draft ready with verified repository and video URLs |
 | Public GitHub repository | `https://github.com/agammann/flo` opened anonymously with the complete source | Verified public |
 | Open-source license visible at top/About | GitHub detects the repository's MIT license | Verified public |
-| Public English demo under 3 minutes | The 2:41 video at `https://youtu.be/ZjROvjL2smo` is uploaded and playable by link; reviewed English WebVTT captions are in `docs/demo/flo-demo.en.vtt` | Uploaded but still unlisted; upload captions and obtain separate confirmation before making it public |
+| Public English demo under 3 minutes | The 2:41 video at `https://youtu.be/ZjROvjL2smo` is uploaded and playable by link; 33 reviewed English WebVTT cues are published in YouTube Studio and a custom thumbnail is saved | Still unlisted; obtain separate confirmation before making it public and verify the public watch page |
 | Product feedback for tools used | `docs/hackathon/product-feedback.md` covers Alexa+ guidance, MCP, the simulator, CloudFormation, Lambda, and Bedrock | Ready |
 | Track selection | Alexa+ | Select on Devpost |
 | Prior-project disclosure | Flo was created for this hackathon unless the entrant states otherwise | Entrant must confirm before final submission |
@@ -36,7 +36,13 @@ Eligible. The new public repository is `https://github.com/agammann/flo`, GitHub
 
 ### AWS Builder
 
-Eligible. Flo's deployed Lambda function calls Amazon Bedrock through the Converse API using Amazon Nova Lite for a constrained parts-comparison narration lead. The CloudFormation stack was verified `CREATE_COMPLETE`, one live invocation succeeded, and the rejection path returned HTTP 403. The repository documents the exact boundary: compatibility, ranking, money, approval, purchases, and scheduling remain deterministic. Select AWS Builder and show the `AWS · amazon_bedrock_narration` trace in the demo.
+Eligible. Flo's deployed Lambda function calls Amazon Bedrock through the Converse API using Amazon Nova Lite for a constrained parts-comparison narration lead. The hardened CloudFormation stack was verified `UPDATE_COMPLETE`: API Gateway limits requests to a steady 1 request/second with burst 2, and CloudWatch log retention is 7 days. Live calls returned HTTP 200 for the permitted request, 403 for a wrong build marker, and 400 for an invalid task. The marker is not authentication and the throttle is not a hard dollar cap. The repository documents the exact boundary: compatibility, ranking, money, approval, purchases, and scheduling remain deterministic. Select AWS Builder and show the `AWS · amazon_bedrock_narration` trace in the demo.
+
+## Hardened release verification
+
+The published source tree matches the locally verified source exactly. [CI run 3](https://github.com/agammann/flo/actions/runs/33944222960) passed on commit `c3afe01ba274b8c7e126997871efd23313c3727f`, covering the hardened runtime, typed MCP outputs, and regression suite. Local build, typecheck, lint, and all 27 tests passed. Docker demo configuration was repaired and its production-mode environment was smoke-tested, but Docker itself was unavailable on the development host; a successful Docker Compose launch is not claimed.
+
+YouTube Studio reports the reviewed English track as Published, the custom thumbnail is saved, and the description accurately distinguishes the custom simulator from live Alexa+ device integration. Video visibility remains Unlisted pending the entrant's separate final confirmation. Publishing captions did not change video visibility.
 
 ## Final evidence gate
 

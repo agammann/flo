@@ -2,7 +2,7 @@
 
 Recording target: under 3:00 at 1080p. Keep the MCP inspector visible only when it supports the story; use production mode for the final transaction.
 
-The completed cut runs 2:41 and is available at <https://youtu.be/ZjROvjL2smo>. Its reviewed English caption track is [`flo-demo.en.vtt`](flo-demo.en.vtt). The video is currently unlisted; making it public remains a separate, explicitly confirmed release action.
+The completed cut runs 2:41 and is available at <https://youtu.be/ZjROvjL2smo>. Its reviewed English caption track is [`flo-demo.en.vtt`](flo-demo.en.vtt); all 33 timed cues are published in YouTube Studio. The custom [`thumbnail`](flo-youtube-thumbnail.png) is saved on the video. The video is currently unlisted; making it public remains a separate, explicitly confirmed release action.
 
 ## 0:00–0:15 — Problem
 
