@@ -1,6 +1,7 @@
 x-flo-service: &flo-service
   build:
     context: .
+  image: flo-demo:local
   restart: unless-stopped
   networks: [flo]
 
@@ -10,28 +11,28 @@ services:
     command: ["node", "services/mock-shop-api/dist/index.js"]
     environment:
       SHOP_API_HOST: 0.0.0.0
-    ports: ["4101:4101"]
+    ports: ["127.0.0.1:4101:4101"]
 
   inventory:
     <<: *flo-service
     command: ["node", "services/mock-inventory-api/dist/index.js"]
     environment:
       INVENTORY_API_HOST: 0.0.0.0
-    ports: ["4102:4102"]
+    ports: ["127.0.0.1:4102:4102"]
 
   supplier:
     <<: *flo-service
     command: ["node", "services/mock-supplier-api/dist/index.js"]
     environment:
       SUPPLIER_API_HOST: 0.0.0.0
-    ports: ["4103:4103"]
+    ports: ["127.0.0.1:4103:4103"]
 
   customer:
     <<: *flo-service
     command: ["node", "services/mock-customer-api/dist/index.js"]
     environment:
       CUSTOMER_API_HOST: 0.0.0.0
-    ports: ["4104:4104"]
+    ports: ["127.0.0.1:4104:4104"]
 
   mcp:
     <<: *flo-service
@@ -46,7 +47,7 @@ services:
       FLO_DEMO_MODE: "true"
       ALLOWED_HOSTNAMES: mcp,localhost,127.0.0.1
       ALLOWED_ORIGIN_HOSTNAMES: simulator,localhost,127.0.0.1
-    ports: ["4100:4100"]
+    ports: ["127.0.0.1:4100:4100"]
 
   simulator:
     <<: *flo-service
@@ -55,7 +56,7 @@ services:
     environment:
       SIMULATOR_HOST: 0.0.0.0
       MCP_URL: http://mcp:4100/mcp
-    ports: ["4200:4200"]
+    ports: ["127.0.0.1:4200:4200"]
 
 networks:
   flo:
