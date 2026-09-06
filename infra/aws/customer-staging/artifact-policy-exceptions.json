@@ -1,0 +1,33 @@
+{
+  "approvedOn": "2026-09-05",
+  "reviewBy": "2026-10-05",
+  "stack": "flo-customer-artifacts",
+  "resource": "Artifacts",
+  "scope": "Private, single-region staging application deployment packages only. No customer, repair, login, session or secret data.",
+  "exceptions": [
+    {
+      "rule": "S3_BUCKET_DEFAULT_LOCK_ENABLED",
+      "reason": "Owner-approved omission of WORM/Object Lock for rebuildable deployment packages. Versioning and retention support rollback but do not prevent authorized version deletion."
+    },
+    {
+      "rule": "S3_BUCKET_REPLICATION_ENABLED",
+      "reason": "Owner-approved single-region staging store. No cross-region artifact recovery guarantee; application source and build instructions are maintained separately."
+    },
+    {
+      "rule": "S3_BUCKET_LOGGING_ENABLED",
+      "reason": "Owner-approved omission of a separate S3 server-access-log bucket for staging packages. API/Lambda logging is not claimed as S3 object-access auditing."
+    }
+  ],
+  "requiredControls": [
+    "All four public-access blocks enabled",
+    "BucketOwnerEnforced with ACLs disabled",
+    "Default SSE-S3 AES256 encryption",
+    "Versioning enabled",
+    "Bucket and object scoped deny of insecure transport",
+    "Retain bucket on deletion or replacement",
+    "Only reviewed nonsecret application packages",
+    "Re-review before production, real customer data or a changed storage purpose"
+  ],
+  "checkerMismatchEvidence": "../../../docs/verification/customer-artifacts-review-2026-09-05.md",
+  "deploymentEvidence": "../../../docs/verification/customer-artifacts-deployment-2026-09-05.md"
+}

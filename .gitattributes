@@ -1,0 +1,3 @@
+# Preserve the exact validated enrollment template bytes across Windows/Linux checkouts.
+infra/aws/customer-enrollment/state.template.json text eol=lf
+docs/verification/enrollment-state-pre-retention.template.json text eol=lf

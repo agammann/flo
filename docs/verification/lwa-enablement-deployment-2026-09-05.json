@@ -1,0 +1,79 @@
+{
+  "scope": "Owner-approved LWA enablement executed; hosted pre-login checks passed; real Amazon sign-in and customer ownership tests await user sign-in.",
+  "changeSet": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-customer-lwa-review-20260906T023152Z/f4eb1cef-5d0c-42ad-8ed0-b42ffed26688",
+  "clientRequestToken": "flo-lwa-owner-approved-20260906T023152Z",
+  "operationId": "aab8e492-7214-4e49-90c4-f5d936028480",
+  "completedAt": "2026-09-06T02:38:18.868000+00:00",
+  "deployment": {
+    "stack": {
+      "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-06T02:37:58.910000+00:00",
+      "Parameters": [
+        {
+          "ParameterKey": "ArtifactBucket",
+          "ParameterValue": "flo-customer-artifacts-artifacts-wiyewwqt3d1r"
+        },
+        {
+          "ParameterKey": "LwaSecretId",
+          "ParameterValue": "arn:aws:secretsmanager:us-west-2:114599789754:secret:flo/customer-staging/lwa-hwN6ke"
+        },
+        {
+          "ParameterKey": "ArtifactKey",
+          "ParameterValue": "flo-customer/461f5e1591b7610ba1ba5fa3d681d6fe886386b16bea63ead9781895e600ebb6.zip"
+        },
+        {
+          "ParameterKey": "ArtifactVersion",
+          "ParameterValue": "raKQgS0ARCNPg5kSiao.DIgrcXy7KP._"
+        },
+        {
+          "ParameterKey": "LwaClientId",
+          "ParameterValue": "LWA_CLIENT_ID_REDACTED_FROM_PUBLIC_EVIDENCE"
+        },
+        {
+          "ParameterKey": "LwaEnabled",
+          "ParameterValue": "true"
+        }
+      ]
+    },
+    "function": {
+      "FunctionName": "flo-customer-staging-http",
+      "State": "Active",
+      "LastUpdateStatus": "Successful",
+      "CodeSha256": "Rh9eFZG3YQuhul+j1oHW/ohjhrFr6mPq2XgYleYA67Y=",
+      "CodeSize": 615855,
+      "Runtime": "nodejs22.x",
+      "Handler": "index.handler",
+      "MemorySize": 512,
+      "Timeout": 25,
+      "LastModified": "2026-09-06T02:38:10.000+0000"
+    },
+    "concurrency": {
+      "ReservedConcurrentExecutions": 3
+    }
+  },
+  "preloginSmoke": {
+    "passed": 16,
+    "requestIds": [
+      "DQXQnjJovHcEPbw=",
+      "DQXQ8i9IPHcEPyQ=",
+      "DQXRIiYMvHcEPhQ=",
+      "DQXRUjjyPHcEP1g=",
+      "DQXRhhpRvHcEPKg=",
+      "DQXRsiZ1PHcEPXw=",
+      "DQXR4jzpvHcEPCw=",
+      "DQXSGi14vHcEPDg=",
+      "DQXSSjA9vHcEPkw=",
+      "DQXSdhdkPHcEP0w=",
+      "DQXSpg0fPHcEPeA=",
+      "DQXS1hksvHcEP2A=",
+      "DQXTBhTyvHcEPJQ=",
+      "DQXTNg-zvHcEP9A=",
+      "DQXTZizzPHcEPUQ=",
+      "DQXTkjCtPHcEPIw="
+    ],
+    "realAmazonExchange": false,
+    "customerLinkWrites": false,
+    "publication": false
+  }
+}

@@ -374,7 +374,7 @@ export class FloOrchestrator {
     return this.adapters.supplier.searchParts(input);
   }
 
-  async findCompatibleParts(actor: Actor, input: { workOrderIdOrNumber?: string; category: string; maximumLandedCostCents?: number; latestDeliveryDate?: string; excludeCheapest?: boolean }): Promise<PartsSearchResult> {
+  async findCompatibleParts(actor: Actor, input: { workOrderIdOrNumber?: string; category: string; maximumLandedCostCents?: number; latestDeliveryDate?: string; excludeCheapest?: boolean; ranking?: "balanced" | "gross_part_margin" }): Promise<PartsSearchResult> {
     requirePermission(actor, "parts:search");
     const workOrder = input.workOrderIdOrNumber === undefined ? await this.resolveWorkOrder(actor, "active job") : await this.getWorkOrder(actor, input.workOrderIdOrNumber);
     const asset = await this.adapters.shop.getAsset(workOrder.assetId);
@@ -405,6 +405,10 @@ export class FloOrchestrator {
         grossPartMarginCents: customerPriceCents - landedCostCents
       };
     });
+    if (input.ranking === "gross_part_margin") {
+      ranked.sort((left, right) => right.grossPartMarginCents - left.grossPartMarginCents || right.score - left.score || left.offer.supplierSku.localeCompare(right.offer.supplierSku));
+      for (const item of ranked) item.reasons.unshift("Ranked by gross part profit in cents, not margin percentage; shipping is passed through at cost.");
+    }
     const recommendation = ranked[0] ?? null;
     if (recommendation !== null) await this.remember(actor, { activeWorkOrderId: workOrder.id, recentAssetId: asset.id, selectedSupplierPart: recommendation.offer });
     return {
@@ -418,7 +422,7 @@ export class FloOrchestrator {
     };
   }
 
-  async compareParts(actor: Actor, input: { workOrderIdOrNumber?: string; category: string; maximumLandedCostCents?: number; latestDeliveryDate?: string; excludeCheapest?: boolean }): Promise<PartsSearchResult> {
+  async compareParts(actor: Actor, input: { workOrderIdOrNumber?: string; category: string; maximumLandedCostCents?: number; latestDeliveryDate?: string; excludeCheapest?: boolean; ranking?: "balanced" | "gross_part_margin" }): Promise<PartsSearchResult> {
     return this.findCompatibleParts(actor, input);
   }
 
@@ -754,7 +758,9 @@ export class FloOrchestrator {
 
   async getOrderStatus(actor: Actor, idOrIdempotencyKey: string): Promise<PurchaseOrder> {
     requirePermission(actor, "purchase:prepare");
-    return this.adapters.supplier.getOrderStatus(idOrIdempotencyKey);
+    const order = await this.adapters.supplier.getOrderStatus(idOrIdempotencyKey);
+    requireWorkOrderRead(actor, order.workOrderId);
+    return order;
   }
 
   async getJobStatus(actor: Actor, reference = "active job"): Promise<JobStatus> {
@@ -807,3 +813,5 @@ export class FloOrchestrator {
 }
 
 export type { Actor, Part };
+export * from "./customer-experience.js";
+export * from "./customer-identity.js";

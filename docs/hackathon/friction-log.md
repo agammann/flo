@@ -1,5 +1,28 @@
 # Hackathon friction log
 
+## 2026-09-05 — Docker engine access and CloudShell build compatibility
+
+- **Technology:** Docker Desktop on Windows, restricted Codex execution, AWS CloudShell Docker and Compose.
+- **What we attempted:** Run the repository's real container build, Compose demo, and DynamoDB Local customer tests before staging exposure.
+- **Expected behavior:** The installed Docker CLI could reach the engine, and Compose could build the image.
+- **Actual behavior:** Windows PowerShell reached Docker's Linux engine, but the Codex session received named-pipe permission denial. In CloudShell, Compose required a newer Buildx than was installed.
+- **Documentation used:** Docker Windows installation guide, official OpenAI Windows sandbox documentation, Docker's published Compose release checksum, and observed command output.
+- **Workaround:** With owner approval, resume the existing isolated CloudShell environment. Build the same Dockerfile with `DOCKER_BUILDKIT=0 docker build`, then use verified standalone Compose with `up --no-build`. Do not expose an unauthenticated Docker TCP endpoint or change live AWS resources.
+- **Suggested improvement:** Publish tested Docker/Buildx/Compose combinations for CloudShell and document scoped Windows engine access for sandboxed development tools.
+- **Impact:** Additional environment setup and verification time. Actual container demo, database integration, and packaged Lambda checks passed; see [verification evidence](../verification/cloudshell-docker-2026-09-05.md).
+
+## 2026-09-05 — Reconciling Alexa+ documentation before certification work
+
+- **Technology:** Alexa+ MCP Toolkit documentation, Inspector, authentication and Alexa AI CLI.
+- **What we attempted:** Read the complete supplied documentation set and map transport, setup and linking examples to Flo's local prototype.
+- **Expected behavior:** Protocol examples, supported host environments and CLI flag examples would agree across the linked guides.
+- **Actual behavior:** The Toolkit overview names MCP 2025-11-25, while lifecycle/Inspector examples show earlier revisions; the setup OS list and Windows Inspector examples differ; account-linking CLI examples differ from the CLI reference. These are documentation observations, not a failed official tool run. The supplied Category Action/Category MCP links both resolve to the Toolkit overview's empty fragment.
+- **Documentation used:** [Toolkit overview](https://developer.amazon.com/docs/alexaplus/add-ons/mcp-toolkit-overview.html), [lifecycle](https://developer.amazon.com/docs/alexaplus/add-ons/mcp-toolkit-client-lifecycle.html), [Inspector](https://developer.amazon.com/docs/alexaplus/add-ons/mcp-toolkit-local-inspector.html), [setup](https://developer.amazon.com/docs/alexaplus/add-ons/set-up-your-development-environment.html), [account linking](https://developer.amazon.com/docs/alexaplus/add-ons/mcp-toolkit-account-linking.html), [CLI reference](https://developer.amazon.com/docs/alexaplus/add-ons/alexa-ai-cli-reference.html).
+- **Workaround:** Keep the explicit 2025-11-25 transport regression, follow actual navigation for category pages, and leave production customer access closed. Confirm supported CLI flags and identity behavior with Amazon before deployment.
+- **Suggested improvement:** Version-stamp examples against one tested CLI release, unify the environment support matrix, and link category headings to real overview guides.
+- **Severity:** Important.
+- **Impact on development:** Documentation reconciliation time; official integration remains unverified. Local owner-read tools and regression tests can proceed independently.
+
 ## 2026-09-04 — AWS Lambda reserved concurrency on a new free-plan account
 
 - **Technology:** AWS CloudFormation and AWS Lambda
@@ -12,6 +35,17 @@
 - **Impact on development:** One failed stack creation and a short redeploy; no application behavior or transaction-safety rule changed.
 
 This log records observed development friction constructively. It should be updated whenever a real issue is reproduced; hypothetical concerns do not belong here.
+
+## 2026-09-05 — LWA credential prefix and legacy length guidance
+
+- **Technology:** Login with Amazon security profiles and server-side token exchange.
+- **What we attempted:** Prepare hosted customer sign-in using the registered LWA profile and a Secrets Manager reference.
+- **Expected behavior:** The server should accept the provider-issued opaque client credential and forward it unchanged to the fixed Amazon HTTPS token endpoint.
+- **Actual behavior:** Flo's original validator copied the older Security Profile page's 64-byte maximum. A synthetic `amzn1.oa2-cs.v1.` prefix plus 64-character payload reproduced rejection before any provider request. Current official Amazon LWA credential examples include that prefix.
+- **Documentation used:** [LWA Security Profile](https://developer.amazon.com/docs/login-with-amazon/security-profile.html) and [Amazon's LWA credential example](https://developer-docs.amazon/sp-api/docs/onboarding-step-5-make-your-first-call-to-the-sp-api-sandbox). The latter is an SP-API onboarding example of LWA credentials, not a Flo integration contract or a published new maximum.
+- **Workaround:** Accept nonempty printable-ASCII credentials with an application-defined 1024-byte bound, preserve the entire value, and test prefix preservation in mocked token exchange and Lambda/durable-auth fixtures. Keep live login disabled until the corrected package is reviewed and deployed.
+- **Suggested improvement:** Reconcile the older byte-limit text with currently issued credential formats and provide a current validation example.
+- **Impact:** A new application package is required before live LWA enablement. Local synthetic tests do not prove validity of the stored credential or grant repair ownership.
 
 ## 2026-09-03 — MCP TypeScript SDK generation boundary
 

@@ -1,0 +1,95 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "MaximumExactVersionWithFreshMfa",
+      "Effect": "Allow",
+      "Action": "lambda:InvokeFunction",
+      "Resource": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+      "Condition": {
+        "ArnEquals": {
+          "aws:PrincipalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+        },
+        "Bool": {
+          "aws:MultiFactorAuthPresent": "true"
+        },
+        "Null": {
+          "aws:MultiFactorAuthAge": "false"
+        },
+        "NumericGreaterThanEquals": {
+          "aws:MultiFactorAuthAge": "0"
+        },
+        "NumericLessThanEquals": {
+          "aws:MultiFactorAuthAge": "900"
+        }
+      }
+    },
+    {
+      "Sid": "DenyOtherCapabilities",
+      "Effect": "Deny",
+      "NotAction": "lambda:InvokeFunction",
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyOtherFunctionsAndVersions",
+      "Effect": "Deny",
+      "Action": "lambda:InvokeFunction",
+      "NotResource": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1"
+    },
+    {
+      "Sid": "DenyOtherPrincipals",
+      "Effect": "Deny",
+      "Action": "lambda:InvokeFunction",
+      "Resource": "*",
+      "Condition": {
+        "ArnNotEquals": {
+          "aws:PrincipalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+        }
+      }
+    },
+    {
+      "Sid": "DenyMissingOrFalseMfa",
+      "Effect": "Deny",
+      "Action": "lambda:InvokeFunction",
+      "Resource": "*",
+      "Condition": {
+        "BoolIfExists": {
+          "aws:MultiFactorAuthPresent": "false"
+        }
+      }
+    },
+    {
+      "Sid": "DenyMissingMfaAge",
+      "Effect": "Deny",
+      "Action": "lambda:InvokeFunction",
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "aws:MultiFactorAuthAge": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyStaleMfa",
+      "Effect": "Deny",
+      "Action": "lambda:InvokeFunction",
+      "Resource": "*",
+      "Condition": {
+        "NumericGreaterThan": {
+          "aws:MultiFactorAuthAge": "900"
+        }
+      }
+    },
+    {
+      "Sid": "DenyInvalidMfaAge",
+      "Effect": "Deny",
+      "Action": "lambda:InvokeFunction",
+      "Resource": "*",
+      "Condition": {
+        "NumericLessThan": {
+          "aws:MultiFactorAuthAge": "0"
+        }
+      }
+    }
+  ]
+}

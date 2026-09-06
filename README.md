@@ -2,9 +2,11 @@
 
 **An open source MCP operating layer for hands-free service operations.**
 
-Flo turns an Alexa+ conversation into a safe, resumable workflow across work orders, diagnostics, compatible parts, supplier availability, estimates, customer approvals, purchasing, and scheduling. The initial demonstration is an automotive repair shop, while the domain and adapter boundaries are intentionally usable by HVAC, plumbing, electrical, appliance repair, facilities, and industrial maintenance teams.
+Flo connects conversational commands to structured repair information and service workflows through MCP. The vehicle-owner preview reviews repair status and customer estimates. The separate shop demo covers diagnostics, compatible parts, supplier availability, approvals, purchasing and scheduling. Both are custom simulations, not a deployed Alexa+ add-on. The adapter boundaries remain extensible beyond automotive repair.
 
-> Project status: the deterministic domain layer, four simulated service APIs, HTTP adapters, persistent job-context abstraction, transaction controls, Streamable HTTP MCP server, polished MCP-backed web simulator, and a narrow Amazon Bedrock narration adapter are implemented. Twenty-seven automated tests pass. Development mode exposes 28 tools; production omits the three demo-only controls. The Bedrock adapter is deployed through AWS CloudFormation and was live-invocation tested with Amazon Nova Lite on September 4, 2026. The official Alexa+ add-on connection, MCP App package, AgentCore runtime, and durable AWS state remain future work and are not claimed as live.
+> Project status: local deterministic engines, four simulated APIs, shop workflow, transaction controls, MCP transport and a read-only vehicle-owner preview are implemented. `/mcp` exposes 28 shop tools in demo mode (25 otherwise); `/customer/mcp` exposes three separate read-only tools only in demo mode and returns 401 otherwise. A separate AWS-hosted customer website supports Login with Amazon and durable sessions; sign-in does not grant repair ownership. Its new fictional-customer enrollment services are implemented and locally tested but not deployed. The narrow Bedrock narrator has recorded live verification. Official Alexa+ account linking, deployment, certification, MCP App packaging, AgentCore and durable shop business state remain incomplete.
+
+**Certification is a separate gate from the hackathon.** Alexa+ policy excludes exclusively internal/B2B add-ons. The vehicle-owner preview is the first consumer-facing increment, not a certification-ready release. See the [complete documentation review and implementation tracker](docs/alexa-plus-certification-plan.md).
 
 For the current competition evidence and remaining external release gates, see [`docs/hackathon/submission-readiness.md`](docs/hackathon/submission-readiness.md).
 
@@ -14,7 +16,21 @@ Technicians often work with gloves, tools, lifts, machinery, and dirty parts. Lo
 
 Flo makes voice the operating interface, not a chat veneer. Every business fact comes from a structured service. Every mutation is an actual tool call. Money, compatibility, authorization, approvals, availability, and transaction state are resolved by deterministic code rather than invented by a language model.
 
-## Demonstrated workflow
+## Vehicle-owner preview
+
+Open `http://127.0.0.1:4200/`, acknowledge the synthetic-data notice, and try “Show my repairs,” “Status of repair 1842,” or “Review estimate 1842.” The estimate becomes available after the shop demo creates it; before that, Flo explicitly says it is not ready. Customer prices omit supplier cost and shop margin. Read-aloud is optional; no voice recognition or general-purpose language model is claimed for this preview. Start over clears the browser conversation, not repair records.
+
+The fixed fictional owner is chosen server-side, not from tool arguments or request headers. Owner tools do not approve work, schedule appointments, order parts or charge anything. This simulator does not become authenticated when the separate website is configured.
+
+### Separate Login with Amazon website
+
+`pnpm --filter @flo/mcp start:customer` (after building) starts an isolated customer-only website on loopback port 4400. It is disabled by default. The implementation exchanges Amazon authorization codes server-side, validates audience/user identity, creates short-lived HttpOnly sessions and requires a trusted operator-maintained Amazon-ID-to-shop-customer mapping before any repair access. Signing in does **not** establish repair ownership. Tests use simulated Amazon responses, not real Amazon credentials.
+
+The separate [AWS staging website](https://i4ceh4qpdg.execute-api.us-west-2.amazonaws.com/) is deployed. The owner reported successful real Amazon sign-in/sign-out, and the authenticated-unlinked UI was inspected; it keeps repair information blocked pending shop verification. The [deployment evidence](docs/verification/customer-unlinked-ui-deployment-2026-09-05.md) distinguishes those observations from still-incomplete hosted enrollment and linked-customer tests. Fictional-customer enrollment, private operator permissions and real-customer ownership verification are not deployed or proven by website sign-in. Website sessions and AWS service credentials cannot unlock the website's closed Alexa routes. Follow the [identity architecture and controlled setup guide](docs/architecture/customer-identity.md); do not expose the shop demo or raw mock APIs. This is not a certification-ready release.
+
+## Shop demonstration workflow
+
+Open `http://127.0.0.1:4200/shop` for the original operational simulation. It is not the consumer add-on surface.
 
 1. “Open work order 1842.”
 2. “The alternator failed.”
@@ -27,14 +43,18 @@ Flo makes voice the operating interface, not a chat veneer. Every business fact 
 9. Flo returns a transaction summary and executes nothing.
 10. “Confirm.” Flo revalidates authorization, approval, offer, and schedule availability; then it places the order, reserves the bay, updates the work order, and writes audit records.
 
-The integration test at `tests/integration/demo-workflow.test.ts` executes that entire stateful workflow. The transport test starts the MCP endpoint, negotiates protocol version `2025-11-25`, lists the live tools, and calls `get_work_order` through Streamable HTTP.
+The integration test at `tests/integration/demo-workflow.test.ts` exercises the stateful workflow using the balanced recommendation and separately verifies gross-profit sorting. The local “best margin” command explicitly interprets margin as gross part profit in dollars, not percentage: it selects the $289 option with $101.15 gross part profit, not the balanced $219 option. The existing video predates this correction and must be reconciled before release. The transport test negotiates `2025-11-25` and invokes real MCP tools.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-  Technician[Technician] --> Alexa[Alexa+ / simulator]
-  Alexa --> MCP[Flo MCP server\nStreamable HTTP]
+  Owner[Vehicle owner] --> Preview[Customer preview]
+  Preview --> CustomerMCP[Read-only customer MCP]
+  CustomerMCP --> Projection[Ownership checks + customer-only fields]
+  Projection --> Shop
+  Technician[Technician] --> Simulator[Shop simulator]
+  Simulator --> MCP[Flo shop MCP server\nStreamable HTTP]
   MCP --> Agent[Agent orchestrator]
   Agent --> Policy[RBAC + confirmation policy]
   Agent --> Engines[Compatibility, estimate,\nscheduling and approval engines]
@@ -52,7 +72,7 @@ The MCP handlers are deliberately thin. The orchestrator coordinates work, adapt
 
 The simulator can call a deployed AWS Lambda function that invokes Amazon Bedrock through the Converse API with `amazon.nova-lite-v1:0`. Bedrock produces only one short qualitative lead sentence for the parts-comparison response. The simulator sends no customer, vehicle, work-order, price, supplier, part-number, or free-form technician data. Flo validates the response and falls back locally if AWS is slow, unavailable, or returns a sentence outside the no-digits/no-prices contract. Deterministic code still chooses the part and owns every operational fact.
 
-The CloudFormation stack `flo-bedrock-narrator` was verified `CREATE_COMPLETE` in `us-west-2`. A live request returned an accepted narration lead and the wrong-build-header path returned HTTP 403. The deployment template, IAM policy, failure contract, and setup instructions are in [`infra/aws/bedrock-narrator`](infra/aws/bedrock-narrator).
+The [recorded September 4 deployment verification](docs/verification/aws-protection-2026-09-04.md) documents `flo-bedrock-narrator` reaching `UPDATE_COMPLETE` in `us-west-2`, successful signed narration, rejected unsigned/invalid requests, seven-day log retention and a retained DynamoDB model-attempt allowance. Caller authentication is IAM/SigV4; a build marker is not authentication. The allowance and throttling are not an account-wide dollar cap. The shop simulator needs an authorized server-side AWS identity for optional narration and otherwise falls back locally. The vehicle-owner preview never calls Bedrock. No AWS credentials belong in browser code.
 
 ### Intended full AWS deployment
 
@@ -69,13 +89,13 @@ flowchart TB
   MCP --> Services[Shop and supplier adapters]
 ```
 
-This diagram is the larger deployment target, not a claim that AgentCore, DynamoDB, or Secrets Manager are active. The current verified AWS surface is the Bedrock narration function described above; local business state remains in seeded stores behind replaceable interfaces. See `docs/architecture/aws.md` for the exact live/future boundary.
+This diagram is the larger deployment target, not a deployed architecture. DynamoDB is used for the narrator's finite invocation allowance, not for work orders or customer memory. AgentCore and Secrets Manager remain planned. Local business state remains in seeded, in-memory stores. See `docs/architecture/aws.md` for the recorded live/future boundary.
 
 ## Why Alexa+
 
 Voice is useful here because the operator’s hands and attention are occupied. Short spoken responses communicate the recommendation or pending state; visual surfaces should carry detailed part comparisons, estimates, approvals, schedule conflicts, and timelines. Flo never reports a transactional action as complete until the service confirms it.
 
-The official Alexa+ MCP Toolkit is the intended integration path because Flo already owns an MCP server and needs direct control over tools, structured data, and future MCP App rendering. The server and transport test use the toolkit-supported MCP `2025-11-25` revision over Streamable HTTP. The current web simulator is a custom development and demo surface—not an official Alexa+ simulator or deployed add-on. See `docs/alexa-plus-fit-audit.md` for the evidence, fixes, and remaining certification work.
+MCP Toolkit is the current prototype route for bespoke repair information. A future consumer booking feature also requires evaluating Category Action Local Booking with Amazon. The transport test checks MCP `2025-11-25` over Streamable HTTP. Neither Flo browser interface is Amazon's official Web Simulator or an MCP App resource. See the [certification tracker](docs/alexa-plus-certification-plan.md) for the current route decision and remaining gates.
 
 The visual simulator follows the Alexa+ design guidance in the areas that can be validated locally: large arm’s-length typography, a low-density work card, 48-pixel touch targets, light and dark themes, voice/text parity, a three-item horizontal comparison pattern, and a customer-controlled expanded view. Alexa+ itself will generate its spoken response from MCP structured output; the wording shown by the local simulator is explicitly a simulated response generated from the same structured result.
 
@@ -93,7 +113,7 @@ The visual simulator follows the Alexa+ design guidance in the areas that can be
 
 ## MCP tools
 
-Flo registers 25 production tools and adds three local demo controls in non-production environments, for 28 development tools:
+The shop MCP surface registers 25 non-demo tools and adds three local demo controls, for 28 development tools. A non-demo tool surface does not make this mock backend production-ready. The separate customer route registers `list_my_repairs`, `get_my_repair` and `get_my_estimate`; it does not expose the following shop tools:
 
 | Area | Tools |
 | --- | --- |
@@ -145,7 +165,7 @@ cp .env.example .env
 pnpm install
 pnpm build
 pnpm test
-pnpm dev:services
+pnpm dev
 ```
 
 Service endpoints:
@@ -153,12 +173,14 @@ Service endpoints:
 | Service | URL |
 | --- | --- |
 | MCP | `http://127.0.0.1:4100/mcp` |
+| Customer MCP (demo only) | `http://127.0.0.1:4100/customer/mcp` |
 | MCP health | `http://127.0.0.1:4100/health` |
 | Shop | `http://127.0.0.1:4101` |
 | Inventory | `http://127.0.0.1:4102` |
 | Supplier | `http://127.0.0.1:4103` |
 | Customer | `http://127.0.0.1:4104` |
-| Alexa simulator | `http://127.0.0.1:4200` |
+| Vehicle-owner preview | `http://127.0.0.1:4200/` |
+| Shop simulator | `http://127.0.0.1:4200/shop` |
 
 In local demo mode, MCP requests can set `x-flo-role` to `technician`, `service_advisor`, `manager`, or `administrator`. Production mode must authenticate identities and must not trust a caller-selected role header.
 
@@ -185,6 +207,7 @@ The suite covers:
 - compatible, incompatible, and ranked part choices;
 - integer-cent estimate calculations;
 - adapter-backed authorization behavior;
+- owner-only repair access, cross-job estimate rejection, private-field projection, and customer-route production denial;
 - the complete diagnosis-to-schedule workflow;
 - approval and confirmation state transitions;
 - persistent context across orchestrator instances;
@@ -226,7 +249,7 @@ Read `SECURITY.md` and `docs/architecture/security.md`. The current local mode i
 3. Run the orchestrator in AgentCore Runtime and move job context into AgentCore Memory.
 4. Persist operational records in DynamoDB and send structured metrics to CloudWatch.
 5. Add verified authentication through AgentCore Identity or the deployment’s identity provider.
-6. Validate the complete flow through the current Alexa+ developer surface and certification checklist when partner access is available.
+6. Complete the consumer experience, verified account linking, privacy/terms and lifecycle tests; validate through official Alexa+ tooling and certification when access is confirmed.
 
 ## Open source
 

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <title>Flo · Your repair, explained</title>
+  <link rel="stylesheet" href="/customer.css">
+</head>
+<body>
+  <header><a class="brand" href="/">flo<span>For vehicle owners</span></a><a href="/shop">Shop demo workspace ↗</a></header>
+  <main>
+    <section class="hero"><p class="eyebrow">YOUR REPAIR. YOUR INFORMATION.</p><h1>Less wondering.<br>More knowing.</h1><p>Check your repair’s progress and understand your estimate, in a conversation.</p><span class="badge">Custom Alexa+ simulation · Not certified</span></section>
+    <section class="notice" aria-labelledby="notice-title"><h2 id="notice-title">Before you try the preview</h2><p>This local demo uses one fixed, fictional vehicle-owner account. No real account linking, customer data, approvals, payments, or bookings. Your question goes to the local Flo service; do not enter personal information. Requests use real MCP tools against simulated shop services.</p><label><input id="consent" type="checkbox"> I understand this is a synthetic-data preview.</label></section>
+    <div class="workspace">
+      <section class="panel" aria-labelledby="talk-title"><h2 id="talk-title">Ask about your repair</h2>
+        <div class="examples"><button data-command="Show my repairs">My repairs</button><button data-command="Status of repair 1842">Repair status</button><button data-command="Review estimate 1842">Review estimate</button></div>
+        <div id="conversation" role="log" aria-live="polite"><p class="answer">I can help you review repair status and estimates. What would you like to check?</p></div>
+        <form id="question-form"><label for="question">Your question</label><div class="input-row"><input id="question" maxlength="300" placeholder="What’s happening with my truck?" autocomplete="off"><button type="submit">Ask Flo</button></div></form>
+        <div class="controls"><button id="listen" type="button">Read response aloud</button><button id="start-over" type="button">Start over</button></div>
+        <p class="small">Read-only preview. Approval and appointment changes are not available yet.</p>
+      </section>
+      <section class="panel" aria-labelledby="details-title"><p class="eyebrow">FROM YOUR SHOP</p><h2 id="details-title">Repair details</h2><div id="details"><p>Your repair information will appear here.</p></div><details><summary>Developer tool trace</summary><p id="trace">No tools called.</p></details></section>
+    </div>
+    <footer>Flo is being developed toward Alexa+ certification. This browser preview is not Amazon’s simulator or an official Alexa+ add-on. All records are fictional. No information is sent to Bedrock by this customer preview.</footer>
+  </main><script type="module" src="/customer.js?v=owner-preview-2"></script>
+</body></html>

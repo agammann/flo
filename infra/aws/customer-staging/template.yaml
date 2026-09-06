@@ -1,0 +1,208 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Flo isolated read-only customer staging. Review costs and change set before execution.
+Parameters:
+  ArtifactBucket:
+    Type: String
+    AllowedPattern: '[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]'
+    Description: Reviewed private same-region artifact bucket; this template does not create it.
+  ArtifactKey:
+    Type: String
+    AllowedPattern: 'flo-customer/[a-f0-9]{64}\.zip'
+    Description: Content-addressed Lambda zip key, including index.mjs and public assets.
+  ArtifactVersion:
+    Type: String
+    MinLength: 1
+    Description: Immutable S3 object version reviewed with this deployment.
+  LwaEnabled:
+    Type: String
+    Default: 'false'
+    AllowedValues: ['true', 'false']
+    Description: Keep false until the exact HTTPS callback/profile and trusted test links are reviewed.
+  LwaClientId:
+    Type: String
+    Default: ''
+    MaxLength: 100
+    Description: Public LWA client ID, not a secret.
+  LwaSecretId:
+    Type: String
+    Default: ''
+    AllowedPattern: '([a-zA-Z0-9/_+=.@-]+|arn:aws:secretsmanager:[a-z0-9-]+:[0-9]{12}:secret:[a-zA-Z0-9/_+=.@-]+)?'
+    Description: Existing private Secrets Manager secret ID with JSON field clientSecret; never supply its value here.
+Conditions:
+  EnableLwa: !Equals [!Ref LwaEnabled, 'true']
+Resources:
+  AuthState:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{AttributeName: id, AttributeType: S}]
+      KeySchema: [{AttributeName: id, KeyType: HASH}]
+      SSESpecification: {SSEEnabled: true}
+      TimeToLiveSpecification: {AttributeName: ttl, Enabled: true}
+      DeletionProtectionEnabled: true
+      OnDemandThroughput: {MaxReadRequestUnits: 10, MaxWriteRequestUnits: 5}
+      # Deliberately no auth-state backups: restoring sessions can undo revocation.
+      PointInTimeRecoverySpecification: {PointInTimeRecoveryEnabled: false}
+  CustomerLinks:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{AttributeName: id, AttributeType: S}]
+      KeySchema: [{AttributeName: id, KeyType: HASH}]
+      SSESpecification: {SSEEnabled: true}
+      DeletionProtectionEnabled: true
+      OnDemandThroughput: {MaxReadRequestUnits: 10, MaxWriteRequestUnits: 5}
+      # Restored links require verification/revocation reconciliation before serving.
+      PointInTimeRecoverySpecification: {PointInTimeRecoveryEnabled: true, RecoveryPeriodInDays: 7}
+  CustomerRepairs:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{AttributeName: pk, AttributeType: S}, {AttributeName: sk, AttributeType: S}]
+      KeySchema: [{AttributeName: pk, KeyType: HASH}, {AttributeName: sk, KeyType: RANGE}]
+      SSESpecification: {SSEEnabled: true}
+      DeletionProtectionEnabled: true
+      OnDemandThroughput: {MaxReadRequestUnits: 10, MaxWriteRequestUnits: 5}
+      PointInTimeRecoverySpecification: {PointInTimeRecoveryEnabled: true, RecoveryPeriodInDays: 7}
+  StateEncryptionKey:
+    Type: AWS::SecretsManager::Secret
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Description: Flo staging AES-256-GCM state encryption key. Never print or put in source.
+      GenerateSecretString:
+        SecretStringTemplate: '{}'
+        GenerateStringKey: encryptionKey
+        PasswordLength: 64
+        ExcludeUppercase: true
+        ExcludePunctuation: true
+        ExcludeCharacters: ghijklmnopqrstuvwxyz
+        IncludeSpace: false
+  CustomerApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub '${AWS::StackName}-http'
+      ProtocolType: HTTP
+      Description: Isolated website login. Customer routes enforce opaque sessions and ownership in the application.
+  FunctionLogs:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-http'
+      RetentionInDays: 7
+  AccessLogs:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RetentionInDays: 7
+  CustomerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: {Service: lambda.amazonaws.com}
+            Action: sts:AssumeRole
+  CustomerRuntimePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Roles: [!Ref CustomerRole]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: ShortLivedAuthStateOnly
+            Effect: Allow
+            Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:DeleteItem]
+            Resource: !GetAtt AuthState.Arn
+          - Sid: TrustedLinksReadOnly
+            Effect: Allow
+            Action: dynamodb:GetItem
+            Resource: !GetAtt CustomerLinks.Arn
+          - Sid: CustomerProjectionsReadOnly
+            Effect: Allow
+            Action: [dynamodb:GetItem, dynamodb:Query]
+            Resource: !GetAtt CustomerRepairs.Arn
+          - Sid: FunctionLogsOnly
+            Effect: Allow
+            Action: [logs:CreateLogStream, logs:PutLogEvents]
+            Resource: !GetAtt FunctionLogs.Arn
+  CustomerFunction:
+    Type: AWS::Lambda::Function
+    DependsOn: [FunctionLogs, CustomerRuntimePolicy]
+    Properties:
+      FunctionName: !Sub '${AWS::StackName}-http'
+      Runtime: nodejs22.x
+      Architectures: [x86_64]
+      Handler: index.handler
+      MemorySize: 512
+      Timeout: 25
+      ReservedConcurrentExecutions: 3
+      Role: !GetAtt CustomerRole.Arn
+      Code:
+        S3Bucket: !Ref ArtifactBucket
+        S3Key: !Ref ArtifactKey
+        S3ObjectVersion: !Ref ArtifactVersion
+      Environment:
+        Variables:
+          NODE_ENV: production
+          FLO_CUSTOMER_PUBLIC_ORIGIN: !GetAtt CustomerApi.ApiEndpoint
+          FLO_CUSTOMER_API_ID: !Ref CustomerApi
+          FLO_CUSTOMER_AUTH_TABLE: !Ref AuthState
+          FLO_CUSTOMER_LINKS_TABLE: !Ref CustomerLinks
+          FLO_CUSTOMER_REPAIRS_TABLE: !Ref CustomerRepairs
+          FLO_CUSTOMER_STATE_KEY: !Sub '{{resolve:secretsmanager:${StateEncryptionKey}:SecretString:encryptionKey}}'
+          LWA_ENABLED: !Ref LwaEnabled
+          LWA_CLIENT_ID: !Ref LwaClientId
+          LWA_CLIENT_SECRET: !If [EnableLwa, !Sub '{{resolve:secretsmanager:${LwaSecretId}:SecretString:clientSecret}}', !Ref 'AWS::NoValue']
+  CustomerIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref CustomerApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt CustomerFunction.Arn
+      PayloadFormatVersion: '2.0'
+      TimeoutInMillis: 29000
+  CustomerRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref CustomerApi
+      RouteKey: '$default'
+      AuthorizationType: NONE
+      Target: !Sub 'integrations/${CustomerIntegration}'
+  CustomerStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref CustomerApi
+      StageName: '$default'
+      AutoDeploy: true
+      DefaultRouteSettings: {ThrottlingBurstLimit: 5, ThrottlingRateLimit: 2}
+      AccessLogSettings:
+        DestinationArn: !GetAtt AccessLogs.Arn
+        Format: '{"requestId":"$context.requestId","status":"$context.status","latency":"$context.responseLatency"}'
+  CustomerInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref CustomerFunction
+      Principal: apigateway.amazonaws.com
+      SourceAccount: !Ref AWS::AccountId
+      SourceArn: !Sub 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${CustomerApi}/*'
+Outputs:
+  WebsiteOrigin:
+    Description: Verify landing/privacy pages before creating the LWA security profile.
+    Value: !GetAtt CustomerApi.ApiEndpoint
+  LwaCallbackUrl:
+    Description: Exact return URL; real Amazon sign-in remains separately gated.
+    Value: !Sub '${CustomerApi.ApiEndpoint}/auth/lwa/callback'
+  PrivacyUrl:
+    Description: Owner review and deployment verification are required before publication.
+    Value: !Sub '${CustomerApi.ApiEndpoint}/privacy'

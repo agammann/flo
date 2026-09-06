@@ -1,12 +1,12 @@
 # Product feedback
 
-This feedback covers the tools and documentation actually used to build and test Flo: Alexa+ developer guidance, the MCP TypeScript SDK, the custom browser simulator, AWS CloudFormation, AWS Lambda, and Amazon Bedrock. It intentionally excludes hands-on claims about Alexa+ partner tooling, physical Alexa devices, AgentCore, DynamoDB, and Secrets Manager because those integrations have not been run in the current implementation.
+This feedback covers Alexa+ documentation, the MCP TypeScript SDK, custom browser simulations and the recorded AWS narrator integration. That integration uses CloudFormation, Lambda, Bedrock, API Gateway, IAM, CloudWatch and DynamoDB for a finite model-attempt allowance. It excludes hands-on claims about official Alexa+ partner tooling/devices, AgentCore, Secrets Manager and durable business-state deployment.
 
 ## Alexa+ developer documentation and MCP Toolkit guidance
 
 **What we used it for:** Choosing the MCP Toolkit path, defining the conversational workflow, separating voice summaries from visual comparison detail, designing confirmation-gated transactions, and checking the required transport and protocol revision.
 
-**What worked well:** The guidance treats Alexa+ as an agentic task interface rather than a command-and-control skill. That framing strongly supported Flo’s multi-step flow across work orders, diagnostics, suppliers, estimates, approvals, purchasing, and scheduling. The division between Category SDK and MCP Toolkit also made the architecture choice clear: a service-operations product outside the currently listed category integrations belongs on the MCP path.
+**What worked well:** The guidance separates capabilities from Alexa's orchestration and distinguishes category contracts from custom MCP tools. The certification policy also exposed an important product gap: an exclusively internal shop workflow is not an end-consumer add-on. We are adding a genuine owner-facing preview and keeping the shop simulation separate. MCP Toolkit remains the repair-information prototype route; consumer appointment booking may overlap Category Action Local Booking and needs review with Amazon.
 
 **What needs work:** The general Alexa developer landing page still emphasizes Alexa Skills Kit and device integrations, while the hackathon points developers toward Alexa+ MCP and Agent Skills. A single prominent route from the general Alexa page to the current Alexa+ add-on documentation would reduce ambiguity. Every sample should also state whether it was verified on a physical device, an official simulator, a local MCP client, or a custom web simulation.
 
@@ -42,7 +42,7 @@ This feedback covers the tools and documentation actually used to build and test
 
 **What we used:** AWS CloudFormation deploys a Node.js Lambda function, IAM grants Bedrock model invocation plus basic logging, Lambda calls Amazon Bedrock's Converse API with Amazon Nova Lite, and CloudWatch Logs receives platform and redacted error logs. The function generates only one non-authoritative comparison lead; deterministic Flo code owns every part choice and operational fact.
 
-**What worked well:** `aws bedrock list-foundation-models` made model availability easy to verify before deployment, the Converse API kept the model call compact, inline Lambda code made the integration reproducible in one template, and CloudFormation outputs provided a clean deployment boundary. The live function returned a valid sentence, while a wrong build header returned HTTP 403.
+**What worked well:** Model discovery, the compact Converse call and reproducible CloudFormation template made the narrow integration inspectable. The later IAM/SigV4 deployment recorded a valid signed response and denied unsigned calls. DynamoDB's atomic update provides a shared, finite attempt boundary across Lambda instances. A build marker is not authentication, and these controls are not an account-wide dollar cap.
 
 **What needs work:** CloudFormation template validation did not reveal that `ReservedConcurrentExecutions: 1` would violate the account's minimum unreserved-concurrency requirement. The error appeared only during stack creation. A validation warning tied to current account quotas would reduce failed first deployments. Bedrock documentation would also benefit from a short hackathon pattern that demonstrates how to keep model output advisory while deterministic code remains authoritative.
 

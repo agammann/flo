@@ -50,6 +50,18 @@ describe("Flo end-to-end demo workflow", () => {
 
   after(async () => { await Promise.all(servers.map(close)); });
 
+  it("ranks explicit gross part profit by deterministic cents, independently of the balanced recommendation", async () => {
+    const input = { workOrderIdOrNumber: "1842", category: "alternator", maximumLandedCostCents: 30000, latestDeliveryDate: "2026-09-04", excludeCheapest: true };
+    const balanced = await orchestrator.compareParts(demoActors.technician, input);
+    const profit = await orchestrator.compareParts(demoActors.technician, { ...input, ranking: "gross_part_margin" });
+    assert.equal(balanced.recommendation?.grossPartMarginCents, 7665);
+    assert.equal(profit.recommendation?.grossPartMarginCents, 10115);
+    assert.equal(profit.recommendation?.landedCostCents, 28900);
+    assert.notEqual(profit.recommendation?.offer.supplierSku, balanced.recommendation?.offer.supplierSku);
+    assert.deepEqual(profit.ranked.map(item => item.grossPartMarginCents), [...profit.ranked.map(item => item.grossPartMarginCents)].sort((a, b) => b - a));
+    assert.ok(profit.ranked.every(item => item.landedCostCents <= 30000 && item.offer.deliveryDate <= "2026-09-04"));
+  });
+
   it("executes work order, diagnosis, parts, estimate, approval, memory, purchase, and scheduling", async () => {
     const actor = demoActors.technician;
     const opened = await orchestrator.getWorkOrder(actor, "1842");

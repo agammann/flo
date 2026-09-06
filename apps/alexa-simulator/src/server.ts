@@ -3,6 +3,8 @@ import { fileURLToPath } from "node:url";
 import express from "express";
 import { Client, StreamableHTTPClientTransport } from "@modelcontextprotocol/client";
 import { signNarratorRequest } from "./aws-narrator-auth.js";
+import { createCustomerRouter } from "./customer-router.js";
+import { createBrowserBoundary } from "./browser-boundary.js";
 
 interface ToolEnvelope {
   ok: boolean;
@@ -30,7 +32,12 @@ const host = process.env.SIMULATOR_HOST ?? "127.0.0.1";
 const mcpUrl = process.env.MCP_URL ?? "http://127.0.0.1:4100/mcp";
 const app = express();
 app.disable("x-powered-by");
+app.use(createBrowserBoundary({ port }));
 app.use(express.json({ limit: "32kb" }));
+app.get("/", (_request, response) => response.sendFile(fileURLToPath(new URL("../public/customer.html", import.meta.url))));
+app.get("/shop", (_request, response) => response.sendFile(fileURLToPath(new URL("../public/index.html", import.meta.url))));
+app.use("/api/customer", createCustomerRouter(new URL("/customer/mcp", mcpUrl).href,
+  process.env.FLO_DEMO_MODE === "true" || process.env.NODE_ENV !== "production"));
 app.use(express.static(fileURLToPath(new URL("../public", import.meta.url)), {
   etag: true,
   maxAge: process.env.NODE_ENV === "production" ? "1h" : 0
@@ -109,11 +116,12 @@ interface ComparisonResult {
   recommendation: RankedPart | null;
 }
 
-const comparisonVoice = (comparison: ComparisonResult, excludeCheapest: boolean): string => {
+const comparisonVoice = (comparison: ComparisonResult, excludeCheapest: boolean, grossMargin = false): string => {
   const selected = comparison.recommendation;
   if (selected === null) return "I did not find a compatible supplier option within those constraints.";
   const lead = `I found ${comparison.ranked.length} compatible option${comparison.ranked.length === 1 ? "" : "s"}.`;
-  const qualifier = excludeCheapest ? "best non-budget choice" : "best balance of warranty, delivery, and margin";
+  if (grossMargin) return `${lead} Using gross part profit in dollars, not margin percentage, ${selected.supplier.name} ranks highest at ${money(selected.grossPartMarginCents)}. Shop cost is ${money(selected.offer.priceCents + selected.offer.shippingCostCents)}, customer part price is ${money(selected.customerPriceCents)}, and warranty is ${selected.offer.warrantyMonths} months. This is not the balanced value recommendation.`;
+  const qualifier = excludeCheapest ? "highest balanced-score choice after excluding the cheapest offer" : "highest balanced-score choice for warranty, reliability, price, and quality";
   return `${lead} ${selected.supplier.name} is the ${qualifier} at ${money(selected.offer.priceCents + selected.offer.shippingCostCents)} shop cost, with a ${selected.offer.warrantyMonths}-month warranty and customer part price of ${money(selected.customerPriceCents)}.`;
 };
 
@@ -202,10 +210,11 @@ const handleCommand = async (command: string): Promise<CommandResult> => {
       category: "alternator",
       maximumLandedCostCents: 30000,
       latestDeliveryDate: window.start.slice(0, 10),
-      excludeCheapest: true
+      excludeCheapest: true,
+      ranking: normalized.includes("best margin") ? "gross_part_margin" : "balanced"
     }, invocations) as ComparisonResult;
     return {
-      voice: await narratedComparisonVoice(comparison, true, invocations),
+      voice: normalized.includes("best margin") ? comparisonVoice(comparison, true, true) : await narratedComparisonVoice(comparison, true, invocations),
       view: "parts", data: comparison, invocations
     };
   }

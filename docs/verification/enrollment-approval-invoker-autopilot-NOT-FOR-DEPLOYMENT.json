@@ -1,0 +1,11 @@
+{
+  "status": "REJECTED_BASELINE_NOT_FOR_DEPLOYMENT",
+  "toolVersion": "iam-policy-autopilot 0.3.0",
+  "reason": "Correct invocation-only action but wildcard function scope; no programmatic MFA boundary. Not attached or accepted for deployment.",
+  "command": "uvx iam-policy-autopilot@latest generate-policies C:/Users/alexa/Documents/Codex/2026-09-03/jo/benchflow/services/flo-mcp/src/customer-enrollment-approval-invoke.ts --region us-west-2 --account 114599789754 --service-hints lambda --pretty",
+  "environment": "Existing .private/iam-tools/bin/uvx.exe; bundled Python; workspace-private uv cache; DISABLE_IAM_POLICY_AUTOPILOT_TELEMETRY=true; no upload flag.",
+  "exitCode": 0,
+  "generated": {
+    "Policies": [{ "Policy": { "Id": "IamPolicyAutopilot", "Version": "2012-10-17", "Statement": [{ "Effect": "Allow", "Action": ["lambda:InvokeFunction"], "Resource": ["arn:aws:lambda:us-west-2:114599789754:function:*"] }] }, "PolicyType": "Identity" }]
+  }
+}

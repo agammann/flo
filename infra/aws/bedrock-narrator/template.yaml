@@ -20,6 +20,90 @@ Parameters:
     Description: Best-effort narration-request burst target at the authenticated boundary.
 
 Resources:
+  NarratorLogsKey:
+    Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Description: Flo narrator and minimal API access-log encryption only.
+      EnableKeyRotation: true
+      PendingWindowInDays: 30
+      KeyPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AccountKeyAdministration
+            Effect: Allow
+            Principal:
+              AWS: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:root
+            Action: kms:*
+            Resource: "*" # In a key policy this denotes this key, not every key.
+          - Sid: EncryptOnlyFloLogs
+            Effect: Allow
+            Principal:
+              Service: !Sub logs.${AWS::Region}.amazonaws.com
+            Action: [kms:Encrypt, kms:Decrypt, kms:ReEncrypt*, kms:GenerateDataKey*, kms:DescribeKey]
+            Resource: "*"
+            Condition:
+              ArnEquals:
+                kms:EncryptionContext:aws:logs:arn:
+                  - !Sub arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/flo-bedrock-narrator
+                  - !Sub arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/apigateway/${AWS::StackName}-access
+          # The Logs service grant does not replace the caller-role grant.
+          # Resource * in this key policy means only this containing key.
+          - Sid: NarratorLogCryptoViaCloudWatch
+            Effect: Allow
+            Principal:
+              AWS: !GetAtt NarratorRole.Arn
+            Action: [kms:Encrypt, kms:Decrypt, kms:ReEncryptFrom, kms:ReEncryptTo, kms:GenerateDataKey, kms:GenerateDataKeyWithoutPlaintext]
+            Resource: "*"
+            Condition:
+              StringEquals:
+                kms:ViaService: !Sub logs.${AWS::Region}.amazonaws.com
+                kms:CallerAccount: !Ref AWS::AccountId
+              ArnEquals:
+                kms:EncryptionContext:aws:logs:arn: !Sub arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/flo-bedrock-narrator
+          # DescribeKey has no encryption-context input. Keep metadata separate
+          # rather than allowing contextless crypto with an IfExists condition.
+          - Sid: NarratorLogKeyMetadataViaCloudWatch
+            Effect: Allow
+            Principal:
+              AWS: !GetAtt NarratorRole.Arn
+            Action: kms:DescribeKey
+            Resource: "*"
+            Condition:
+              StringEquals:
+                kms:ViaService: !Sub logs.${AWS::Region}.amazonaws.com
+                kms:CallerAccount: !Ref AWS::AccountId
+
+  NarrationAllowanceKey:
+    Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Description: Flo allowance encryption. Retain while any table or backup uses this key.
+      EnableKeyRotation: true
+      PendingWindowInDays: 30
+      KeyPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AccountKeyAdministration
+            Effect: Allow
+            Principal:
+              AWS: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:root
+            Action: kms:*
+            Resource: "*"
+          - Sid: NarratorTableKeyDecryption
+            Effect: Allow
+            Principal:
+              AWS: !GetAtt NarratorRole.Arn
+            Action: kms:Decrypt
+            Resource: "*"
+            Condition:
+              StringEquals:
+                kms:CallerAccount: !Ref AWS::AccountId
+                kms:ViaService: !Sub dynamodb.${AWS::Region}.amazonaws.com
+                kms:EncryptionContext:aws:dynamodb:tableName: flo-narration-allowance
+
   NarrationAllowance:
     Type: AWS::DynamoDB::Table
     DeletionPolicy: Retain
@@ -36,6 +120,11 @@ Resources:
           KeyType: HASH
       SSESpecification:
         SSEEnabled: true
+        SSEType: KMS
+        KMSMasterKeyId: !GetAtt NarrationAllowanceKey.Arn
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+        RecoveryPeriodInDays: 7
 
   NarratorRole:
     Type: AWS::IAM::Role
@@ -48,25 +137,52 @@ Resources:
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-      Policies:
-        - PolicyName: InvokeFloNarrationModel
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - bedrock:InvokeModel
-                Resource: !Sub arn:${AWS::Partition}:bedrock:${AWS::Region}::foundation-model/${ModelId}
-              - Effect: Allow
-                Action: dynamodb:UpdateItem
-                Resource: !GetAtt NarrationAllowance.Arn
-                Condition:
-                  ForAllValues:StringEquals:
-                    dynamodb:LeadingKeys: [flo-lifetime-v1]
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  # Preserve the existing runtime actions while moving out of inline role policies.
+  NarratorRuntimePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Flo model invocation and fixed-key allowance update; handler code enforces conditional decrements.
+      Roles: [!Ref NarratorRole]
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: bedrock:InvokeModel
+            Resource: !Sub arn:${AWS::Partition}:bedrock:${AWS::Region}::foundation-model/${ModelId}
+          - Effect: Allow
+            Action: dynamodb:UpdateItem
+            Resource: !GetAtt NarrationAllowance.Arn
+            Condition:
+              ForAllValues:StringEquals:
+                dynamodb:LeadingKeys: [flo-lifetime-v1]
+              "Null":
+                dynamodb:LeadingKeys: "false"
+
+  # Existing deployments must IMPORT this already-created group before UPDATE.
+  # Preserve its functional name; never delete logs to resolve a name collision.
+  NarratorLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/lambda/flo-bedrock-narrator
+      RetentionInDays: 7
+      KmsKeyId: !GetAtt NarratorLogsKey.Arn
+
+  NarratorAccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/apigateway/${AWS::StackName}-access
+      RetentionInDays: 7
+      KmsKeyId: !GetAtt NarratorLogsKey.Arn
 
   NarratorFunction:
     Type: AWS::Lambda::Function
+    DependsOn: [NarratorRuntimePolicy, NarratorLogGroup]
     Properties:
       FunctionName: flo-bedrock-narrator
       Description: Uses Amazon Bedrock only for a short narration lead; deterministic Flo code owns all operational facts.
@@ -75,6 +191,7 @@ Resources:
       Role: !GetAtt NarratorRole.Arn
       Timeout: 8
       MemorySize: 256
+      ReservedConcurrentExecutions: 2 # Requires at least 102 regional concurrency; never replace with zero.
       Environment:
         Variables:
           MODEL_ID: !Ref ModelId
@@ -169,6 +286,9 @@ Resources:
       ApiId: !Ref NarratorApi
       StageName: $default
       AutoDeploy: true
+      AccessLogSettings:
+        DestinationArn: !GetAtt NarratorAccessLogGroup.Arn
+        Format: '{"requestId":"$context.requestId","status":"$context.status","latency":"$context.responseLatency"}'
       DefaultRouteSettings:
         ThrottlingRateLimit: !Ref ThrottlingRateLimit
         ThrottlingBurstLimit: !Ref ThrottlingBurstLimit

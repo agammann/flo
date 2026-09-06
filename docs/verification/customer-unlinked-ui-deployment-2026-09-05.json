@@ -1,0 +1,83 @@
+{
+  "preflight": {
+    "account": "114599789754",
+    "changeSet": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-customer-unlinked-ui-20260906T025712Z/5f4ed808-beb9-4736-af7e-86be1a0a2dfe",
+    "status": "CREATE_COMPLETE",
+    "executionStatus": "AVAILABLE",
+    "changedPaths": [
+      "/Properties/Code/S3Key",
+      "/Properties/Code/S3ObjectVersion"
+    ],
+    "validationErrors": 0,
+    "stackStatus": "UPDATE_COMPLETE"
+  },
+  "execution": {
+    "submitted": true,
+    "clientRequestToken": "flo-unlinked-ui-owner-approved-20260906T025712Z",
+    "response": {}
+  },
+  "live": {
+    "stackStatus": "UPDATE_COMPLETE",
+    "lastUpdated": "2026-09-06T03:00:49.569000+00:00",
+    "function": {
+      "State": "Active",
+      "LastUpdateStatus": "Successful",
+      "CodeSha256": "Ga0n1RONKyYdMyn7Abo36y5D6S+pKylpkzZKuldc6sU=",
+      "CodeSize": 616093,
+      "Runtime": "nodejs22.x",
+      "MemorySize": 512,
+      "Timeout": 25
+    }
+  },
+  "events": {
+    "events": [
+      {
+        "eventType": "STACK_EVENT",
+        "status": "SUCCEEDED",
+        "type": "UPDATE_STACK",
+        "timestamp": "2026-09-06T03:01:03.938000+00:00"
+      },
+      {
+        "eventType": "PROGRESS",
+        "resourceStatus": "UPDATE_COMPLETE",
+        "resource": "flo-customer-staging",
+        "timestamp": "2026-09-06T03:01:03.937000+00:00"
+      },
+      {
+        "eventType": "PROGRESS",
+        "resourceStatus": "UPDATE_COMPLETE_CLEANUP_IN_PROGRESS",
+        "resource": "flo-customer-staging",
+        "timestamp": "2026-09-06T03:01:03.156000+00:00"
+      },
+      {
+        "eventType": "PROGRESS",
+        "resourceStatus": "UPDATE_COMPLETE",
+        "resource": "CustomerFunction",
+        "timestamp": "2026-09-06T03:01:01.203000+00:00"
+      },
+      {
+        "eventType": "PROGRESS",
+        "resourceStatus": "UPDATE_IN_PROGRESS",
+        "resource": "CustomerFunction",
+        "timestamp": "2026-09-06T03:00:53.499000+00:00"
+      },
+      {
+        "eventType": "PROGRESS",
+        "resourceStatus": "UPDATE_IN_PROGRESS",
+        "resource": "flo-customer-staging",
+        "timestamp": "2026-09-06T03:00:49.569000+00:00"
+      },
+      {
+        "eventType": "STACK_EVENT",
+        "status": "IN_PROGRESS",
+        "type": "UPDATE_STACK",
+        "timestamp": "2026-09-06T03:00:49.559000+00:00"
+      }
+    ]
+  },
+  "hostedChecks": {
+    "passed": 16,
+    "realSignedInUnlinkedScreenVerified": false,
+    "browser": "After real navigation, sign-in required; owner must renew session. No credentials or consent entered by agent."
+  }
+}

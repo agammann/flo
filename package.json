@@ -9,6 +9,8 @@
   },
   "scripts": {
     "build": "node scripts/compile-workspaces.mjs",
+    "build:customer": "node scripts/build-customer-staging.mjs",
+    "build:enrollment": "node scripts/build-customer-enrollment.mjs",
     "dev": "concurrently -n shop,inventory,supplier,customer,mcp,simulator -c blue,green,magenta,cyan,yellow,white \"pnpm --filter @flo/mock-shop-api dev\" \"pnpm --filter @flo/mock-inventory-api dev\" \"pnpm --filter @flo/mock-supplier-api dev\" \"pnpm --filter @flo/mock-customer-api dev\" \"pnpm --filter @flo/mcp dev\" \"pnpm --filter @flo/alexa-simulator dev\"",
     "dev:services": "concurrently -n shop,inventory,supplier,customer,mcp -c blue,green,magenta,cyan,yellow \"pnpm --filter @flo/mock-shop-api dev\" \"pnpm --filter @flo/mock-inventory-api dev\" \"pnpm --filter @flo/mock-supplier-api dev\" \"pnpm --filter @flo/mock-customer-api dev\" \"pnpm --filter @flo/mcp dev\"",
     "test": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs",
@@ -26,6 +28,7 @@
     "@modelcontextprotocol/client": "^2.0.0",
     "@types/node": "^24.10.0",
     "concurrently": "^9.2.1",
+    "esbuild": "^0.28.2",
     "eslint": "^9.39.1",
     "tsx": "^4.23.13",
     "typescript": "^6.0.3",

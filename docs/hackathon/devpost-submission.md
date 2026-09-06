@@ -1,6 +1,8 @@
 # Devpost submission draft
 
-> Evidence status: this draft describes the verified implementation, public source repository, and live Amazon Bedrock narration adapter. The 2:41 English demo is uploaded and playable by link, but remains unlisted until the entrant gives separate final publication confirmation. The official Alexa+ add-on connection and MCP App package remain explicitly unclaimed.
+> Release status: working custom simulations and the separate AWS-hosted Login with Amazon website are described below. The original 2:41 video is stale and must be replaced; its current visibility is not reverified by this draft. Do not submit the old video as proof of the corrected build. Official Alexa+ account linking, certification and MCP App packaging remain unclaimed. This file is a draft, not evidence that the Devpost form is populated or submitted.
+
+> September 5 local addendum: a separate, read-only vehicle-owner preview now supports owned repair status and customer-price estimate review through three MCP tools. It has not been pushed or added to the existing video. The original shop workflow alone does not address Alexa+'s consumer-eligibility policy. See [the certification tracker](../alexa-plus-certification-plan.md); reconcile this draft and the video before any final submission. This document is not evidence that the Devpost form is complete.
 
 ## Project name
 
@@ -36,7 +38,9 @@ Alexa+ or the simulator calls the Flo MCP endpoint. The MCP server derives the a
 
 Flo uses AWS for a narrow, non-authoritative narration step. The simulator sends a minimal, non-personal payload to an AWS Lambda function deployed by CloudFormation. Lambda calls Amazon Bedrock's Converse API with Amazon Nova Lite to generate one short qualitative lead sentence before Flo appends the deterministic comparison facts. The model never chooses the part, calculates price, checks compatibility, approves a customer action, orders inventory, or schedules work. The simulator validates the sentence and falls back to deterministic narration if AWS is unavailable or violates the output contract.
 
-The IAM-protected `flo-bedrock-narrator` stack was verified `UPDATE_COMPLETE` in `us-west-2`. Live checks returned 403 for unsigned requests, 429 for a signed request before allowance initialization, 400 for an invalid signed task, and 200 for valid signed Bedrock narration. After explicit approval, its retained DynamoDB allowance was initialized once to 100 model attempts; one verification call left 99. Seven-day log retention and best-effort API Gateway throttling complement that model-call limit, which is not an account-wide dollar cap. The successful signed test ran from AWS CloudShell; simulator hosts need their own authorized AWS identity and otherwise retain deterministic fallback. This implemented Bedrock integration provides AWS Builder evidence. AgentCore and Secrets Manager remain future architecture, and the DynamoDB allowance is not business-state persistence.
+The IAM-protected `flo-bedrock-narrator` stack has recorded successful signed Bedrock narration and rejected unsigned/invalid requests. Its retained DynamoDB allowance reserves model attempts atomically. Seven-day log retention and best-effort API Gateway throttling complement that model-call limit, which is not an account-wide dollar cap. Historical allowance read-backs are not a current remaining-balance claim. Simulator hosts need their own authorized AWS identity and otherwise retain deterministic fallback. This implemented Bedrock integration provides AWS Builder evidence.
+
+A separate customer staging website is deployed through CloudFormation using Lambda, API Gateway, DynamoDB for encrypted auth/session state and separate customer-link/repair projections, and Secrets Manager for private runtime configuration. Login with Amazon authenticates the person; only a trusted shop mapping can authorize repair access. The owner reported successful real sign-in/sign-out and the authenticated-unlinked page was inspected. New private fictional-customer enrollment services are locally tested, not deployed. Actual hosted linked-customer isolation tests remain incomplete. AgentCore and durable shop-workflow state remain future work; website login is not Alexa+ account linking.
 
 ## Challenges
 
@@ -53,7 +57,7 @@ The IAM-protected `flo-bedrock-narrator` stack was verified `UPDATE_COMPLETE` in
 - Exact integer-cent estimates and deterministic fitment explanations.
 - Role checks, approval state machine, single-use confirmation, idempotency, schedule conflict detection, and audit records.
 - Long-term job reference resolution with explicit ambiguity errors.
-- Twenty-seven passing automated tests, including permissions, fitment-data completeness, immutable approval/SKU binding, cross-job approval isolation, supplier-response validation, single-flight confirmations, cancelled-order retry safety, rollback, end-to-end, MCP transport, and production tool-surface coverage.
+- Automated regression coverage for permissions, fitment-data completeness, immutable approval/SKU binding, cross-job approval isolation, supplier-response validation, single-flight confirmations, cancelled-order retry safety, rollback, end-to-end flow and MCP transport. Consult the latest test run for counts rather than treating this draft as a CI report.
 
 ## What we learned
 
@@ -83,4 +87,6 @@ Reviewed English captions: [`docs/demo/flo-demo.en.vtt`](../demo/flo-demo.en.vtt
 
 TypeScript, Node.js, pnpm workspaces, Model Context Protocol TypeScript SDK, MCP `2025-11-25`, Streamable HTTP, Zod, Express, Node test runner, HTML, CSS, browser speech recognition, Docker, AWS CloudFormation, AWS Lambda, AWS IAM, Amazon Bedrock Converse API, Amazon Nova Lite, and Amazon CloudWatch Logs.
 
-Planned but not yet claimed as used: Bedrock AgentCore, DynamoDB, and Secrets Manager.
+Also used: DynamoDB for the finite narrator model-attempt allowance, not business-state persistence.
+
+Also implemented for the separate customer website: Login with Amazon, AWS Secrets Manager and durable DynamoDB auth/session storage. Planned but not claimed as deployed: Bedrock AgentCore, private fictional-customer enrollment and durable shop-workflow state.

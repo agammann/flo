@@ -10,3 +10,7 @@ coverage/
 .vite/
 cdk.out/
 .agentcore/
+.private/
+customer-links*.json
+__pycache__/
+*.pyc

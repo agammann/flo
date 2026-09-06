@@ -1,0 +1,226 @@
+{
+  "scope": "Review-only; not executed. Secrets withheld; no raw property contexts.",
+  "changeSet": {
+    "ChangeSetName": "flo-customer-lwa-review-20260906T023152Z",
+    "ChangeSetId": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-customer-lwa-review-20260906T023152Z/f4eb1cef-5d0c-42ad-8ed0-b42ffed26688",
+    "StackName": "flo-customer-staging",
+    "Status": "CREATE_COMPLETE",
+    "ExecutionStatus": "AVAILABLE",
+    "CreationTime": "2026-09-06T02:32:03.568000+00:00",
+    "Parameters": [
+      {
+        "ParameterKey": "ArtifactBucket",
+        "ParameterValue": "flo-customer-artifacts-artifacts-wiyewwqt3d1r"
+      },
+      {
+        "ParameterKey": "LwaSecretId",
+        "ParameterValue": "arn:aws:secretsmanager:us-west-2:114599789754:secret:flo/customer-staging/lwa-hwN6ke"
+      },
+      {
+        "ParameterKey": "ArtifactKey",
+        "ParameterValue": "flo-customer/461f5e1591b7610ba1ba5fa3d681d6fe886386b16bea63ead9781895e600ebb6.zip"
+      },
+      {
+        "ParameterKey": "ArtifactVersion",
+        "ParameterValue": "raKQgS0ARCNPg5kSiao.DIgrcXy7KP._"
+      },
+      {
+        "ParameterKey": "LwaClientId",
+        "ParameterValue": "LWA_CLIENT_ID_REDACTED_FROM_PUBLIC_EVIDENCE"
+      },
+      {
+        "ParameterKey": "LwaEnabled",
+        "ParameterValue": "true"
+      }
+    ],
+    "changes": [
+      {
+        "Action": "Modify",
+        "LogicalResourceId": "CustomerFunction",
+        "PhysicalResourceId": "flo-customer-staging-http",
+        "ResourceType": "AWS::Lambda::Function",
+        "Replacement": "False",
+        "Scope": [
+          "Properties"
+        ],
+        "details": [
+          {
+            "attribute": "Properties",
+            "name": "Environment",
+            "path": "/Properties/Environment/Variables/LWA_ENABLED",
+            "requiresRecreation": "Never",
+            "evaluation": "Dynamic",
+            "source": "DirectModification"
+          },
+          {
+            "attribute": "Properties",
+            "name": "Code",
+            "path": "/Properties/Code/S3ObjectVersion",
+            "requiresRecreation": "Never",
+            "evaluation": "Dynamic",
+            "source": "DirectModification"
+          },
+          {
+            "attribute": "Properties",
+            "name": "Environment",
+            "path": "/Properties/Environment/Variables/LWA_CLIENT_SECRET",
+            "requiresRecreation": "Never",
+            "evaluation": "Static",
+            "source": "ParameterReference",
+            "entity": "LwaSecretId"
+          },
+          {
+            "attribute": "Properties",
+            "name": "Environment",
+            "path": "/Properties/Environment/Variables/LWA_CLIENT_ID",
+            "requiresRecreation": "Never",
+            "evaluation": "Dynamic",
+            "source": "DirectModification"
+          },
+          {
+            "attribute": "Properties",
+            "name": "Environment",
+            "path": "/Properties/Environment/Variables/LWA_ENABLED",
+            "requiresRecreation": "Never",
+            "evaluation": "Static",
+            "source": "ParameterReference",
+            "entity": "LwaEnabled"
+          },
+          {
+            "attribute": "Properties",
+            "name": "Code",
+            "path": "/Properties/Code/S3ObjectVersion",
+            "requiresRecreation": "Never",
+            "evaluation": "Static",
+            "source": "ParameterReference",
+            "entity": "ArtifactVersion"
+          },
+          {
+            "attribute": "Properties",
+            "name": "Code",
+            "path": "/Properties/Code/S3Key",
+            "requiresRecreation": "Never",
+            "evaluation": "Static",
+            "source": "ParameterReference",
+            "entity": "ArtifactKey"
+          },
+          {
+            "attribute": "Properties",
+            "name": "Code",
+            "path": "/Properties/Code/S3Key",
+            "requiresRecreation": "Never",
+            "evaluation": "Dynamic",
+            "source": "DirectModification"
+          },
+          {
+            "attribute": "Properties",
+            "name": "Environment",
+            "path": "/Properties/Environment/Variables/LWA_CLIENT_SECRET",
+            "requiresRecreation": "Never",
+            "evaluation": "Dynamic",
+            "source": "DirectModification"
+          },
+          {
+            "attribute": "Properties",
+            "name": "Environment",
+            "path": "/Properties/Environment/Variables/LWA_CLIENT_ID",
+            "requiresRecreation": "Never",
+            "evaluation": "Static",
+            "source": "ParameterReference",
+            "entity": "LwaClientId"
+          }
+        ],
+        "propertyDifferences": [
+          {
+            "path": "/Properties/Code/S3Key",
+            "before": "flo-customer/744a3e67d9bc003479cbf95d015b6ac3d696cae7ae687e5b36a7514610a57cc3.zip",
+            "after": "flo-customer/461f5e1591b7610ba1ba5fa3d681d6fe886386b16bea63ead9781895e600ebb6.zip"
+          },
+          {
+            "path": "/Properties/Code/S3ObjectVersion",
+            "before": "3pbmv1gha2sCK7UPUi7bZ_1q8QjtPPTX",
+            "after": "raKQgS0ARCNPg5kSiao.DIgrcXy7KP._"
+          },
+          {
+            "path": "/Properties/Environment/Variables/LWA_CLIENT_ID",
+            "before": "",
+            "after": "LWA_CLIENT_ID_REDACTED_FROM_PUBLIC_EVIDENCE"
+          },
+          {
+            "path": "/Properties/Environment/Variables/LWA_CLIENT_SECRET",
+            "before": "[withheld]",
+            "after": "[withheld]"
+          },
+          {
+            "path": "/Properties/Environment/Variables/LWA_ENABLED",
+            "before": "false",
+            "after": "true"
+          }
+        ]
+      }
+    ]
+  },
+  "finalChecks": {
+    "events": {
+      "OperationEvents": [
+        {
+          "EventType": "STACK_EVENT",
+          "OperationType": "CREATE_CHANGESET",
+          "OperationStatus": "SUCCEEDED",
+          "Timestamp": "2026-09-06T02:32:11.262000+00:00"
+        },
+        {
+          "EventType": "STACK_EVENT",
+          "OperationType": "CREATE_CHANGESET",
+          "OperationStatus": "IN_PROGRESS",
+          "Timestamp": "2026-09-06T02:32:03.583000+00:00"
+        }
+      ]
+    },
+    "live_stack": {
+      "StackName": "flo-customer-staging",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-06T01:50:53.002000+00:00",
+      "Parameters": [
+        {
+          "ParameterKey": "ArtifactBucket",
+          "ParameterValue": "flo-customer-artifacts-artifacts-wiyewwqt3d1r"
+        },
+        {
+          "ParameterKey": "LwaSecretId",
+          "ParameterValue": ""
+        },
+        {
+          "ParameterKey": "ArtifactKey",
+          "ParameterValue": "flo-customer/744a3e67d9bc003479cbf95d015b6ac3d696cae7ae687e5b36a7514610a57cc3.zip"
+        },
+        {
+          "ParameterKey": "ArtifactVersion",
+          "ParameterValue": "3pbmv1gha2sCK7UPUi7bZ_1q8QjtPPTX"
+        },
+        {
+          "ParameterKey": "LwaClientId",
+          "ParameterValue": ""
+        },
+        {
+          "ParameterKey": "LwaEnabled",
+          "ParameterValue": "false"
+        }
+      ]
+    },
+    "live_concurrency": {
+      "ReservedConcurrentExecutions": 3
+    }
+  },
+  "artifact": {
+    "bucket": "flo-customer-artifacts-artifacts-wiyewwqt3d1r",
+    "key": "flo-customer/461f5e1591b7610ba1ba5fa3d681d6fe886386b16bea63ead9781895e600ebb6.zip",
+    "versionId": "raKQgS0ARCNPg5kSiao.DIgrcXy7KP._",
+    "sha256": "461f5e1591b7610ba1ba5fa3d681d6fe886386b16bea63ead9781895e600ebb6",
+    "bytes": 615855,
+    "checksumSHA256": "Rh9eFZG3YQuhul+j1oHW/ohjhrFr6mPq2XgYleYA67Y=",
+    "encryption": "AES256",
+    "byteForByteReadback": true,
+    "lastModified": "2026-09-06T02:28:39+00:00"
+  }
+}

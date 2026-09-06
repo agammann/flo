@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "status": "APPROVED_POLICY_TREATMENT_ONLY",
+  "applicability": "HISTORICAL_PRE_RETENTION_TEMPLATE_ONLY; current retention revision requires fresh validation and review",
+  "approval": "User explicitly approved documenting AWS-managed encryption for all three tables and no PITR for requests/approvals only, without deployment.",
+  "scope": "Fictional Flo customer-enrollment staging storage only; not production or real customer data.",
+  "deploymentApproved": false,
+  "template": "infra/aws/customer-enrollment/state.template.json",
+  "templateSha256": "58881cef3da86e8dcff4119e3475a5ca9c2ee7078cba2879289118f5b0bd9cbd",
+  "evidence": "docs/verification/enrollment-state-cloudshell-validation-2026-09-05.json",
+  "evidenceJsonSha256": "1b013f88b8d472b3167dcc587320e9157d6dcc6cba16a20eb9b3d9f300d8ec7b",
+  "evidenceHashEncoding": "SHA-256 of UTF-8 JSON.stringify(JSON.parse(raw evidence)); formatting only is ignored.",
+  "exceptions": [
+    {
+      "rule": "DYNAMODB_TABLE_ENCRYPTED_KMS",
+      "resources": ["EnrollmentRequests", "EnrollmentApprovals", "EnrollmentAudit"],
+      "properties": ["SSESpecification.KMSMasterKeyId", "SSESpecification.SSEType"],
+      "reason": "Retain SSEEnabled true with the default AWS-managed DynamoDB KMS key. Do not provision extra customer-managed keys or force the default alias merely to satisfy the static rule. This does not waive encryption; KMS usage charges may still apply."
+    },
+    {
+      "rule": "DYNAMODB_PITR_ENABLED",
+      "resources": ["EnrollmentRequests", "EnrollmentApprovals"],
+      "properties": ["PointInTimeRecoverySpecification.PointInTimeRecoveryEnabled"],
+      "reason": "Keep PITR disabled only for transient request and approval authority. Never restore or reconnect old authority state that could resurrect expired or consumed requests or invitations. EnrollmentAudit retains seven-day PITR; audit recovery is evidence only and must never recreate customer links."
+    }
+  ],
+  "requiredControls": [
+    "Server-side expiry and conditional consumption checks remain mandatory; TTL is cleanup only.",
+    "Separate request, approval and audit stores; Amazon identity alone never proves repair ownership.",
+    "All three tables retain SSEEnabled true, deletion protection and retain-on-delete/replace.",
+    "EnrollmentAudit retains PITR enabled with RecoveryPeriodInDays 7; record retention is a separate unresolved release gate.",
+    "Raw lint and Guard evidence stays unchanged and visible: Guard FAIL with two failing rules, not an unconditional pass."
+  ],
+  "reviewTriggers": [
+    "Any template-byte change, new finding, changed rules/evidence, new resource or expanded exception requires renewed review.",
+    "Review before any deployment, production use or real customer data, and whenever authorization or recovery assumptions change."
+  ],
+  "remainingGates": [
+    "Independently enforced fictional-customer designation and tested programmatic MFA for approval authority.",
+    "Validated least-privilege runtime IAM, exact resource/cost plan and CloudFormation change-set review with separate execution approval.",
+    "Approved audit-record retention/deletion procedure before live enrollment writes.",
+    "Hosted allowed/rejected principal and customer-isolation tests; separate Alexa+ integration checks.",
+    "Submission and video publication remain paused pending separate final approval."
+  ]
+}

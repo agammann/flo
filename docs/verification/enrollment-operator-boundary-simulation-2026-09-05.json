@@ -1,0 +1,970 @@
+{
+  "scope": "SIMULATION_ONLY_HYPOTHETICAL_FUNCTION_NO_DEPLOYMENT",
+  "boundary": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "MaximumExactVersionWithFreshMfa",
+        "Effect": "Allow",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+        "Condition": {
+          "ArnEquals": {
+            "aws:PrincipalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+          },
+          "Bool": {
+            "aws:MultiFactorAuthPresent": "true"
+          },
+          "Null": {
+            "aws:MultiFactorAuthAge": "false"
+          },
+          "NumericGreaterThanEquals": {
+            "aws:MultiFactorAuthAge": "0"
+          },
+          "NumericLessThanEquals": {
+            "aws:MultiFactorAuthAge": "900"
+          }
+        }
+      },
+      {
+        "Sid": "DenyOtherCapabilities",
+        "Effect": "Deny",
+        "NotAction": "lambda:InvokeFunction",
+        "Resource": "*"
+      },
+      {
+        "Sid": "DenyOtherFunctionsAndVersions",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "NotResource": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1"
+      },
+      {
+        "Sid": "DenyOtherPrincipals",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "*",
+        "Condition": {
+          "ArnNotEquals": {
+            "aws:PrincipalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+          }
+        }
+      },
+      {
+        "Sid": "DenyMissingOrFalseMfa",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "*",
+        "Condition": {
+          "BoolIfExists": {
+            "aws:MultiFactorAuthPresent": "false"
+          }
+        }
+      },
+      {
+        "Sid": "DenyMissingMfaAge",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "*",
+        "Condition": {
+          "Null": {
+            "aws:MultiFactorAuthAge": "true"
+          }
+        }
+      },
+      {
+        "Sid": "DenyStaleMfa",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "*",
+        "Condition": {
+          "NumericGreaterThan": {
+            "aws:MultiFactorAuthAge": "900"
+          }
+        }
+      },
+      {
+        "Sid": "DenyInvalidMfaAge",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "*",
+        "Condition": {
+          "NumericLessThan": {
+            "aws:MultiFactorAuthAge": "0"
+          }
+        }
+      }
+    ]
+  },
+  "identityBaseline": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "lambda:InvokeFunction"
+        ],
+        "Resource": [
+          "arn:aws:lambda:us-west-2:114599789754:function:*"
+        ]
+      }
+    ]
+  },
+  "liveReadOnlyPreflight": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "identity": {
+        "UserId": "114599789754",
+        "Account": "114599789754",
+        "Arn": "arn:aws:iam::114599789754:root"
+      },
+      "operator": {
+        "Arn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+        "UserId": "AIDARVLVOAS5N5MWSFYR5",
+        "Path": "/flo/"
+      },
+      "attached": {
+        "AttachedPolicies": []
+      },
+      "inline": {
+        "PolicyNames": []
+      },
+      "groups": {
+        "Groups": []
+      },
+      "mfa": {
+        "count": 1
+      },
+      "functions": [
+        {
+          "FunctionName": "flo-bedrock-narrator",
+          "FunctionArn": "arn:aws:lambda:us-west-2:114599789754:function:flo-bedrock-narrator",
+          "Role": "arn:aws:iam::114599789754:role/flo-bedrock-narrator-NarratorRole-wrHW4saOnH42",
+          "Version": "$LATEST"
+        },
+        {
+          "FunctionName": "flo-customer-staging-http",
+          "FunctionArn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-staging-http",
+          "Role": "arn:aws:iam::114599789754:role/flo-customer-staging-CustomerRole-F3EBVfIp3zcy",
+          "Version": "$LATEST"
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "sts",
+        "operation": "GetCallerIdentity",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListAttachedUserPolicies",
+        "status": "success",
+        "n_items": {
+          "AttachedPolicies": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListUserPolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListGroupsForUser",
+        "status": "success",
+        "n_items": {
+          "Groups": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListMFADevices",
+        "status": "success",
+        "n_items": {
+          "MFADevices": 1
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "ListFunctions",
+        "status": "success",
+        "n_items": {
+          "Functions": 2
+        }
+      }
+    ]
+  },
+  "simulation": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "scope": "HYPOTHETICAL_VERSION_POLICY_SIMULATION_ONLY_NOT_LIVE_MFA",
+      "validation": [],
+      "cases": [
+        {
+          "case": "fresh",
+          "results": [
+            {
+              "EvalActionName": "lambda:InvokeFunction",
+              "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+              "EvalDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 41
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 163
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": true
+              },
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+                  "EvalResourceDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "PolicyInputList.1",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 41
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 163
+                      }
+                    }
+                  ],
+                  "PermissionsBoundaryDecisionDetail": {
+                    "AllowedByPermissionsBoundary": true
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": "age900",
+          "results": [
+            {
+              "EvalActionName": "lambda:InvokeFunction",
+              "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+              "EvalDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 41
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 163
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": true
+              },
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+                  "EvalResourceDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "PolicyInputList.1",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 41
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 163
+                      }
+                    }
+                  ],
+                  "PermissionsBoundaryDecisionDetail": {
+                    "AllowedByPermissionsBoundary": true
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": "stale",
+          "results": [
+            {
+              "EvalActionName": "lambda:InvokeFunction",
+              "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+              "EvalDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 1388
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1555
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              },
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+                  "EvalResourceDecision": "explicitDeny",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                      "SourcePolicyType": "Permissions Boundary Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 1388
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 1555
+                      }
+                    }
+                  ],
+                  "PermissionsBoundaryDecisionDetail": {
+                    "AllowedByPermissionsBoundary": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": "missing_mfa",
+          "results": [
+            {
+              "EvalActionName": "lambda:InvokeFunction",
+              "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+              "EvalDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 1053
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1229
+                  }
+                },
+                {
+                  "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 1229
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1388
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              },
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+                  "EvalResourceDecision": "explicitDeny",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                      "SourcePolicyType": "Permissions Boundary Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 1053
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 1229
+                      }
+                    },
+                    {
+                      "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                      "SourcePolicyType": "Permissions Boundary Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 1229
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 1388
+                      }
+                    }
+                  ],
+                  "PermissionsBoundaryDecisionDetail": {
+                    "AllowedByPermissionsBoundary": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": "false_mfa",
+          "results": [
+            {
+              "EvalActionName": "lambda:InvokeFunction",
+              "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+              "EvalDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 1053
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1229
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              },
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+                  "EvalResourceDecision": "explicitDeny",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                      "SourcePolicyType": "Permissions Boundary Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 1053
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 1229
+                      }
+                    }
+                  ],
+                  "PermissionsBoundaryDecisionDetail": {
+                    "AllowedByPermissionsBoundary": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": "missing_age",
+          "results": [
+            {
+              "EvalActionName": "lambda:InvokeFunction",
+              "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+              "EvalDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 1229
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1388
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              },
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+                  "EvalResourceDecision": "explicitDeny",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                      "SourcePolicyType": "Permissions Boundary Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 1229
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 1388
+                      }
+                    }
+                  ],
+                  "PermissionsBoundaryDecisionDetail": {
+                    "AllowedByPermissionsBoundary": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": "other_version",
+          "results": [
+            {
+              "EvalActionName": "lambda:InvokeFunction",
+              "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:2",
+              "EvalDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 654
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 839
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              },
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:2",
+                  "EvalResourceDecision": "explicitDeny",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                      "SourcePolicyType": "Permissions Boundary Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 654
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 839
+                      }
+                    }
+                  ],
+                  "PermissionsBoundaryDecisionDetail": {
+                    "AllowedByPermissionsBoundary": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": "other_function",
+          "results": [
+            {
+              "EvalActionName": "lambda:InvokeFunction",
+              "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:other:1",
+              "EvalDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 654
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 839
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              },
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:other:1",
+                  "EvalResourceDecision": "explicitDeny",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                      "SourcePolicyType": "Permissions Boundary Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 654
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 839
+                      }
+                    }
+                  ],
+                  "PermissionsBoundaryDecisionDetail": {
+                    "AllowedByPermissionsBoundary": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": "unqualified",
+          "results": [
+            {
+              "EvalActionName": "lambda:InvokeFunction",
+              "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval",
+              "EvalDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 654
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 839
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              },
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval",
+                  "EvalResourceDecision": "explicitDeny",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                      "SourcePolicyType": "Permissions Boundary Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 654
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 839
+                      }
+                    }
+                  ],
+                  "PermissionsBoundaryDecisionDetail": {
+                    "AllowedByPermissionsBoundary": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": "root",
+          "results": [
+            {
+              "EvalActionName": "lambda:InvokeFunction",
+              "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+              "EvalDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 839
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1053
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              },
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+                  "EvalResourceDecision": "explicitDeny",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                      "SourcePolicyType": "Permissions Boundary Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 839
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 1053
+                      }
+                    }
+                  ],
+                  "PermissionsBoundaryDecisionDetail": {
+                    "AllowedByPermissionsBoundary": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": "write_table",
+          "results": [
+            {
+              "EvalActionName": "dynamodb:PutItem",
+              "EvalResourceName": "arn:aws:dynamodb:us-west-2:114599789754:table/synthetic-approvals",
+              "EvalDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 547
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 654
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              },
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:dynamodb:us-west-2:114599789754:table/synthetic-approvals",
+                  "EvalResourceDecision": "explicitDeny",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                      "SourcePolicyType": "Permissions Boundary Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 547
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 654
+                      }
+                    }
+                  ],
+                  "PermissionsBoundaryDecisionDetail": {
+                    "AllowedByPermissionsBoundary": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": "change_configuration",
+          "results": [
+            {
+              "EvalActionName": "lambda:UpdateFunctionConfiguration",
+              "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+              "EvalDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 547
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 654
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              },
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-west-2:114599789754:function:synthetic-flo-approval:1",
+                  "EvalResourceDecision": "explicitDeny",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+                      "SourcePolicyType": "Permissions Boundary Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 547
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 654
+                      }
+                    }
+                  ],
+                  "PermissionsBoundaryDecisionDetail": {
+                    "AllowedByPermissionsBoundary": false
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "accessanalyzer",
+        "operation": "ValidatePolicy",
+        "status": "success",
+        "n_items": {
+          "findings": 0
+        }
+      }
+    ]
+  }
+}

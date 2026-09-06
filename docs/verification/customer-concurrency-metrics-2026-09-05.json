@@ -1,0 +1,83 @@
+{
+  "status": "success",
+  "stdout": "",
+  "return_value": {
+    "window": {
+      "start": "2026-09-06T01:52:00Z",
+      "end": "2026-09-06T01:54:00Z"
+    },
+    "metrics": {
+      "Throttles": {
+        "Label": "Throttles",
+        "Datapoints": [
+          {
+            "Timestamp": "2026-09-06T01:53:00+00:00",
+            "Sum": 0,
+            "Unit": "Count"
+          },
+          {
+            "Timestamp": "2026-09-06T01:52:00+00:00",
+            "Sum": 0,
+            "Unit": "Count"
+          }
+        ]
+      },
+      "Errors": {
+        "Label": "Errors",
+        "Datapoints": [
+          {
+            "Timestamp": "2026-09-06T01:53:00+00:00",
+            "Sum": 0,
+            "Unit": "Count"
+          },
+          {
+            "Timestamp": "2026-09-06T01:52:00+00:00",
+            "Sum": 0,
+            "Unit": "Count"
+          }
+        ]
+      },
+      "ConcurrentExecutions": {
+        "Label": "ConcurrentExecutions",
+        "Datapoints": [
+          {
+            "Timestamp": "2026-09-06T01:53:00+00:00",
+            "Maximum": 2,
+            "Unit": "Count"
+          },
+          {
+            "Timestamp": "2026-09-06T01:52:00+00:00",
+            "Maximum": 3,
+            "Unit": "Count"
+          }
+        ]
+      }
+    }
+  },
+  "api_calls": [
+    {
+      "service": "cloudwatch",
+      "operation": "GetMetricStatistics",
+      "status": "success",
+      "n_items": {
+        "Datapoints": 2
+      }
+    },
+    {
+      "service": "cloudwatch",
+      "operation": "GetMetricStatistics",
+      "status": "success",
+      "n_items": {
+        "Datapoints": 2
+      }
+    },
+    {
+      "service": "cloudwatch",
+      "operation": "GetMetricStatistics",
+      "status": "success",
+      "n_items": {
+        "Datapoints": 2
+      }
+    }
+  ]
+}

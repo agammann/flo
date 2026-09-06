@@ -3,22 +3,36 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "exports": { ".": { "types": "./dist/server.d.ts", "import": "./dist/server.js" } },
+  "exports": {
+    ".": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
+    }
+  },
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
+    "start:customer": "node dist/customer-website-index.js",
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "demo:reset": "tsx src/reset.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1127.0",
+    "@aws-sdk/client-lambda": "3.1127.0",
+    "@aws-sdk/client-sts": "3.1127.0",
+    "@aws-sdk/lib-dynamodb": "^3.1127.0",
     "@flo/adapters": "workspace:*",
     "@flo/agent": "workspace:*",
     "@flo/domain": "workspace:*",
     "@flo/shared-types": "workspace:*",
+    "@modelcontextprotocol/client": "^2.0.0",
     "@modelcontextprotocol/node": "^2.0.0",
     "@modelcontextprotocol/server": "^2.0.0",
     "zod": "^4.5.4"
   },
-  "devDependencies": { "tsx": "^4.23.13", "typescript": "^6.0.3" }
+  "devDependencies": {
+    "tsx": "^4.23.13",
+    "typescript": "^6.0.3"
+  }
 }

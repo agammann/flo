@@ -1,0 +1,102 @@
+{
+  "changeSetName": "flo-customer-concurrency-review-20260906T014620Z",
+  "changeSetId": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-customer-concurrency-review-20260906T014620Z/986237ee-3afe-46e4-b354-69b27c56e6d7",
+  "stackName": "flo-customer-staging",
+  "status": "CREATE_COMPLETE",
+  "executionStatus": "AVAILABLE",
+  "parameters": [
+    {
+      "ParameterKey": "ArtifactBucket",
+      "ParameterValue": "flo-customer-artifacts-artifacts-wiyewwqt3d1r"
+    },
+    {
+      "ParameterKey": "LwaSecretId",
+      "ParameterValue": ""
+    },
+    {
+      "ParameterKey": "ArtifactKey",
+      "ParameterValue": "flo-customer/744a3e67d9bc003479cbf95d015b6ac3d696cae7ae687e5b36a7514610a57cc3.zip"
+    },
+    {
+      "ParameterKey": "ArtifactVersion",
+      "ParameterValue": "3pbmv1gha2sCK7UPUi7bZ_1q8QjtPPTX"
+    },
+    {
+      "ParameterKey": "LwaClientId",
+      "ParameterValue": ""
+    },
+    {
+      "ParameterKey": "LwaEnabled",
+      "ParameterValue": "false"
+    }
+  ],
+  "changes": [
+    {
+      "action": "Modify",
+      "logicalResourceId": "CustomerFunction",
+      "physicalResourceId": "flo-customer-staging-http",
+      "type": "AWS::Lambda::Function",
+      "replacement": "False",
+      "details": [
+        {
+          "Target": {
+            "Attribute": "Properties",
+            "Name": "ReservedConcurrentExecutions",
+            "RequiresRecreation": "Never",
+            "Path": "/Properties/ReservedConcurrentExecutions",
+            "BeforeValue": "1",
+            "AfterValue": "3",
+            "AttributeChangeType": "Modify"
+          },
+          "Evaluation": "Static",
+          "ChangeSource": "DirectModification"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "events": {
+      "OperationEvents": [
+        {
+          "EventId": "2ef89073-6bdf-41f5-97d3-b83e3c69f445",
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "OperationId": "986237ee-3afe-46e4-b354-69b27c56e6d7",
+          "OperationType": "CREATE_CHANGESET",
+          "OperationStatus": "SUCCEEDED",
+          "EventType": "STACK_EVENT",
+          "Timestamp": "2026-09-06T01:46:27.102000+00:00",
+          "StartTime": "2026-09-06T01:46:21.105000+00:00",
+          "EndTime": "2026-09-06T01:46:27.102000+00:00"
+        },
+        {
+          "EventId": "3f287efe-46cb-4f09-9ab3-faabe882a521",
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "OperationId": "986237ee-3afe-46e4-b354-69b27c56e6d7",
+          "OperationType": "CREATE_CHANGESET",
+          "OperationStatus": "IN_PROGRESS",
+          "EventType": "STACK_EVENT",
+          "Timestamp": "2026-09-06T01:46:21.105000+00:00",
+          "StartTime": "2026-09-06T01:46:21.105000+00:00"
+        }
+      ]
+    },
+    "liveConcurrency": {
+      "ReservedConcurrentExecutions": 1
+    },
+    "accountSettings": {
+      "AccountLimit": {
+        "TotalCodeSize": 322122547200,
+        "CodeSizeUnzipped": 262144000,
+        "CodeSizeZipped": 52428800,
+        "ConcurrentExecutions": 1000,
+        "UnreservedConcurrentExecutions": 997
+      },
+      "AccountUsage": {
+        "TotalCodeSize": 617464,
+        "FunctionCount": 2
+      }
+    }
+  },
+  "templateSha256": "87d753a04241749a438d24528b3282c8100fe4dd2e686e0bcd15613d5878ad96",
+  "executed": false
+}

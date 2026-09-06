@@ -1,0 +1,209 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "REVIEW ONLY: Flo enrollment storage. Creates no IAM grants, Lambda functions, routes, customer links or secrets. Validate and review costs before execution.",
+  "Metadata": {
+    "FloReview": {
+      "Status": "DRAFT_NOT_APPROVED_FOR_DEPLOYMENT",
+      "Region": "us-west-2",
+      "ExistingStackChanges": "None",
+      "Recovery": "Never restore request or approval authority. Audit backup is evidence only, never a source of customer links.",
+      "Retention": "Request/approval TTL is cleanup only; application expiry is mandatory. Audit deletion schedule needs owner review before live writes."
+    }
+  },
+  "Resources": {
+    "EnrollmentRequests": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "BillingMode": "PAY_PER_REQUEST",
+        "TableClass": "STANDARD",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "SSESpecification": {
+          "SSEEnabled": true
+        },
+        "DeletionProtectionEnabled": true,
+        "OnDemandThroughput": {
+          "MaxReadRequestUnits": 10,
+          "MaxWriteRequestUnits": 5
+        },
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": false
+        },
+        "TimeToLiveSpecification": {
+          "AttributeName": "ttl",
+          "Enabled": true
+        },
+        "Tags": [
+          {
+            "Key": "Project",
+            "Value": "Flo"
+          },
+          {
+            "Key": "Purpose",
+            "Value": "PendingFictionalPairingRequests"
+          },
+          {
+            "Key": "DataClassification",
+            "Value": "FictionalStagingEnrollment"
+          }
+        ]
+      }
+    },
+    "EnrollmentApprovals": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "BillingMode": "PAY_PER_REQUEST",
+        "TableClass": "STANDARD",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "SSESpecification": {
+          "SSEEnabled": true
+        },
+        "DeletionProtectionEnabled": true,
+        "OnDemandThroughput": {
+          "MaxReadRequestUnits": 10,
+          "MaxWriteRequestUnits": 5
+        },
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": false
+        },
+        "TimeToLiveSpecification": {
+          "AttributeName": "ttl",
+          "Enabled": true
+        },
+        "Tags": [
+          {
+            "Key": "Project",
+            "Value": "Flo"
+          },
+          {
+            "Key": "Purpose",
+            "Value": "ProtectedFictionalPairingApprovals"
+          },
+          {
+            "Key": "DataClassification",
+            "Value": "FictionalStagingEnrollment"
+          }
+        ]
+      }
+    },
+    "EnrollmentAudit": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "BillingMode": "PAY_PER_REQUEST",
+        "TableClass": "STANDARD",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "SSESpecification": {
+          "SSEEnabled": true
+        },
+        "DeletionProtectionEnabled": true,
+        "OnDemandThroughput": {
+          "MaxReadRequestUnits": 10,
+          "MaxWriteRequestUnits": 5
+        },
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true,
+          "RecoveryPeriodInDays": 7
+        },
+        "Tags": [
+          {
+            "Key": "Project",
+            "Value": "Flo"
+          },
+          {
+            "Key": "Purpose",
+            "Value": "FictionalPairingAuditEvidence"
+          },
+          {
+            "Key": "DataClassification",
+            "Value": "FictionalStagingEnrollment"
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "EnrollmentRequestsName": {
+      "Description": "Generated EnrollmentRequests table name for a separately reviewed runtime deployment.",
+      "Value": {
+        "Ref": "EnrollmentRequests"
+      }
+    },
+    "EnrollmentRequestsArn": {
+      "Description": "Exact EnrollmentRequests ARN for a separately reviewed permission plan.",
+      "Value": {
+        "Fn::GetAtt": [
+          "EnrollmentRequests",
+          "Arn"
+        ]
+      }
+    },
+    "EnrollmentApprovalsName": {
+      "Description": "Generated EnrollmentApprovals table name for a separately reviewed runtime deployment.",
+      "Value": {
+        "Ref": "EnrollmentApprovals"
+      }
+    },
+    "EnrollmentApprovalsArn": {
+      "Description": "Exact EnrollmentApprovals ARN for a separately reviewed permission plan.",
+      "Value": {
+        "Fn::GetAtt": [
+          "EnrollmentApprovals",
+          "Arn"
+        ]
+      }
+    },
+    "EnrollmentAuditName": {
+      "Description": "Generated EnrollmentAudit table name for a separately reviewed runtime deployment.",
+      "Value": {
+        "Ref": "EnrollmentAudit"
+      }
+    },
+    "EnrollmentAuditArn": {
+      "Description": "Exact EnrollmentAudit ARN for a separately reviewed permission plan.",
+      "Value": {
+        "Fn::GetAtt": [
+          "EnrollmentAudit",
+          "Arn"
+        ]
+      }
+    }
+  }
+}

@@ -56,6 +56,7 @@ services:
     environment:
       SIMULATOR_HOST: 0.0.0.0
       MCP_URL: http://mcp:4100/mcp
+      FLO_DEMO_MODE: "true"
     ports: ["127.0.0.1:4200:4200"]
 
 networks:

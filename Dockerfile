@@ -12,6 +12,8 @@ COPY scripts ./scripts
 
 RUN pnpm install --frozen-lockfile
 RUN pnpm build
+RUN pnpm build:customer
+RUN pnpm build:enrollment
 
 FROM node:22-alpine AS runtime
 

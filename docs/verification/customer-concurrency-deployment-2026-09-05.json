@@ -1,0 +1,640 @@
+{
+  "stack": {
+    "StackStatus": "UPDATE_COMPLETE",
+    "LastUpdatedTime": "2026-09-06T01:50:53.002000+00:00",
+    "LastOperations": [
+      {
+        "OperationType": "UPDATE_STACK",
+        "OperationId": "adc1b482-b3d1-4786-b545-53a992054fd8"
+      }
+    ],
+    "Parameters": [
+      {
+        "ParameterKey": "ArtifactBucket",
+        "ParameterValue": "flo-customer-artifacts-artifacts-wiyewwqt3d1r"
+      },
+      {
+        "ParameterKey": "LwaSecretId",
+        "ParameterValue": ""
+      },
+      {
+        "ParameterKey": "ArtifactKey",
+        "ParameterValue": "flo-customer/744a3e67d9bc003479cbf95d015b6ac3d696cae7ae687e5b36a7514610a57cc3.zip"
+      },
+      {
+        "ParameterKey": "ArtifactVersion",
+        "ParameterValue": "3pbmv1gha2sCK7UPUi7bZ_1q8QjtPPTX"
+      },
+      {
+        "ParameterKey": "LwaClientId",
+        "ParameterValue": ""
+      },
+      {
+        "ParameterKey": "LwaEnabled",
+        "ParameterValue": "false"
+      }
+    ]
+  },
+  "execution": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {},
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "ExecuteChangeSet",
+        "status": "success"
+      }
+    ]
+  },
+  "controls": {
+    "concurrency": {
+      "ReservedConcurrentExecutions": 3
+    },
+    "function": {
+      "FunctionName": "flo-customer-staging-http",
+      "FunctionArn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-staging-http",
+      "Runtime": "nodejs22.x",
+      "Handler": "index.handler",
+      "CodeSha256": "dEo+Z9m8ADR5y/ldAVtqw9aWyueuaH5bNqdRRhClfMM=",
+      "CodeSize": 615803,
+      "MemorySize": 512,
+      "Timeout": 25,
+      "State": "Active",
+      "LastUpdateStatus": "Successful",
+      "LastModified": "2026-09-06T00:49:06.648+0000",
+      "Role": "arn:aws:iam::114599789754:role/flo-customer-staging-CustomerRole-F3EBVfIp3zcy"
+    },
+    "integration": {
+      "ConnectionType": "INTERNET",
+      "IntegrationId": "qfwnq4s",
+      "IntegrationMethod": "POST",
+      "IntegrationType": "AWS_PROXY",
+      "IntegrationUri": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-staging-http",
+      "PayloadFormatVersion": "2.0",
+      "TimeoutInMillis": 29000
+    },
+    "stage": {
+      "AccessLogSettings": {
+        "DestinationArn": "arn:aws:logs:us-west-2:114599789754:log-group:flo-customer-staging-AccessLogs-cLu3brPSgZes",
+        "Format": "{\"requestId\":\"$context.requestId\",\"status\":\"$context.status\",\"latency\":\"$context.responseLatency\"}"
+      },
+      "AutoDeploy": true,
+      "CreatedDate": "2026-09-06T00:48:30+00:00",
+      "DefaultRouteSettings": {
+        "DetailedMetricsEnabled": false,
+        "ThrottlingBurstLimit": 5,
+        "ThrottlingRateLimit": 2
+      },
+      "DeploymentId": "hzpk3h",
+      "LastDeploymentStatusMessage": "Successfully deployed stage with deployment ID 'hzpk3h'",
+      "LastUpdatedDate": "2026-09-06T00:49:17+00:00",
+      "RouteSettings": {},
+      "StageName": "$default",
+      "StageVariables": {},
+      "Tags": {
+        "aws:cloudformation:stack-id": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+        "aws:cloudformation:stack-name": "flo-customer-staging",
+        "aws:cloudformation:logical-id": "CustomerStage"
+      }
+    },
+    "events": {
+      "OperationEvents": [
+        {
+          "EventId": "d08f6be4-c508-44de-b607-6fbda7e4f736",
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "OperationId": "adc1b482-b3d1-4786-b545-53a992054fd8",
+          "OperationType": "UPDATE_STACK",
+          "OperationStatus": "SUCCEEDED",
+          "EventType": "STACK_EVENT",
+          "Timestamp": "2026-09-06T01:51:00.545000+00:00",
+          "StartTime": "2026-09-06T01:50:52.993000+00:00",
+          "EndTime": "2026-09-06T01:51:00.545000+00:00"
+        },
+        {
+          "EventId": "8e0aba8a-f14b-47f8-97f3-595abbcc1b4d",
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "OperationId": "adc1b482-b3d1-4786-b545-53a992054fd8",
+          "EventType": "PROGRESS",
+          "LogicalResourceId": "flo-customer-staging",
+          "PhysicalResourceId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "ResourceType": "AWS::CloudFormation::Stack",
+          "Timestamp": "2026-09-06T01:51:00.544000+00:00",
+          "ResourceStatus": "UPDATE_COMPLETE",
+          "ClientRequestToken": "flo-customer-concurrency-owner-approved-20260906"
+        },
+        {
+          "EventId": "ae13049f-66e4-445d-b122-e7dbb274f53a",
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "OperationId": "adc1b482-b3d1-4786-b545-53a992054fd8",
+          "EventType": "PROGRESS",
+          "LogicalResourceId": "flo-customer-staging",
+          "PhysicalResourceId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "ResourceType": "AWS::CloudFormation::Stack",
+          "Timestamp": "2026-09-06T01:50:59.854000+00:00",
+          "ResourceStatus": "UPDATE_COMPLETE_CLEANUP_IN_PROGRESS",
+          "ClientRequestToken": "flo-customer-concurrency-owner-approved-20260906"
+        },
+        {
+          "EventId": "0065a088-da5d-4e0c-8e0a-8335a6c27588",
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "OperationId": "adc1b482-b3d1-4786-b545-53a992054fd8",
+          "EventType": "PROGRESS",
+          "LogicalResourceId": "CustomerFunction",
+          "PhysicalResourceId": "flo-customer-staging-http",
+          "ResourceType": "AWS::Lambda::Function",
+          "Timestamp": "2026-09-06T01:50:58.243000+00:00",
+          "ResourceStatus": "UPDATE_COMPLETE",
+          "ClientRequestToken": "flo-customer-concurrency-owner-approved-20260906"
+        },
+        {
+          "EventId": "db1017ba-dc91-4474-b898-45f4ff901c83",
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "OperationId": "adc1b482-b3d1-4786-b545-53a992054fd8",
+          "EventType": "PROGRESS",
+          "LogicalResourceId": "CustomerFunction",
+          "PhysicalResourceId": "flo-customer-staging-http",
+          "ResourceType": "AWS::Lambda::Function",
+          "Timestamp": "2026-09-06T01:50:56.464000+00:00",
+          "ResourceStatus": "UPDATE_IN_PROGRESS",
+          "ClientRequestToken": "flo-customer-concurrency-owner-approved-20260906"
+        },
+        {
+          "EventId": "28375f66-66f6-49ef-83f4-e089b428d171",
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "OperationId": "adc1b482-b3d1-4786-b545-53a992054fd8",
+          "EventType": "PROGRESS",
+          "LogicalResourceId": "flo-customer-staging",
+          "PhysicalResourceId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "ResourceType": "AWS::CloudFormation::Stack",
+          "Timestamp": "2026-09-06T01:50:53.002000+00:00",
+          "ResourceStatus": "UPDATE_IN_PROGRESS",
+          "ResourceStatusReason": "User Initiated",
+          "ClientRequestToken": "flo-customer-concurrency-owner-approved-20260906"
+        },
+        {
+          "EventId": "35da1390-3cfc-4c3e-bfe1-33bf056aef82",
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "OperationId": "adc1b482-b3d1-4786-b545-53a992054fd8",
+          "OperationType": "UPDATE_STACK",
+          "OperationStatus": "IN_PROGRESS",
+          "EventType": "STACK_EVENT",
+          "Timestamp": "2026-09-06T01:50:52.993000+00:00",
+          "StartTime": "2026-09-06T01:50:52.993000+00:00"
+        }
+      ]
+    },
+    "account": {
+      "AccountLimit": {
+        "TotalCodeSize": 322122547200,
+        "CodeSizeUnzipped": 262144000,
+        "CodeSizeZipped": 52428800,
+        "ConcurrentExecutions": 1000,
+        "UnreservedConcurrentExecutions": 995
+      },
+      "AccountUsage": {
+        "TotalCodeSize": 617464,
+        "FunctionCount": 2
+      }
+    }
+  },
+  "parallel": {
+    "startedAt": "2026-09-06T01:52:15.525Z",
+    "endedAt": "2026-09-06T01:52:16.739Z",
+    "results": [
+      {
+        "path": "/",
+        "status": 200,
+        "bytes": 2046,
+        "sha256": "62b65ca8f3a90e92892fc60cae6d5cc90168a457179186c1cbd0307dc2372433",
+        "requestId": "DQQUnh1NPHcEPUA=",
+        "checks": {
+          "status": true,
+          "byteHash": true,
+          "noStore": true,
+          "noCookies": true,
+          "noRedirect": true
+        }
+      },
+      {
+        "path": "/signin.css",
+        "status": 200,
+        "bytes": 1662,
+        "sha256": "a6abcf1047aff331e2b47d5e8d7321d88ddc151a2505b71a60d43d08e8f75ac2",
+        "requestId": "DQQUnhbHPHcEPTA=",
+        "checks": {
+          "status": true,
+          "byteHash": true,
+          "noStore": true,
+          "noCookies": true,
+          "noRedirect": true
+        }
+      },
+      {
+        "path": "/signin.js",
+        "status": 200,
+        "bytes": 3763,
+        "sha256": "f6bcd232457bd11f67117ba8ef82e562a31ec0659df26ef01e925fa56e442e21",
+        "requestId": "DQQUnhXzvHcEP7g=",
+        "checks": {
+          "status": true,
+          "byteHash": true,
+          "noStore": true,
+          "noCookies": true,
+          "noRedirect": true
+        }
+      }
+    ]
+  },
+  "serial": {
+    "exitCode": 0,
+    "checks": [
+      {
+        "method": "GET",
+        "path": "/",
+        "status": 200,
+        "bytes": 2046,
+        "sha256": "62b65ca8f3a90e92892fc60cae6d5cc90168a457179186c1cbd0307dc2372433",
+        "requestId": "DQQV6jUdPHcEPrw=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      },
+      {
+        "method": "GET",
+        "path": "/privacy",
+        "status": 200,
+        "bytes": 3577,
+        "sha256": "3d491f9fd3200bc13957a7df5fead09f95ee6cef6a965fe47fa143c539c97d90",
+        "requestId": "DQQWGj0xvHcEPmQ=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      },
+      {
+        "method": "GET",
+        "path": "/terms",
+        "status": 200,
+        "bytes": 1562,
+        "sha256": "c94adc6f7c2379ff52c580157ef26f99de59f5fef96c305a2b2519435b53f9e3",
+        "requestId": "DQQWShRAvHcEPRA=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      },
+      {
+        "method": "GET",
+        "path": "/signin.js",
+        "status": 200,
+        "bytes": 3763,
+        "sha256": "f6bcd232457bd11f67117ba8ef82e562a31ec0659df26ef01e925fa56e442e21",
+        "requestId": "DQQWeh5lPHcEPXw=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      },
+      {
+        "method": "GET",
+        "path": "/signin.css",
+        "status": 200,
+        "bytes": 1662,
+        "sha256": "a6abcf1047aff331e2b47d5e8d7321d88ddc151a2505b71a60d43d08e8f75ac2",
+        "requestId": "DQQWqjmgvHcEPdQ=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/session",
+        "status": 503,
+        "bytes": 108,
+        "sha256": "74c5ba3a2bec9833c555fd7e0eeaaa1b7aae933b49a56dc7c584bce5b2ad691a",
+        "requestId": "DQQW2gFhPHcEPVQ=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/session",
+        "status": 503,
+        "bytes": 108,
+        "sha256": "74c5ba3a2bec9833c555fd7e0eeaaa1b7aae933b49a56dc7c584bce5b2ad691a",
+        "requestId": "DQQXCj_tPHcEP1A=",
+        "securityHeaders": "pass",
+        "variant": "synthetic-header"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/lwa/callback?state=synthetic&code=synthetic",
+        "status": 503,
+        "bytes": 108,
+        "sha256": "74c5ba3a2bec9833c555fd7e0eeaaa1b7aae933b49a56dc7c584bce5b2ad691a",
+        "requestId": "DQQXOjm-PHcEPrw=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/lwa/start",
+        "status": 403,
+        "bytes": 42,
+        "sha256": "c4092a14132ed268fa7d59bde2aa92ba3fd4f52d1e6f1ec6f7287f1027809c82",
+        "requestId": "DQQXaidDPHcEPUA=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/logout",
+        "status": 403,
+        "bytes": 42,
+        "sha256": "c4092a14132ed268fa7d59bde2aa92ba3fd4f52d1e6f1ec6f7287f1027809c82",
+        "requestId": "DQQXmiJzvHcEPXw=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      },
+      {
+        "method": "POST",
+        "path": "/api/customer/command",
+        "status": 403,
+        "bytes": 42,
+        "sha256": "c4092a14132ed268fa7d59bde2aa92ba3fd4f52d1e6f1ec6f7287f1027809c82",
+        "requestId": "DQQXxj04PHcEPNw=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      },
+      {
+        "method": "POST",
+        "path": "/api/customer/command",
+        "status": 403,
+        "bytes": 42,
+        "sha256": "c4092a14132ed268fa7d59bde2aa92ba3fd4f52d1e6f1ec6f7287f1027809c82",
+        "requestId": "DQQX9gNJvHcEP1A=",
+        "securityHeaders": "pass",
+        "variant": "synthetic-header"
+      },
+      {
+        "method": "POST",
+        "path": "/website/mcp",
+        "status": 403,
+        "bytes": 42,
+        "sha256": "c4092a14132ed268fa7d59bde2aa92ba3fd4f52d1e6f1ec6f7287f1027809c82",
+        "requestId": "DQQYJi54PHcEPcA=",
+        "securityHeaders": "pass",
+        "variant": "synthetic-header"
+      },
+      {
+        "method": "GET",
+        "path": "/alexa/mcp",
+        "status": 401,
+        "bytes": 121,
+        "sha256": "77ae5b0104f3f6dc9eeabe38c068c6c3846bc3d8586df880717364ea6409c653",
+        "requestId": "DQQYVgo9PHcEPJQ=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      },
+      {
+        "method": "GET",
+        "path": "/customer/mcp",
+        "status": 401,
+        "bytes": 121,
+        "sha256": "77ae5b0104f3f6dc9eeabe38c068c6c3846bc3d8586df880717364ea6409c653",
+        "requestId": "DQQYhgVBvHcEP1A=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      },
+      {
+        "method": "GET",
+        "path": "/mcp",
+        "status": 401,
+        "bytes": 121,
+        "sha256": "77ae5b0104f3f6dc9eeabe38c068c6c3846bc3d8586df880717364ea6409c653",
+        "requestId": "DQQYti9APHcEP3A=",
+        "securityHeaders": "pass",
+        "variant": "ordinary"
+      }
+    ]
+  },
+  "observations": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "access": {
+        "eventCount": 22,
+        "matched": [
+          {
+            "requestId": "DQQUnhbHPHcEPTA=",
+            "status": "200",
+            "latency": "935",
+            "timestamp": 1788659536249
+          },
+          {
+            "requestId": "DQQUnh1NPHcEPUA=",
+            "status": "200",
+            "latency": "872",
+            "timestamp": 1788659536255
+          },
+          {
+            "requestId": "DQQUnhXzvHcEP7g=",
+            "status": "200",
+            "latency": "841",
+            "timestamp": 1788659536256
+          },
+          {
+            "requestId": "DQQV6jUdPHcEPrw=",
+            "status": "200",
+            "latency": "37",
+            "timestamp": 1788659544577
+          },
+          {
+            "requestId": "DQQWGj0xvHcEPmQ=",
+            "status": "200",
+            "latency": "21",
+            "timestamp": 1788659545778
+          },
+          {
+            "requestId": "DQQWShRAvHcEPRA=",
+            "status": "200",
+            "latency": "40",
+            "timestamp": 1788659546951
+          },
+          {
+            "requestId": "DQQWeh5lPHcEPXw=",
+            "status": "200",
+            "latency": "14",
+            "timestamp": 1788659548143
+          },
+          {
+            "requestId": "DQQWqjmgvHcEPdQ=",
+            "status": "200",
+            "latency": "20",
+            "timestamp": 1788659549337
+          },
+          {
+            "requestId": "DQQW2gFhPHcEPVQ=",
+            "status": "503",
+            "latency": "19",
+            "timestamp": 1788659550577
+          },
+          {
+            "requestId": "DQQXCj_tPHcEP1A=",
+            "status": "503",
+            "latency": "18",
+            "timestamp": 1788659551783
+          },
+          {
+            "requestId": "DQQXOjm-PHcEPrw=",
+            "status": "503",
+            "latency": "18",
+            "timestamp": 1788659552952
+          },
+          {
+            "requestId": "DQQXaidDPHcEPUA=",
+            "status": "403",
+            "latency": "20",
+            "timestamp": 1788659554129
+          },
+          {
+            "requestId": "DQQXmiJzvHcEPXw=",
+            "status": "403",
+            "latency": "17",
+            "timestamp": 1788659555307
+          },
+          {
+            "requestId": "DQQXxj04PHcEPNw=",
+            "status": "403",
+            "latency": "35",
+            "timestamp": 1788659556490
+          },
+          {
+            "requestId": "DQQX9gNJvHcEP1A=",
+            "status": "403",
+            "latency": "19",
+            "timestamp": 1788659557693
+          },
+          {
+            "requestId": "DQQYJi54PHcEPcA=",
+            "status": "403",
+            "latency": "22",
+            "timestamp": 1788659558875
+          },
+          {
+            "requestId": "DQQYVgo9PHcEPJQ=",
+            "status": "401",
+            "latency": "22",
+            "timestamp": 1788659560062
+          },
+          {
+            "requestId": "DQQYhgVBvHcEP1A=",
+            "status": "401",
+            "latency": "15",
+            "timestamp": 1788659561259
+          },
+          {
+            "requestId": "DQQYti9APHcEP3A=",
+            "status": "401",
+            "latency": "17",
+            "timestamp": 1788659562431
+          }
+        ],
+        "missing": [],
+        "otherStatusCounts": {
+          "200": 1,
+          "503": 2
+        },
+        "fields": [
+          "latency",
+          "requestId",
+          "status",
+          "timestamp"
+        ]
+      },
+      "functionLogs": {
+        "eventCount": 75,
+        "reportCount": 24,
+        "errorMarkerCount": 0
+      },
+      "Throttles": {
+        "Label": "Throttles",
+        "Datapoints": [
+          {
+            "Timestamp": "2026-09-06T01:52:00+00:00",
+            "Sum": 0,
+            "Unit": "Count"
+          }
+        ]
+      },
+      "Errors": {
+        "Label": "Errors",
+        "Datapoints": [
+          {
+            "Timestamp": "2026-09-06T01:52:00+00:00",
+            "Sum": 0,
+            "Unit": "Count"
+          }
+        ]
+      },
+      "ConcurrentExecutions": {
+        "Label": "ConcurrentExecutions",
+        "Datapoints": [
+          {
+            "Timestamp": "2026-09-06T01:52:00+00:00",
+            "Maximum": 3,
+            "Unit": "Count"
+          }
+        ]
+      },
+      "window": {
+        "start": "2026-09-06T01:52:00+00:00",
+        "end": "2026-09-06T01:53:46.341071+00:00"
+      }
+    },
+    "api_calls": [
+      {
+        "service": "logs",
+        "operation": "FilterLogEvents",
+        "status": "success",
+        "n_items": {
+          "events": 22,
+          "searchedLogStreams": 0
+        }
+      },
+      {
+        "service": "logs",
+        "operation": "FilterLogEvents",
+        "status": "success",
+        "n_items": {
+          "events": 75,
+          "searchedLogStreams": 0
+        }
+      },
+      {
+        "service": "cloudwatch",
+        "operation": "GetMetricStatistics",
+        "status": "success",
+        "n_items": {
+          "Datapoints": 1
+        }
+      },
+      {
+        "service": "cloudwatch",
+        "operation": "GetMetricStatistics",
+        "status": "success",
+        "n_items": {
+          "Datapoints": 1
+        }
+      },
+      {
+        "service": "cloudwatch",
+        "operation": "GetMetricStatistics",
+        "status": "success",
+        "n_items": {
+          "Datapoints": 1
+        }
+      }
+    ]
+  },
+  "templateMatchesReviewedCandidate": true,
+  "browser": {
+    "firstLoad": "Login with Amazon is not configured. No customer access is enabled.",
+    "reload": "same expected state",
+    "loginButton": "disabled",
+    "officialLoginTested": false
+  }
+}

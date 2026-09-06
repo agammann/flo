@@ -4,11 +4,11 @@ Flo has one intentionally narrow live AWS integration and a larger future deploy
 
 ## Verified live integration
 
-On September 4, 2026, the CloudFormation stack `flo-bedrock-narrator` reached `CREATE_COMPLETE` in `us-west-2`. Its Node.js Lambda function invokes Amazon Bedrock through the Converse API with `amazon.nova-lite-v1:0`. A live request returned a contract-valid qualitative narration lead; a request with the wrong build header returned HTTP 403.
+The September 4, 2026 [deployment verification](../verification/aws-protection-2026-09-04.md) records `flo-bedrock-narrator` reaching `UPDATE_COMPLETE` in `us-west-2`. Its Node.js Lambda function invokes Amazon Bedrock through Converse with `amazon.nova-lite-v1:0`. Tests recorded successful signed narration and rejected unsigned and invalid signed requests. This is dated evidence, not a fresh account audit.
 
 The simulator sends only the task label, option count, and sanitized quality tier. It does not send customer, vehicle, work-order, price, supplier, part-number, or free-form technician data. Bedrock does not rank or choose parts and does not calculate or mutate any business state. Both Lambda and the simulator enforce an 8–160 character, at-most-16-word response containing no digits, price marker, line breaks, or common Markdown delimiters. The simulator records the call as `AWS · amazon_bedrock_narration` and falls back to deterministic narration on failure. Lambda platform and redacted error logs flow to CloudWatch Logs through the basic execution role; the deployment guide sets a seven-day retention policy.
 
-The function role grants `bedrock:InvokeModel` only for the configured foundation-model ARN. The current Lambda Function URL deliberately uses `AuthType: NONE` solely so the local hackathon simulator can demonstrate the live integration without distributing AWS credentials. Its fixed build header is not authentication, and the endpoint URL is not committed. A shared or production deployment must use `AWS_IAM` with a SigV4-signed server-side caller or an authenticated, rate-limited gateway.
+The function role restricts model invocation to the configured ARN. The deployed API Gateway route uses `AWS_IAM`; the former public Function URL/build-marker approach is obsolete. Server-side callers sign with authorized AWS credentials. A retained DynamoDB allowance is atomically reserved before each model attempt and fails closed if missing or exhausted. The recorded initialization allowed 100 attempts and verification left 99 at that time; this is not a current balance. Seven-day log retention and best-effort throttling complement this limit, not an account-wide dollar cap. The customer preview makes no AWS calls.
 
 ## Future deployment target
 
@@ -23,7 +23,7 @@ The function role grants `bedrock:InvokeModel` only for the configured foundatio
 | CloudWatch | Structured tool latency, result status, work-order reference, approval transitions, and transaction metrics |
 | Secrets Manager | Provider credentials and signing material |
 
-The current in-memory stores satisfy interfaces that can later be implemented with DynamoDB and AgentCore Memory. The HTTP adapters remain unchanged when mock services are replaced by authenticated provider endpoints. AgentCore, DynamoDB, and Secrets Manager are not active in the current demo.
+The current in-memory business stores can later use DynamoDB and AgentCore Memory. DynamoDB is already used only for the narrator allowance; AgentCore and Secrets Manager are not deployed in the recorded implementation. The HTTP adapters provide a replacement boundary for authenticated providers. Alexa+ customer OAuth/account linking is separate from AWS SigV4 caller authentication.
 
 ## Deployment gates
 

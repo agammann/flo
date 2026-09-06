@@ -1,0 +1,53 @@
+{
+  "approvedOn": "2026-09-05",
+  "reviewBy": "2026-10-05",
+  "scope": "Isolated Flo customer staging only; policy treatment, not deployment approval",
+  "exceptions": [
+    {
+      "rule": "CLOUDWATCH_LOG_GROUP_ENCRYPTED",
+      "resources": ["FunctionLogs", "AccessLogs"],
+      "reason": "Use CloudWatch Logs default at-rest encryption instead of additional customer-managed KMS keys. Keep seven-day retention and minimal operational fields; do not log OAuth tokens, cookies, credentials or repair payloads. This exception concerns key management, not permission to store plaintext logs."
+    },
+    {
+      "rule": "DYNAMODB_TABLE_ENCRYPTED_KMS",
+      "resources": ["AuthState", "CustomerLinks", "CustomerRepairs"],
+      "reason": "Keep SSEEnabled true with AWS-managed key management instead of customer-managed keys. Authentication values additionally require application-level AES-256-GCM encryption. This exception does not waive encryption or customer ownership checks."
+    },
+    {
+      "rule": "DYNAMODB_PITR_ENABLED",
+      "resources": ["AuthState"],
+      "reason": "Do not back up or restore login/session state: a restore can resurrect consumed login state or undo logout. Recover with a new empty auth table and new encryption key, requiring fresh sign-in. CustomerLinks and CustomerRepairs retain seven-day PITR and require revocation/ownership/deletion reconciliation before restored data can serve traffic."
+    },
+    {
+      "rule": "LAMBDA_DLQ_CHECK",
+      "resources": ["CustomerFunction"],
+      "reason": "Synchronous API Gateway HTTP workflow with no asynchronous event sources; errors return to the caller. Re-review before introducing asynchronous invocation."
+    },
+    {
+      "rule": "LAMBDA_INSIDE_VPC",
+      "resources": ["CustomerFunction"],
+      "reason": "No private-network dependencies in this isolated staging flow. Use TLS for AWS and Amazon endpoints. Public landing/login routes do not authorize customer data: data routes require a valid opaque session and a trusted Amazon-identity-to-customer mapping. Re-review for private integrations or production network requirements."
+    }
+  ],
+  "requiredControls": [
+    "LwaEnabled=false until real profile and hosted-flow verification",
+    "No public enrollment or customer-link-writing endpoint",
+    "Runtime read-only access to trusted customer links and repair projections",
+    "Strongly consistent authorization reads and conditional auth-state writes",
+    "Session expiry, provider revalidation and logout enforcement",
+    "AWS/service credentials never authorize customer data",
+    "Seven-day minimal operational logs",
+    "AWS-managed/default at-rest encryption and application-encrypted authentication values",
+    "No authentication-state backup or restore",
+    "Seven-day customer-link and repair PITR with restore reconciliation",
+    "Positive fixed reserved concurrency and bounded API/database throughput",
+    "No asynchronous event sources or public Lambda Function URL",
+    "Raw Guard findings remain visible; no suppression metadata"
+  ],
+  "reviewTriggers": [
+    "Before production or real customer repair data",
+    "Change to identity, storage, logging, backup, invocation or network assumptions",
+    "Any new Guard failure or affected resource outside the listed scope",
+    "On or before reviewBy"
+  ]
+}

@@ -127,14 +127,15 @@ export const createFloMcpServer = (orchestrator: FloOrchestrator, actor: Actor, 
 
   server.registerTool("compare_parts", {
     title: "Compare compatible supplier parts",
-    description: "Run compatibility, inventory, supplier search, and deterministic ranking. Can exclude the cheapest option when balancing warranty and margin.",
-    inputSchema: optionalWorkOrder.extend({ category: z.string().min(1), maximumLandedCostCents: z.number().int().nonnegative().optional(), latestDeliveryDate: z.iso.date().optional(), excludeCheapest: z.boolean().optional() }), outputSchema: toolOutputSchemas.partsComparison, annotations: { ...readOnly, openWorldHint: true }
+    description: "Run compatibility, inventory and supplier search. Default balanced ranking weighs warranty, reliability, price and quality. gross_part_margin sorts by gross part profit in cents, not percentage. Clarify which margin measure the user means. Can exclude the cheapest option.",
+    inputSchema: optionalWorkOrder.extend({ category: z.string().min(1), maximumLandedCostCents: z.number().int().nonnegative().optional(), latestDeliveryDate: z.iso.date().optional(), excludeCheapest: z.boolean().optional(), ranking: z.enum(["balanced", "gross_part_margin"]).optional() }), outputSchema: toolOutputSchemas.partsComparison, annotations: { ...readOnly, openWorldHint: true }
   }, (input) => execute("compare_parts", actor, () => orchestrator.compareParts(actor, {
     category: input.category,
     ...(input.workOrderIdOrNumber === undefined ? {} : { workOrderIdOrNumber: input.workOrderIdOrNumber }),
     ...(input.maximumLandedCostCents === undefined ? {} : { maximumLandedCostCents: input.maximumLandedCostCents }),
     ...(input.latestDeliveryDate === undefined ? {} : { latestDeliveryDate: input.latestDeliveryDate }),
-    ...(input.excludeCheapest === undefined ? {} : { excludeCheapest: input.excludeCheapest })
+    ...(input.excludeCheapest === undefined ? {} : { excludeCheapest: input.excludeCheapest }),
+    ...(input.ranking === undefined ? {} : { ranking: input.ranking })
   })));
 
   server.registerTool("calculate_estimate", {

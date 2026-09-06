@@ -2,9 +2,19 @@
 
 Audit date: 2026-09-04
 
-This checklist uses the current Devpost requirements as the source of truth and separates repository evidence from external release evidence.
+## Current release checkpoint — September 5, 2026 (Pacific)
+
+The dated sections below are historical. Current read-only checks found the customer and narrator stacks `UPDATE_COMPLETE`, the artifact stack `CREATE_COMPLETE`, and only the two existing Lambda functions in us-west-2. The hosted customer website passed all 16 pre-login asset/security/denial checks again. Real sign-in/sign-out was previously reported by the owner; this repeat did not authenticate a real person or establish a customer mapping.
+
+The Devpost connection currently returns project `1416486` as `Untitled`, empty description, no video URL and `submitted_at: null`. Do not confuse this with a completed submission. Its live event requirements permit a simulated Alexa+ web experience, require public source and a public English demo under three minutes, and require developer-tool feedback. The original video needs replacement and separate publication review. User-only eligibility declarations and final submission confirmation are still required.
+
+The latest local application suite is 151 tests (Windows: 148 pass/3 platform skips; Linux: 150 pass/1 platform skip), with build, typecheck, lint, isolated bundle smoke and Docker Compose database contracts passing. Private enrollment runtime/IAM deployment and hosted customer-pairing tests are incomplete. The [fresh retention template validation](../verification/enrollment-retention-validation-2026-09-05.json) found no schema findings and two unchanged Guard policy failures requiring scoped treatment; no deployment was performed. A later source push or green CI does not prove those external gates complete.
+
+This checklist records dated hackathon evidence, not current certification readiness. Both Devpost requirements and Alexa+ certification requirements apply to the intended release; see the [September 5 certification tracker](../alexa-plus-certification-plan.md). The new local vehicle-owner preview is read-only, not published or certified. The original exclusively internal shop workflow is not by itself consumer-eligible. Reconcile the video with the corrected gross-profit ranking before final publication. Earlier counts, CI links and external statuses below are historical observations, not verification of today's uncommitted changes.
 
 ## Primary track: Alexa+
+
+September 5 local identity increment: a separate Login with Amazon website and trusted customer-link adapter are implemented with simulated-provider tests, including in-flight logout and reassignment protection. The full local suite now passes 62 tests. The signed-in LWA console still showed no setup; no live profile/callback or official Alexa linking was configured. See [the dated sign-in evidence](../verification/customer-signin-2026-09-05.md). This does not update the historical CI/cloud/video evidence below.
 
 | Requirement | Evidence | Status |
 | --- | --- | --- |

@@ -1,0 +1,783 @@
+{
+  "status": "READ_ONLY_PREPARATION_NO_DEPLOYMENT",
+  "checkedAt": "2026-09-06T05:05:06.719051+00:00",
+  "checks": {
+    "identity": {
+      "UserId": "114599789754",
+      "Account": "114599789754",
+      "Arn": "arn:aws:iam::114599789754:root"
+    },
+    "stack": {
+      "Stacks": [
+        {
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+          "StackName": "flo-customer-staging",
+          "ChangeSetId": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-customer-unlinked-ui-20260906T025712Z/5f4ed808-beb9-4736-af7e-86be1a0a2dfe",
+          "Description": "Flo isolated read-only customer staging. Review costs and change set before execution.",
+          "Parameters": [
+            {
+              "ParameterKey": "ArtifactBucket",
+              "ParameterValue": "flo-customer-artifacts-artifacts-wiyewwqt3d1r"
+            },
+            {
+              "ParameterKey": "LwaSecretId",
+              "ParameterValue": "arn:aws:secretsmanager:us-west-2:114599789754:secret:flo/customer-staging/lwa-hwN6ke"
+            },
+            {
+              "ParameterKey": "ArtifactKey",
+              "ParameterValue": "flo-customer/19ad27d5138d2b261d3329fb01ba37eb2e43e92fa92b296993364aba575ceac5.zip"
+            },
+            {
+              "ParameterKey": "ArtifactVersion",
+              "ParameterValue": "xKCi0sczMSbYU_8FlvNzzn988t9ZD21g"
+            },
+            {
+              "ParameterKey": "LwaClientId",
+              "ParameterValue": "LWA_CLIENT_ID_REDACTED_FROM_PUBLIC_EVIDENCE"
+            },
+            {
+              "ParameterKey": "LwaEnabled",
+              "ParameterValue": "true"
+            }
+          ],
+          "CreationTime": "2026-09-06T00:15:27.512000+00:00",
+          "LastUpdatedTime": "2026-09-06T03:00:49.569000+00:00",
+          "RollbackConfiguration": {},
+          "StackStatus": "UPDATE_COMPLETE",
+          "DisableRollback": false,
+          "DeploymentConfig": {
+            "Mode": "STANDARD",
+            "DisableRollback": false
+          },
+          "NotificationARNs": [],
+          "Capabilities": [
+            "CAPABILITY_IAM"
+          ],
+          "Outputs": [
+            {
+              "OutputKey": "WebsiteOrigin",
+              "OutputValue": "https://i4ceh4qpdg.execute-api.us-west-2.amazonaws.com",
+              "Description": "Verify landing/privacy pages before creating the LWA security profile."
+            },
+            {
+              "OutputKey": "LwaCallbackUrl",
+              "OutputValue": "https://i4ceh4qpdg.execute-api.us-west-2.amazonaws.com/auth/lwa/callback",
+              "Description": "Exact return URL; real Amazon sign-in remains separately gated."
+            },
+            {
+              "OutputKey": "PrivacyUrl",
+              "OutputValue": "https://i4ceh4qpdg.execute-api.us-west-2.amazonaws.com/privacy",
+              "Description": "Owner review and deployment verification are required before publication."
+            }
+          ],
+          "Tags": [],
+          "EnableTerminationProtection": false,
+          "DriftInformation": {
+            "StackDriftStatus": "NOT_CHECKED"
+          },
+          "LastOperations": [
+            {
+              "OperationType": "UPDATE_STACK",
+              "OperationId": "4742d786-3355-420e-9376-d194593d5415"
+            }
+          ]
+        }
+      ]
+    },
+    "resources": {
+      "StackResourceSummaries": [
+        {
+          "LogicalResourceId": "AccessLogs",
+          "PhysicalResourceId": "flo-customer-staging-AccessLogs-cLu3brPSgZes",
+          "ResourceType": "AWS::Logs::LogGroup",
+          "LastUpdatedTimestamp": "2026-09-06T00:48:29.426000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "AuthState",
+          "PhysicalResourceId": "flo-customer-staging-AuthState-17UXOCYCV0R2C",
+          "ResourceType": "AWS::DynamoDB::Table",
+          "LastUpdatedTimestamp": "2026-09-06T00:48:33.409000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "CustomerApi",
+          "PhysicalResourceId": "i4ceh4qpdg",
+          "ResourceType": "AWS::ApiGatewayV2::Api",
+          "LastUpdatedTimestamp": "2026-09-06T00:48:21.700000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "CustomerFunction",
+          "PhysicalResourceId": "flo-customer-staging-http",
+          "ResourceType": "AWS::Lambda::Function",
+          "LastUpdatedTimestamp": "2026-09-06T03:01:01.203000+00:00",
+          "ResourceStatus": "UPDATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "CustomerIntegration",
+          "PhysicalResourceId": "qfwnq4s",
+          "ResourceType": "AWS::ApiGatewayV2::Integration",
+          "LastUpdatedTimestamp": "2026-09-06T00:49:14.695000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "CustomerInvokePermission",
+          "PhysicalResourceId": "flo-customer-staging-CustomerInvokePermission-kXP5P9ZXMeor",
+          "ResourceType": "AWS::Lambda::Permission",
+          "LastUpdatedTimestamp": "2026-09-06T00:49:14.536000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "CustomerLinks",
+          "PhysicalResourceId": "flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+          "ResourceType": "AWS::DynamoDB::Table",
+          "LastUpdatedTimestamp": "2026-09-06T00:48:43.758000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "CustomerRepairs",
+          "PhysicalResourceId": "flo-customer-staging-CustomerRepairs-1TU01CXBBGKYE",
+          "ResourceType": "AWS::DynamoDB::Table",
+          "LastUpdatedTimestamp": "2026-09-06T00:48:33.818000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "CustomerRole",
+          "PhysicalResourceId": "flo-customer-staging-CustomerRole-F3EBVfIp3zcy",
+          "ResourceType": "AWS::IAM::Role",
+          "LastUpdatedTimestamp": "2026-09-06T00:48:36.966000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "CustomerRoute",
+          "PhysicalResourceId": "9v2n2sm",
+          "ResourceType": "AWS::ApiGatewayV2::Route",
+          "LastUpdatedTimestamp": "2026-09-06T00:49:16.368000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "CustomerRuntimePolicy",
+          "PhysicalResourceId": "arn:aws:iam::114599789754:policy/flo-customer-staging-CustomerRuntimePolicy-N49ZPkj65PYz",
+          "ResourceType": "AWS::IAM::ManagedPolicy",
+          "LastUpdatedTimestamp": "2026-09-06T00:49:02.672000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "CustomerStage",
+          "PhysicalResourceId": "$default",
+          "ResourceType": "AWS::ApiGatewayV2::Stage",
+          "LastUpdatedTimestamp": "2026-09-06T00:48:31.384000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "FunctionLogs",
+          "PhysicalResourceId": "/aws/lambda/flo-customer-staging-http",
+          "ResourceType": "AWS::Logs::LogGroup",
+          "LastUpdatedTimestamp": "2026-09-06T00:48:29.315000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "StateEncryptionKey",
+          "PhysicalResourceId": "arn:aws:secretsmanager:us-west-2:114599789754:secret:StateEncryptionKey-mGZvNejXxrn2-nqgYZa",
+          "ResourceType": "AWS::SecretsManager::Secret",
+          "LastUpdatedTimestamp": "2026-09-06T00:48:21.350000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ]
+    },
+    "operator": {
+      "User": {
+        "Path": "/flo/",
+        "UserName": "flo-staging-operator",
+        "UserId": "AIDARVLVOAS5N5MWSFYR5",
+        "Arn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+        "CreateDate": "2026-09-06T04:06:54+00:00",
+        "PasswordLastUsed": "2026-09-06T04:24:00+00:00",
+        "Tags": [
+          {
+            "Key": "Project",
+            "Value": "Flo"
+          },
+          {
+            "Key": "Purpose",
+            "Value": "FictionalStagingApproval"
+          },
+          {
+            "Key": "BootstrapState",
+            "Value": "AwaitingPrivatePasswordAndMFA"
+          }
+        ]
+      }
+    },
+    "operator_attached": {
+      "AttachedPolicies": []
+    },
+    "operator_inline": {
+      "PolicyNames": []
+    },
+    "operator_groups": {
+      "Groups": []
+    },
+    "operator_mfa": {
+      "MFADevices": [
+        {
+          "UserName": "flo-staging-operator",
+          "SerialNumber": "arn:aws:iam::114599789754:mfa/pixel",
+          "EnableDate": "2026-09-06T04:15:36+00:00"
+        }
+      ]
+    },
+    "lambda_quota": {
+      "AccountLimit": {
+        "TotalCodeSize": 322122547200,
+        "CodeSizeUnzipped": 262144000,
+        "CodeSizeZipped": 52428800,
+        "ConcurrentExecutions": 1000,
+        "UnreservedConcurrentExecutions": 995
+      },
+      "AccountUsage": {
+        "TotalCodeSize": 617754,
+        "FunctionCount": 2
+      }
+    }
+  },
+  "apiCalls": [
+    {
+      "service": "sts",
+      "operation": "GetCallerIdentity",
+      "status": "success"
+    },
+    {
+      "service": "cloudformation",
+      "operation": "DescribeStacks",
+      "status": "success",
+      "n_items": {
+        "Stacks": 1
+      }
+    },
+    {
+      "service": "cloudformation",
+      "operation": "ListStackResources",
+      "status": "success",
+      "n_items": {
+        "StackResourceSummaries": 14
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "GetUser",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "ListAttachedUserPolicies",
+      "status": "success",
+      "n_items": {
+        "AttachedPolicies": 0
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "ListUserPolicies",
+      "status": "success",
+      "n_items": {
+        "PolicyNames": 0
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "ListGroupsForUser",
+      "status": "success",
+      "n_items": {
+        "Groups": 0
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "ListMFADevices",
+      "status": "success",
+      "n_items": {
+        "MFADevices": 1
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "GetAccountSettings",
+      "status": "success"
+    }
+  ],
+  "pricing": {
+    "region": "us-west-2",
+    "rows": [
+      {
+        "sku": "3UPHCSRYPYQNZZFB",
+        "family": "Provisioned IOPS",
+        "usageType": "USW2-IA-ReadCapacityUnit-Hrs",
+        "group": "DDB-ReadUnitsIA",
+        "description": "$0.0001600 per hour for units of IA read capacity in US West (Oregon)",
+        "unit": "ReadCapacityUnit-Hrs",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0001600000"
+        }
+      },
+      {
+        "sku": "3VHHM5XHVVVUCGAJ",
+        "family": "Amazon DynamoDB PayPerRequest Throughput",
+        "usageType": "USW2-ReplWriteRequestUnits",
+        "group": "DDB-ReplicatedWriteUnits",
+        "description": "$0.625 per million replicated write request units (Oregon)",
+        "unit": "ReplicatedWriteRequestUnits",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0000006250"
+        }
+      },
+      {
+        "sku": "4FHMADHT95PDVFGQ",
+        "family": null,
+        "usageType": "USW2-ChangeDataCaptureUnits-Kinesis",
+        "group": "DDB-Kinesis",
+        "description": "$0.10000 per million change data capture units for Kinesis Data Streams in US West (Oregon)",
+        "unit": "ChangeDataCaptureUnits",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0000001000"
+        }
+      },
+      {
+        "sku": "4G4G98VBTENWGY5R",
+        "family": "Amazon DynamoDB PayPerRequest Throughput",
+        "usageType": "USW2-WriteRequestUnits",
+        "group": "DDB-WriteUnits",
+        "description": "$0.625 per million write request units (Oregon)",
+        "unit": "WriteRequestUnits",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0000006250"
+        }
+      },
+      {
+        "sku": "75AU3C9PDZSEBJ7B",
+        "family": "Amazon DynamoDB PayPerRequest Throughput",
+        "usageType": "USW2-IA-ReadRequestUnits",
+        "group": "DDB-ReadUnitsIA",
+        "description": "$0.155 per million IA read request units in US West (Oregon)",
+        "unit": "ReadRequestUnits",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0000001550"
+        }
+      },
+      {
+        "sku": "9VVQSPQ8YDGDZS9D",
+        "family": "Amazon DynamoDB PayPerRequest Throughput",
+        "usageType": "USW2-IA-ReplWriteRequestUnits",
+        "group": "DDB-ReplicatedWriteUnitsIA",
+        "description": "$0.78 per million replicated IA write request units in US West (Oregon)",
+        "unit": "ReplicatedWriteRequestUnits",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0000007800"
+        }
+      },
+      {
+        "sku": "AB8443CJPJ6K7CNA",
+        "family": "Provisioned IOPS",
+        "usageType": "USW2-IA-WriteCapacityUnit-Hrs",
+        "group": "DDB-WriteUnitsIA",
+        "description": "$0.0008100 per hour for units of IA write capacity in US West (Oregon)",
+        "unit": "WriteCapacityUnit-Hrs",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0008100000"
+        }
+      },
+      {
+        "sku": "AU9AE8JMKEYP6Q3W",
+        "family": "DDB-Operation-ReplicatedWrite",
+        "usageType": "USW2-ReplWriteCapacityUnit-Hrs",
+        "group": "DDB-ReplicatedWriteUnits",
+        "description": "$0.00 per hour for 25 units of replicated write capacity for a month (free tier)",
+        "unit": "ReplicatedWriteCapacityUnit-Hrs",
+        "beginRange": "0",
+        "endRange": "18600",
+        "price": {
+          "USD": "0.0000000000"
+        }
+      },
+      {
+        "sku": "AU9AE8JMKEYP6Q3W",
+        "family": "DDB-Operation-ReplicatedWrite",
+        "usageType": "USW2-ReplWriteCapacityUnit-Hrs",
+        "group": "DDB-ReplicatedWriteUnits",
+        "description": "$0.00065 per hour for units of replicated write capacity beyond the free tier",
+        "unit": "ReplicatedWriteCapacityUnit-Hrs",
+        "beginRange": "18600",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0006500000"
+        }
+      },
+      {
+        "sku": "BSCZKG49S5D6TSA4",
+        "family": "Amazon DynamoDB PayPerRequest Throughput",
+        "usageType": "USW2-IA-VectorWriteRequest",
+        "group": "DDB-VectorWriteRequest-IA",
+        "description": "$0.65 per GB of IA vector write requests in US West (Oregon)",
+        "unit": "GB",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.6500000000"
+        }
+      },
+      {
+        "sku": "EJBJJKEKPGW7XH2H",
+        "family": null,
+        "usageType": "USW2-ChangeDataCaptureUnits-ElasticViews",
+        "group": "DDB-ElasticViews",
+        "description": "$0.10000 per million change data capture units for AWS Glue Elastic Views in US West (Oregon)",
+        "unit": "ChangeDataCaptureUnits",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0000001000"
+        }
+      },
+      {
+        "sku": "FKADSHRX49BYUMRC",
+        "family": "DDB-Operation-ReplicatedWrite",
+        "usageType": "USW2-IA-ReplWriteCapacityUnit-Hrs",
+        "group": "DDB-ReplicatedWriteUnitsIA",
+        "description": "$0.00081 per hour for units of IA replicated write capacity in US West (Oregon)",
+        "unit": "ReplicatedWriteCapacityUnit-Hrs",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0008100000"
+        }
+      },
+      {
+        "sku": "GTC4K5DV2VGGRJ8K",
+        "family": "Amazon DynamoDB On-Demand Backup Storage",
+        "usageType": "USW2-TimedBackupStorage-ByteHrs",
+        "group": null,
+        "description": "$0.10 per GB-Month of storage used for on-demand backup",
+        "unit": "GB-Month",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.1000000000"
+        }
+      },
+      {
+        "sku": "JHQJGS8K9HCUMYG2",
+        "family": "Amazon DynamoDB Export Data Size",
+        "usageType": "USW2-ExportDataSize-Bytes",
+        "group": null,
+        "description": "$0.10000 per GB of data exported in US West (Oregon)",
+        "unit": "GB",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.1000000000"
+        }
+      },
+      {
+        "sku": "K6UMRY3TVDVCBP56",
+        "family": "Amazon DynamoDB PayPerRequest Throughput",
+        "usageType": "USW2-ReadRequestUnits",
+        "group": "DDB-ReadUnits",
+        "description": "$0.125 per million read request units (Oregon)",
+        "unit": "ReadRequestUnits",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0000001250"
+        }
+      },
+      {
+        "sku": "P93X3G5BVPQ4SDHE",
+        "family": "Amazon DynamoDB Restore Data Size",
+        "usageType": "USW2-RestoreDataSize-Bytes",
+        "group": null,
+        "description": "$0.15 per GB of data restored",
+        "unit": "GB",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.1500000000"
+        }
+      },
+      {
+        "sku": "PPDKWPKVEXU6663K",
+        "family": "Amazon DynamoDB Import Data Size",
+        "usageType": "USW2-ImportDataSize-Bytes",
+        "group": null,
+        "description": "$0.1500 per GB for data import in US West (Oregon)",
+        "unit": "GB",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.1500000000"
+        }
+      },
+      {
+        "sku": "R5727KNRMRDP5YTZ",
+        "family": "Amazon DynamoDB PayPerRequest Throughput",
+        "usageType": "USW2-VectorWriteRequest",
+        "group": "DDB-VectorWriteRequest",
+        "description": "$0.52 per GB of vector write requests in US West (Oregon)",
+        "unit": "GB",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.5200000000"
+        }
+      },
+      {
+        "sku": "RAJR3PG5HAUVDC9E",
+        "family": "Amazon DynamoDB Export Data Size",
+        "usageType": "USW2-IncrementalExportDataSize-Bytes",
+        "group": null,
+        "description": "$0.1000 per GB of incremental data exported in US West (Oregon)",
+        "unit": "GB",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.1000000000"
+        }
+      },
+      {
+        "sku": "TF2793YJYNZQTHQX",
+        "family": "Database Storage",
+        "usageType": "USW2-IA-TimedStorage-ByteHrs",
+        "group": null,
+        "description": "$0.10000 per GB-Month of IA storage in US West (Oregon)",
+        "unit": "GB-Mo",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.1000000000"
+        }
+      },
+      {
+        "sku": "UKQHCFER4QFSMKMD",
+        "family": "Database Storage",
+        "usageType": "USW2-TimedPITRStorage-ByteHrs",
+        "group": null,
+        "description": "$0.20 per GB-Month of storage used for DynamoDB PITR backup",
+        "unit": "GB-Mo",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.2000000000"
+        }
+      },
+      {
+        "sku": "UNCJFSHZ2ZQGDPJV",
+        "family": "Database Storage",
+        "usageType": "USW2-TimedStorage-ByteHrs",
+        "group": null,
+        "description": "$0.00 per GB-Month of storage for first 25 free GB-Months",
+        "unit": "GB-Mo",
+        "beginRange": "0",
+        "endRange": "25",
+        "price": {
+          "USD": "0.0000000000"
+        }
+      },
+      {
+        "sku": "UNCJFSHZ2ZQGDPJV",
+        "family": "Database Storage",
+        "usageType": "USW2-TimedStorage-ByteHrs",
+        "group": null,
+        "description": "$0.25 per GB-Month of storage used beyond first 25 free GB-Months",
+        "unit": "GB-Mo",
+        "beginRange": "25",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.2500000000"
+        }
+      },
+      {
+        "sku": "UNYP9JHTNU39Q48W",
+        "family": "Amazon DynamoDB PayPerRequest Throughput",
+        "usageType": "USW2-IA-VectorSearch",
+        "group": "DDB-VectorSearch-IA",
+        "description": "$0.0025 per GB of IA vector data searched in US West (Oregon)",
+        "unit": "GB",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0025000000"
+        }
+      },
+      {
+        "sku": "W7QHZRBMSZ94SXJ5",
+        "family": "Provisioned IOPS",
+        "usageType": "USW2-ReadCapacityUnit-Hrs",
+        "group": "DDB-ReadUnits",
+        "description": "$0.00013 per hour for units of read capacity beyond the free tier",
+        "unit": "ReadCapacityUnit-Hrs",
+        "beginRange": "18600",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0001300000"
+        }
+      },
+      {
+        "sku": "W7QHZRBMSZ94SXJ5",
+        "family": "Provisioned IOPS",
+        "usageType": "USW2-ReadCapacityUnit-Hrs",
+        "group": "DDB-ReadUnits",
+        "description": "$0.00 per hour for 25 units of read capacity for a month (free tier)",
+        "unit": "ReadCapacityUnit-Hrs",
+        "beginRange": "0",
+        "endRange": "18600",
+        "price": {
+          "USD": "0.0000000000"
+        }
+      },
+      {
+        "sku": "XD2FN4QWFKZNBWCV",
+        "family": "Amazon DynamoDB PayPerRequest Throughput",
+        "usageType": "USW2-IA-WriteRequestUnits",
+        "group": "DDB-WriteUnitsIA",
+        "description": "$0.78 per million IA write request units in US West (Oregon)",
+        "unit": "WriteRequestUnits",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0000007800"
+        }
+      },
+      {
+        "sku": "YMQRM65S8TD2QXME",
+        "family": "API Request",
+        "usageType": "USW2-Streams-Requests",
+        "group": "DDB-StreamsReadRequests",
+        "description": "$0.00 for 2.5 million DynamoDB Streams read request units for a month (free tier) (US West (Oregon))",
+        "unit": "Requests",
+        "beginRange": "0",
+        "endRange": "2500000",
+        "price": {
+          "USD": "0.0000000000"
+        }
+      },
+      {
+        "sku": "YMQRM65S8TD2QXME",
+        "family": "API Request",
+        "usageType": "USW2-Streams-Requests",
+        "group": "DDB-StreamsReadRequests",
+        "description": "$0.0000002 per DynamoDB Streams read request unit beyond free tier (US West (Oregon))",
+        "unit": "Requests",
+        "beginRange": "2500000",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0000002000"
+        }
+      },
+      {
+        "sku": "YSHGCBPMUVPMDF79",
+        "family": "Provisioned IOPS",
+        "usageType": "USW2-WriteCapacityUnit-Hrs",
+        "group": "DDB-WriteUnits",
+        "description": "$0.00 per hour for 25 units of write capacity for a month (free tier)",
+        "unit": "WriteCapacityUnit-Hrs",
+        "beginRange": "0",
+        "endRange": "18600",
+        "price": {
+          "USD": "0.0000000000"
+        }
+      },
+      {
+        "sku": "YSHGCBPMUVPMDF79",
+        "family": "Provisioned IOPS",
+        "usageType": "USW2-WriteCapacityUnit-Hrs",
+        "group": "DDB-WriteUnits",
+        "description": "$0.00065 per hour for units of write capacity beyond the free tier",
+        "unit": "WriteCapacityUnit-Hrs",
+        "beginRange": "18600",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0006500000"
+        }
+      },
+      {
+        "sku": "ZAGHGPSVWC72GFEV",
+        "family": "Amazon DynamoDB PayPerRequest Throughput",
+        "usageType": "USW2-VectorSearch",
+        "group": "DDB-VectorSearch",
+        "description": "$0.002 per GB of vector data searched in US West (Oregon)",
+        "unit": "GB",
+        "beginRange": "0",
+        "endRange": "Inf",
+        "price": {
+          "USD": "0.0020000000"
+        }
+      }
+    ]
+  },
+  "pricingCalls": [
+    {
+      "service": "pricing",
+      "operation": "GetProducts",
+      "status": "success",
+      "n_items": {
+        "PriceList": 27
+      }
+    }
+  ]
+}

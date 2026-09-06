@@ -52,6 +52,17 @@ describe("transaction and reference safety failures", () => {
 
   after(async () => { await Promise.all(servers.map(close)); });
 
+  it("authorizes order status by the returned work order for both ID and idempotency key", async () => {
+    for (const workOrderId of ["wo-1842", "wo-1844"]) {
+      const placed = await adapters.supplier.placeOrder({ supplierId: "supplier-b", supplierSku: "PM-ALT-7842", quantity: 1, workOrderId, idempotencyKey: `isolation-${workOrderId}` });
+      for (const reference of [placed.order.id, placed.order.idempotencyKey]) {
+        if (workOrderId === "wo-1842") assert.equal((await orchestrator.getOrderStatus(demoActors.technician, reference)).id, placed.order.id);
+        else await assert.rejects(orchestrator.getOrderStatus(demoActors.technician, reference), error => error instanceof FloError && error.code === "WORK_ORDER_ACCESS_DENIED");
+        assert.equal((await orchestrator.getOrderStatus(demoActors.manager, reference)).id, placed.order.id);
+      }
+    }
+  });
+
   it("asks for clarification when Ford matches multiple visible jobs and no recent context exists", async () => {
     await assert.rejects(
       orchestrator.getJobStatus(demoActors.manager, "Ford"),

@@ -3,5 +3,9 @@ node_modules
 **/dist
 .git
 .env
+.env.*
+.private
+**/.private
+**/customer-links*.json
 coverage
 outputs

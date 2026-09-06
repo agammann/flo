@@ -3,7 +3,7 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["**/dist/**", "**/coverage/**", "**/node_modules/**"]
+    ignores: ["**/dist/**", "**/coverage/**", "**/node_modules/**", "**/.private/**"]
   },
   eslint.configs.recommended,
   {
@@ -34,7 +34,7 @@ export default tseslint.config(
     rules: { "@typescript-eslint/no-floating-promises": "off" }
   },
   {
-    files: ["apps/*/public/**/*.js"],
+    files: ["apps/*/public/**/*.js", "services/*/public/**/*.js"],
     languageOptions: {
       globals: {
         document: "readonly",

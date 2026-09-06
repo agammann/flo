@@ -1,0 +1,107 @@
+{
+  "changeSet": {
+    "name": "flo-customer-unlinked-ui-20260906T025712Z",
+    "id": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-customer-unlinked-ui-20260906T025712Z/5f4ed808-beb9-4736-af7e-86be1a0a2dfe",
+    "stackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+    "changedParameters": [
+      "ArtifactKey",
+      "ArtifactVersion"
+    ],
+    "executed": false
+  },
+  "review": {
+    "status": "CREATE_COMPLETE",
+    "executionStatus": "AVAILABLE",
+    "changes": [
+      {
+        "action": "Modify",
+        "logicalId": "CustomerFunction",
+        "type": "AWS::Lambda::Function",
+        "replacement": "False",
+        "changedPaths": [
+          "/Properties/Code/S3Key",
+          "/Properties/Code/S3ObjectVersion"
+        ],
+        "details": [
+          {
+            "target": {
+              "Attribute": "Properties",
+              "Name": "Code",
+              "RequiresRecreation": "Never",
+              "Path": "/Properties/Code/S3ObjectVersion",
+              "BeforeValue": "raKQgS0ARCNPg5kSiao.DIgrcXy7KP._",
+              "AfterValue": "xKCi0sczMSbYU_8FlvNzzn988t9ZD21g",
+              "AttributeChangeType": "Modify"
+            },
+            "evaluation": "Dynamic",
+            "source": "DirectModification"
+          },
+          {
+            "target": {
+              "Attribute": "Properties",
+              "Name": "Code",
+              "RequiresRecreation": "Never",
+              "Path": "/Properties/Code/S3Key",
+              "BeforeValue": "flo-customer/461f5e1591b7610ba1ba5fa3d681d6fe886386b16bea63ead9781895e600ebb6.zip",
+              "AfterValue": "flo-customer/19ad27d5138d2b261d3329fb01ba37eb2e43e92fa92b296993364aba575ceac5.zip",
+              "AttributeChangeType": "Modify"
+            },
+            "evaluation": "Dynamic",
+            "source": "DirectModification"
+          },
+          {
+            "target": {
+              "Attribute": "Properties",
+              "Name": "Code",
+              "RequiresRecreation": "Never",
+              "Path": "/Properties/Code/S3Key",
+              "BeforeValue": "flo-customer/461f5e1591b7610ba1ba5fa3d681d6fe886386b16bea63ead9781895e600ebb6.zip",
+              "AfterValue": "flo-customer/19ad27d5138d2b261d3329fb01ba37eb2e43e92fa92b296993364aba575ceac5.zip",
+              "AttributeChangeType": "Modify"
+            },
+            "evaluation": "Static",
+            "source": "ParameterReference"
+          },
+          {
+            "target": {
+              "Attribute": "Properties",
+              "Name": "Code",
+              "RequiresRecreation": "Never",
+              "Path": "/Properties/Code/S3ObjectVersion",
+              "BeforeValue": "raKQgS0ARCNPg5kSiao.DIgrcXy7KP._",
+              "AfterValue": "xKCi0sczMSbYU_8FlvNzzn988t9ZD21g",
+              "AttributeChangeType": "Modify"
+            },
+            "evaluation": "Static",
+            "source": "ParameterReference"
+          }
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "eventCount": 2,
+    "validationErrors": [],
+    "operations": [
+      {
+        "type": "STACK_EVENT",
+        "status": "SUCCEEDED",
+        "operation": "CREATE_CHANGESET",
+        "timestamp": "2026-09-06T02:57:20.473000+00:00"
+      },
+      {
+        "type": "STACK_EVENT",
+        "status": "IN_PROGRESS",
+        "operation": "CREATE_CHANGESET",
+        "timestamp": "2026-09-06T02:57:13.272000+00:00"
+      }
+    ],
+    "artifact": {
+      "ContentLength": 616093,
+      "VersionId": "xKCi0sczMSbYU_8FlvNzzn988t9ZD21g",
+      "ServerSideEncryption": "AES256",
+      "ContentType": "application/zip"
+    }
+  },
+  "executed": false
+}

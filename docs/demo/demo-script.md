@@ -1,5 +1,7 @@
 # Flo demo script
 
+> Superseded recording plan: the script below describes the older shop-only cut and must not be followed for a new release. Use [the replacement-video reconciliation plan](video-reconciliation.md). Its corrections cover the consumer preview, gross-profit ranking, matching estimate, DynamoDB allowance and the chosen—but not yet implemented—Login with Amazon sign-in. The old video and caption track are preserved; their existing timing is not suitable for the replacement.
+
 Recording target: under 3:00 at 1080p. Keep the MCP inspector visible only when it supports the story; use production mode for the final transaction.
 
 The completed cut runs 2:41 and is available at <https://youtu.be/ZjROvjL2smo>. Its reviewed English caption track is [`flo-demo.en.vtt`](flo-demo.en.vtt); all 33 timed cues are published in YouTube Studio. The custom [`thumbnail`](flo-youtube-thumbnail.png) is saved on the video. The video is currently unlisted; making it public remains a separate, explicitly confirmed release action.

@@ -1,3 +1,4 @@
+import { browserRequest } from './browser-request.js';
 const $ = (selector) => document.querySelector(selector);
 const transcript = $("#transcript");
 const form = $("#commandForm");
@@ -104,7 +105,7 @@ function render(view, data) {
 async function runCommand(command) {
   addMessage("user", command); input.value = ""; input.disabled = true; send.disabled = true; talk.disabled = true;
   try {
-    const response = await fetch("/api/command", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ command }) });
+    const response = await browserRequest("/api/command", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ command }) });
     const result = await response.json();
     lastResult = result;
     addMessage("assistant", result.voice); renderTrace(result.invocations); render(result.view, result.data);
@@ -122,8 +123,19 @@ canvas.addEventListener("click", (event) => { const button = event.target instan
 $("#debugToggle").addEventListener("click", () => { trace.hidden = !trace.hidden; $("#debugToggle").setAttribute("aria-pressed", String(!trace.hidden)); });
 $("#themeToggle").addEventListener("click", () => { const next = document.documentElement.dataset.theme === "light" ? "dark" : "light"; document.documentElement.dataset.theme = next; $("#themeToggle").textContent = next === "light" ? "☾" : "☼"; $("#themeToggle").setAttribute("aria-label", `Switch to ${next === "light" ? "dark" : "light"} theme`); });
 $("#focusToggle").addEventListener("click", () => { const focused = document.body.classList.toggle("focus-mode"); $("#focusToggle").setAttribute("aria-pressed", String(focused)); $("#focusToggle").setAttribute("aria-label", focused ? "Exit expanded visual result" : "Expand visual result"); });
-$("#newConversation").addEventListener("click", async () => { await fetch("/api/new-conversation", { method: "POST" }); transcript.innerHTML = ""; addMessage("assistant", "New conversation started. Long-term job context is still available."); });
-$("#reset").addEventListener("click", async () => { const button = $("#reset"); button.disabled = true; const response = await fetch("/api/reset", { method: "POST" }); button.disabled = false; if (response.ok) location.reload(); else addMessage("assistant", "The demo reset failed. Check the service trace."); });
+$("#newConversation").addEventListener("click", async () => {
+  try {
+    const response = await browserRequest("/api/new-conversation", { method: "POST" });
+    if (!response.ok) throw new Error("New conversation request denied. Reload and try again.");
+    transcript.innerHTML = ""; addMessage("assistant", "New conversation started. Long-term job context is still available.");
+  } catch (error) { addMessage("assistant", error.message); }
+});
+$("#reset").addEventListener("click", async () => {
+  const button = $("#reset"); button.disabled = true;
+  try { const response = await browserRequest("/api/reset", { method: "POST" }); if (response.ok) location.reload(); else addMessage("assistant", "The demo reset failed or was denied. Reload and try again."); }
+  catch { addMessage("assistant", "The demo reset could not be completed."); }
+  finally { button.disabled = false; }
+});
 
 const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (Recognition) {

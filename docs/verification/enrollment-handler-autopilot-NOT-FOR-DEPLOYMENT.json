@@ -1,0 +1,61 @@
+{
+  "status": "REJECTED_BASELINE_NOT_FOR_DEPLOYMENT",
+  "toolVersion": "iam-policy-autopilot 0.3.0",
+  "reason": "Wildcard tables/keys/functions and broad DynamoDB union do not enforce the desired request-handler scope. Includes shared-module calls; does not prove reachable runtime permissions.",
+  "command": "$env:UV_CACHE_DIR=Join-Path (Get-Location) '.private/uv-cache'\n$env:DISABLE_IAM_POLICY_AUTOPILOT_TELEMETRY='true'\n& './.private/iam-tools/bin/uvx.exe' --python 'C:/Users/alexa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe' iam-policy-autopilot@latest generate-policies 'C:/Users/alexa/Documents/Codex/2026-09-03/jo/benchflow/services/flo-mcp/src/customer-enrollment-dynamodb-common.ts' 'C:/Users/alexa/Documents/Codex/2026-09-03/jo/benchflow/services/flo-mcp/src/customer-enrollment-dynamodb-start.ts' 'C:/Users/alexa/Documents/Codex/2026-09-03/jo/benchflow/services/flo-mcp/src/customer-dynamodb.ts' 'C:/Users/alexa/Documents/Codex/2026-09-03/jo/benchflow/services/flo-mcp/src/customer-enrollment-invoke.ts' --region us-west-2 --account 114599789754 --service-hints dynamodb lambda --pretty",
+  "exitCode": 0,
+  "generated": {
+    "Policies": [
+      {
+        "Policy": {
+          "Id": "IamPolicyAutopilot",
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:Query",
+                "dynamodb:ReadDataForReplication",
+                "dynamodb:UpdateItem",
+                "dynamodb:WriteDataForReplication"
+              ],
+              "Resource": [
+                "arn:aws:dynamodb:us-west-2:114599789754:table/*"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "kms:Decrypt"
+              ],
+              "Resource": [
+                "arn:aws:kms:us-west-2:114599789754:key/*"
+              ],
+              "Condition": {
+                "StringEquals": {
+                  "kms:ViaService": [
+                    "dynamodb.us-west-2.amazonaws.com"
+                  ]
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:InvokeFunction"
+              ],
+              "Resource": [
+                "arn:aws:lambda:us-west-2:114599789754:function:*"
+              ]
+            }
+          ]
+        },
+        "PolicyType": "Identity"
+      }
+    ]
+  }
+}

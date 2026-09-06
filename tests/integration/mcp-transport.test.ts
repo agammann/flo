@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
-import type { Server } from "node:http";
+import { request as httpRequest, type Server } from "node:http";
 import { after, before, describe, it } from "node:test";
-import type { Express } from "express";
+import express, { type Express } from "express";
+import type * as CustomerRouterModule from "../../apps/alexa-simulator/dist/customer-router.js";
 import { Client, StreamableHTTPClientTransport } from "@modelcontextprotocol/client";
 import { createHttpAdapters } from "@flo/adapters";
 import { createCustomerApi } from "@flo/mock-customer-api";
@@ -67,6 +68,19 @@ describe("Flo MCP Streamable HTTP transport", () => {
   after(async () => {
     await mcp.close();
     await Promise.all(serviceServers.map(close));
+  });
+
+  it("rejects malformed Host and request targets without killing the listener", async () => {
+    const raw = (host: string, path: string): Promise<number> => new Promise((resolve, reject) => {
+      const request = httpRequest(mcpUrl, { path, headers: { Host: host }, agent: false }, response => { response.resume(); response.on("end", () => resolve(response.statusCode!)); });
+      request.on("error", reject); request.end();
+    });
+    for (const host of ["[", "[::1", "attacker.example", "localhost@attacker.example"]) {
+      for (const path of ["/mcp", "/health", "/customer/mcp"]) assert.equal(await raw(host, path), 403);
+      assert.equal((await fetch(`${mcpUrl}/health`)).status, 200);
+    }
+    for (const path of ["http://attacker.example/mcp", "//attacker.example/mcp", "/\\attacker.example/mcp"]) assert.equal(await raw(new URL(mcpUrl).host, path), 400);
+    assert.equal((await fetch(`${mcpUrl}/health`)).status, 200);
   });
 
   it("negotiates the required 2025-11-25 protocol and invokes a real tool", async () => {
@@ -148,6 +162,69 @@ describe("Flo MCP Streamable HTTP transport", () => {
     }
   });
 
+  it("isolates the owner tool surface and ignores client-supplied identity headers", async () => {
+    const client = new Client({ name: "flo-owner-test", version: "0.2.0" }, { versionNegotiation: { mode: "legacy" } });
+    try {
+      await client.connect(new StreamableHTTPClientTransport(new URL(`${mcpUrl}/customer/mcp`), {
+        requestInit: { headers: { "x-flo-role": "administrator", "x-flo-actor-id": "customer-002", "x-flo-customer-id": "customer-002" } }
+      }));
+      const listed = await client.listTools();
+      assert.deepEqual(listed.tools.map(tool => tool.name).sort(), ["get_my_estimate", "get_my_repair", "list_my_repairs"]);
+      for (const tool of listed.tools) {
+        assert.equal(tool.annotations?.readOnlyHint, true);
+        assert.ok(tool.outputSchema !== undefined);
+      }
+      const own = await client.callTool({ name: "get_my_repair", arguments: { repairNumber: "1842" } });
+      assert.notEqual(own.isError, true);
+      const serialized = JSON.stringify(own.structuredContent);
+      assert.match(serialized, /2019 Ford F-150/);
+      assert.doesNotMatch(serialized, /"(?:vin|customerId|technician|complaint|diagnosis|margin)":/i);
+      const work = await adapters.shop.listWorkOrders();
+      const other = work.find(item => item.customerId !== "customer-001");
+      assert.ok(other);
+      const forbidden = await client.callTool({ name: "get_my_repair", arguments: { repairNumber: other.workOrderNumber } });
+      const missing = await client.callTool({ name: "get_my_repair", arguments: { repairNumber: "99999999" } });
+      assert.equal(forbidden.isError, true);
+      assert.deepEqual(forbidden.structuredContent, missing.structuredContent);
+      const override = await client.callTool({ name: "list_my_repairs", arguments: { customerId: other.customerId } });
+      assert.equal(override.isError, true);
+      const unavailableEstimate = await client.callTool({ name: "get_my_estimate", arguments: { repairNumber: "1842" } });
+      assert.equal(unavailableEstimate.isError, true);
+      assert.match(JSON.stringify(unavailableEstimate.content), /has not prepared an estimate/);
+    } finally { await client.close(); }
+  });
+
+  it("runs the customer preview through MCP and rejects missing consent, identity overrides and unsupported actions", async () => {
+    const { createCustomerRouter } = await import(new URL("../../../apps/alexa-simulator/dist/customer-router.js", import.meta.url).href) as typeof CustomerRouterModule;
+    const app = express();
+    app.use(express.json());
+    app.use(createCustomerRouter(`${mcpUrl}/customer/mcp`, true));
+    const preview = await listenExpress(app);
+    const send = async (body: unknown) => {
+      const response = await fetch(`${preview.url}/command`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      return { status: response.status, body: await response.json() as { voice: string; tools?: string[]; data?: { repairNumber: string } } };
+    };
+    try {
+      assert.equal((await send({ command: "Show my repairs" })).status, 400);
+      assert.equal((await send({ command: "Show my repairs", demoConsent: true, customerId: "customer-002" })).status, 400);
+      assert.equal((await send({ command: " ", demoConsent: true })).status, 400);
+      for (const command of ["Approve estimate 1842", "Pay for repair 1842", "Book repair 1842", "Cancel repair 1842"]) {
+        const result = await send({ command, demoConsent: true });
+        assert.deepEqual(result.body.tools, []);
+        assert.match(result.body.voice, /Nothing has been changed/);
+      }
+      const ambiguous = await send({ command: "Review repair 1842 or 1843", demoConsent: true });
+      assert.deepEqual(ambiguous.body.tools, []);
+      assert.match(ambiguous.body.voice, /Which repair/);
+      const unsupported = await send({ command: "Tell me the weather", demoConsent: true });
+      assert.deepEqual(unsupported.body.tools, []);
+      const status = await send({ command: "Status of repair 1842", demoConsent: true });
+      assert.equal(status.status, 200);
+      assert.deepEqual(status.body.tools, ["get_my_repair"]);
+      assert.equal(status.body.data?.repairNumber, "1842");
+    } finally { await close(preview.server); }
+  });
+
   it("omits simulator-only controls from the production tool surface", async () => {
     const productionMcp = createFloHttpServer({ adapters, clock: () => new Date(fixedNow), demoMode: false });
     const productionUrl = await listenNode(productionMcp.server);
@@ -160,6 +237,9 @@ describe("Flo MCP Streamable HTTP transport", () => {
     });
 
     try {
+      const denied = await fetch(`${productionUrl}/customer/mcp`, { headers: { Authorization: "Bearer unverified-token", "x-flo-customer-id": "customer-001" } });
+      assert.equal(denied.status, 401);
+      assert.equal(denied.headers.get("www-authenticate"), null);
       await productionClient.connect(productionTransport);
       const listed = await productionClient.listTools();
       assert.equal(listed.tools.length, 25);

@@ -1,0 +1,16 @@
+{
+  "approvedOn": "2026-09-05",
+  "reviewBy": "2026-10-05",
+  "resource": "NarratorFunction",
+  "exceptions": [
+    {
+      "rule": "LAMBDA_DLQ_CHECK",
+      "reason": "Owner-approved synchronous API Gateway narration workflow; no asynchronous event sources. Re-review before any async invocation path is introduced."
+    },
+    {
+      "rule": "LAMBDA_INSIDE_VPC",
+      "reason": "Owner-approved no-customer-VPC deployment. IAM-authenticated synchronous ingress and AWS SDK TLS connections; no private-network dependencies or customer repair payloads. Re-review if those assumptions change."
+    }
+  ],
+  "requiredControls": ["AWS_IAM ingress", "bounded input", "conditional allowance", "no public Function URL", "no async event sources"]
+}

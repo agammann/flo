@@ -32,7 +32,7 @@ Release evidence now includes the public MIT-licensed repository at <https://git
 | Sensitive actions need clear confirmation and state agreement | Preparation returns an exact summary and short-lived token; confirmation rechecks approval and bay availability; UI says when nothing has executed | Verified locally |
 | Voice and touch offer the same transaction decision | The confirmation surface exposes explicit 48-pixel Confirm and Cancel controls that run the same command path as voice | Fixed locally |
 | Multi-system execution handles partial failure safely | If ordering succeeds but scheduling fails, Flo automatically cancels the order; if cancellation cannot be verified, it returns a non-retryable partial-failure error with recovery instructions | Fixed and tested locally |
-| Production tools should be purposeful and avoid demo controls | Approval simulation, deterministic demo time, and reset tools are omitted when `NODE_ENV=production` | Fixed locally |
+| Non-demo tools should be purposeful and avoid demo controls | Approval simulation, deterministic demo time, and reset tools are omitted when `NODE_ENV=production` unless explicitly opted in with `FLO_DEMO_MODE=true`. Docker is a local-only demo and opts in for both MCP and simulator. Hiding tools is not production authentication. | Verified by configuration tests |
 
 ## Corrections made in this audit
 

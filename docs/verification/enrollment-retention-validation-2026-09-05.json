@@ -1,0 +1,101 @@
+{
+  "templateSha256": "573fe2694bab405740ab93f71c0b912b3c667229ca7f2bbf6e60e9db9d84f775",
+  "templateBytes": 6028,
+  "region": "us-west-2",
+  "environment": "local-isolated-docker-no-network-no-aws-credentials",
+  "lintVersion": {
+    "command": [
+      "cfn-lint",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "cfn-lint 1.52.1\n",
+    "stderr": ""
+  },
+  "lint": {
+    "command": [
+      "cfn-lint",
+      "--format",
+      "json",
+      "--regions",
+      "us-west-2",
+      "--template",
+      "/input/state.template.json"
+    ],
+    "exit": 0,
+    "stdout": "[]\n",
+    "stderr": ""
+  },
+  "guardVersion": {
+    "command": [
+      "/opt/guard/cfn-guard-v3-x86_64-ubuntu-latest/cfn-guard",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "cfn-guard 3.2.1\n",
+    "stderr": ""
+  },
+  "rulesCommit": "7f7340c26ae5d5e8874651dbffeb12e0e9f505b6",
+  "rules": [
+    {
+      "path": "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_autoscaling_enabled.guard",
+      "sha256": "cece2dcfe5888e003858d2c822699169a716c2617860108cd44db3abe35f6795"
+    },
+    {
+      "path": "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_billing_mode_rule.guard",
+      "sha256": "9cbd8e6cff4b8e52d81dee91603e4ed721159801fac741869ae37bfdf2743eec"
+    },
+    {
+      "path": "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_in_backup_plan.guard",
+      "sha256": "44a00f93f5da65ae7b1a5e31f9d55b5558efaf9f33d6b6dea444267d149e5aeb"
+    },
+    {
+      "path": "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_pitr_enabled.guard",
+      "sha256": "e0b37c91803736abb53ba9288eb000e906c5b71e5857b0df8054538fc4644565"
+    },
+    {
+      "path": "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_resources_protected_by_backup_plan.guard",
+      "sha256": "99f1cdabf127d4920c481f3c211297f47df67accb914876695e8ee9cce73854c"
+    },
+    {
+      "path": "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_table_encrypted_kms.guard",
+      "sha256": "26ea3da5b3e0e43ec20ecf4a8e5b8faeba0a1d849ad11a7441916e727cc7fb40"
+    },
+    {
+      "path": "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_table_must_be_encrypted.guard",
+      "sha256": "9b4f92e32dbd58d335825fbbba1c335eca9cb581e624b6aeee8a80ac9e96f4fc"
+    },
+    {
+      "path": "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_throughput_limit_check.guard",
+      "sha256": "60b2c62189339dc2d1d95fa2f0f83ce81b068eefe8f0891009ecf258c56827fc"
+    }
+  ],
+  "deployed": false,
+  "guard": {
+    "command": [
+      "/opt/guard/cfn-guard-v3-x86_64-ubuntu-latest/cfn-guard",
+      "validate",
+      "--rules",
+      "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_autoscaling_enabled.guard",
+      "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_billing_mode_rule.guard",
+      "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_in_backup_plan.guard",
+      "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_pitr_enabled.guard",
+      "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_resources_protected_by_backup_plan.guard",
+      "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_table_encrypted_kms.guard",
+      "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_table_must_be_encrypted.guard",
+      "/opt/rules/aws-guard-rules-registry-7f7340c26ae5d5e8874651dbffeb12e0e9f505b6/rules/aws/dynamodb/dynamodb_throughput_limit_check.guard",
+      "--data",
+      "/input/state.template.json",
+      "--output-format",
+      "json",
+      "--structured",
+      "--show-summary",
+      "none",
+      "--type",
+      "CFNTemplate"
+    ],
+    "exit": 19,
+    "stdout": "[\n  {\n    \"name\": \"/input/state.template.json\",\n    \"metadata\": {},\n    \"status\": \"FAIL\",\n    \"not_compliant\": [\n      {\n        \"Rule\": {\n          \"name\": \"DYNAMODB_PITR_ENABLED\",\n          \"metadata\": {},\n          \"messages\": {\n            \"custom_message\": null,\n            \"error_message\": null\n          },\n          \"checks\": [\n            {\n              \"Clause\": {\n                \"Binary\": {\n                  \"context\": \" %dynamodb_pitr_enabled[*].Properties.PointInTimeRecoverySpecification.PointInTimeRecoveryEnabled EQUALS  true\",\n                  \"messages\": {\n                    \"custom_message\": \"\\n      Violation: All DynamoDB Tables must have Point-In-Time-Recovery enabled.\\n      Fix: Set the dynamodb table property PointInTimeRecoverySpecification.PointInTimeRecoveryEnabled to true.\\n    \",\n                    \"error_message\": \"Check was not compliant as property value [Path=/Resources/EnrollmentRequests/Properties/PointInTimeRecoverySpecification/PointInTimeRecoveryEnabled[L:41,C:40] Value=false] not equal to value [Path=[L:0,C:0] Value=true].\"\n                  },\n                  \"check\": {\n                    \"Resolved\": {\n                      \"from\": {\n                        \"path\": \"/Resources/EnrollmentRequests/Properties/PointInTimeRecoverySpecification/PointInTimeRecoveryEnabled\",\n                        \"value\": false\n                      },\n                      \"to\": {\n                        \"path\": \"\",\n                        \"value\": true\n                      },\n                      \"comparison\": [\n                        \"Eq\",\n                        false\n                      ]\n                    }\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Binary\": {\n                  \"context\": \" %dynamodb_pitr_enabled[*].Properties.PointInTimeRecoverySpecification.PointInTimeRecoveryEnabled EQUALS  true\",\n                  \"messages\": {\n                    \"custom_message\": \"\\n      Violation: All DynamoDB Tables must have Point-In-Time-Recovery enabled.\\n      Fix: Set the dynamodb table property PointInTimeRecoverySpecification.PointInTimeRecoveryEnabled to true.\\n    \",\n                    \"error_message\": \"Check was not compliant as property value [Path=/Resources/EnrollmentApprovals/Properties/PointInTimeRecoverySpecification/PointInTimeRecoveryEnabled[L:91,C:40] Value=false] not equal to value [Path=[L:0,C:0] Value=true].\"\n                  },\n                  \"check\": {\n                    \"Resolved\": {\n                      \"from\": {\n                        \"path\": \"/Resources/EnrollmentApprovals/Properties/PointInTimeRecoverySpecification/PointInTimeRecoveryEnabled\",\n                        \"value\": false\n                      },\n                      \"to\": {\n                        \"path\": \"\",\n                        \"value\": true\n                      },\n                      \"comparison\": [\n                        \"Eq\",\n                        false\n                      ]\n                    }\n                  }\n                }\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"Rule\": {\n          \"name\": \"DYNAMODB_TABLE_ENCRYPTED_KMS\",\n          \"metadata\": {},\n          \"messages\": {\n            \"custom_message\": null,\n            \"error_message\": null\n          },\n          \"checks\": [\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/EnrollmentRequests/Properties/SSESpecification\",\n                          \"value\": {\n                            \"SSEEnabled\": true\n                          }\n                        },\n                        \"remaining_query\": \"KMSMasterKeyId\",\n                        \"reason\": \"Could not find key KMSMasterKeyId inside struct at path /Resources/EnrollmentRequests/Properties/SSESpecification[L:32,C:28]\"\n                      },\n                      \"comparison\": [\n                        \"Exists\",\n                        false\n                      ]\n                    }\n                  },\n                  \"context\": \" %dynamodb_table_encrypted_kms[*].Properties.SSESpecification.KMSMasterKeyId EXISTS  \",\n                  \"messages\": {\n                    \"custom_message\": \"\",\n                    \"error_message\": \"Check was not compliant as property [KMSMasterKeyId] is missing. Value traversed to [Path=/Resources/EnrollmentRequests/Properties/SSESpecification[L:32,C:28] Value={\\\"SSEEnabled\\\":true}].\"\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/EnrollmentApprovals/Properties/SSESpecification\",\n                          \"value\": {\n                            \"SSEEnabled\": true\n                          }\n                        },\n                        \"remaining_query\": \"KMSMasterKeyId\",\n                        \"reason\": \"Could not find key KMSMasterKeyId inside struct at path /Resources/EnrollmentApprovals/Properties/SSESpecification[L:82,C:28]\"\n                      },\n                      \"comparison\": [\n                        \"Exists\",\n                        false\n                      ]\n                    }\n                  },\n                  \"context\": \" %dynamodb_table_encrypted_kms[*].Properties.SSESpecification.KMSMasterKeyId EXISTS  \",\n                  \"messages\": {\n                    \"custom_message\": \"\",\n                    \"error_message\": \"Check was not compliant as property [KMSMasterKeyId] is missing. Value traversed to [Path=/Resources/EnrollmentApprovals/Properties/SSESpecification[L:82,C:28] Value={\\\"SSEEnabled\\\":true}].\"\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/EnrollmentAudit/Properties/SSESpecification\",\n                          \"value\": {\n                            \"SSEEnabled\": true\n                          }\n                        },\n                        \"remaining_query\": \"KMSMasterKeyId\",\n                        \"reason\": \"Could not find key KMSMasterKeyId inside struct at path /Resources/EnrollmentAudit/Properties/SSESpecification[L:132,C:28]\"\n                      },\n                      \"comparison\": [\n                        \"Exists\",\n                        false\n                      ]\n                    }\n                  },\n                  \"context\": \" %dynamodb_table_encrypted_kms[*].Properties.SSESpecification.KMSMasterKeyId EXISTS  \",\n                  \"messages\": {\n                    \"custom_message\": \"\",\n                    \"error_message\": \"Check was not compliant as property [KMSMasterKeyId] is missing. Value traversed to [Path=/Resources/EnrollmentAudit/Properties/SSESpecification[L:132,C:28] Value={\\\"SSEEnabled\\\":true}].\"\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Binary\": {\n                  \"context\": \" %dynamodb_table_encrypted_kms[*].Properties.SSESpecification.SSEType IN  %DYNAMODB_TABLE_ENCRYPTED_KMS_ALLOWED_ALGORITHMS\",\n                  \"messages\": {\n                    \"custom_message\": \"\\n        Violation: Amazon DynamoDB tables are configured with SSE and a KMS key\\n        Fix: In SSESpecification, set SSEEnabled to true and set KMSMasterKeyId to the ID of a KMS key\\n      \",\n                    \"error_message\": \"Check was not compliant as property [SSEType] to compare from is missing. Value traversed to [Path=/Resources/EnrollmentRequests/Properties/SSESpecification[L:32,C:28] Value={\\\"SSEEnabled\\\":true}].\"\n                  },\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/EnrollmentRequests/Properties/SSESpecification\",\n                          \"value\": {\n                            \"SSEEnabled\": true\n                          }\n                        },\n                        \"remaining_query\": \"SSEType\",\n                        \"reason\": \"Could not find key SSEType inside struct at path /Resources/EnrollmentRequests/Properties/SSESpecification[L:32,C:28]\"\n                      },\n                      \"comparison\": [\n                        \"In\",\n                        false\n                      ]\n                    }\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Binary\": {\n                  \"context\": \" %dynamodb_table_encrypted_kms[*].Properties.SSESpecification.SSEType IN  %DYNAMODB_TABLE_ENCRYPTED_KMS_ALLOWED_ALGORITHMS\",\n                  \"messages\": {\n                    \"custom_message\": \"\\n        Violation: Amazon DynamoDB tables are configured with SSE and a KMS key\\n        Fix: In SSESpecification, set SSEEnabled to true and set KMSMasterKeyId to the ID of a KMS key\\n      \",\n                    \"error_message\": \"Check was not compliant as property [SSEType] to compare from is missing. Value traversed to [Path=/Resources/EnrollmentApprovals/Properties/SSESpecification[L:82,C:28] Value={\\\"SSEEnabled\\\":true}].\"\n                  },\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/EnrollmentApprovals/Properties/SSESpecification\",\n                          \"value\": {\n                            \"SSEEnabled\": true\n                          }\n                        },\n                        \"remaining_query\": \"SSEType\",\n                        \"reason\": \"Could not find key SSEType inside struct at path /Resources/EnrollmentApprovals/Properties/SSESpecification[L:82,C:28]\"\n                      },\n                      \"comparison\": [\n                        \"In\",\n                        false\n                      ]\n                    }\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Binary\": {\n                  \"context\": \" %dynamodb_table_encrypted_kms[*].Properties.SSESpecification.SSEType IN  %DYNAMODB_TABLE_ENCRYPTED_KMS_ALLOWED_ALGORITHMS\",\n                  \"messages\": {\n                    \"custom_message\": \"\\n        Violation: Amazon DynamoDB tables are configured with SSE and a KMS key\\n        Fix: In SSESpecification, set SSEEnabled to true and set KMSMasterKeyId to the ID of a KMS key\\n      \",\n                    \"error_message\": \"Check was not compliant as property [SSEType] to compare from is missing. Value traversed to [Path=/Resources/EnrollmentAudit/Properties/SSESpecification[L:132,C:28] Value={\\\"SSEEnabled\\\":true}].\"\n                  },\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/EnrollmentAudit/Properties/SSESpecification\",\n                          \"value\": {\n                            \"SSEEnabled\": true\n                          }\n                        },\n                        \"remaining_query\": \"SSEType\",\n                        \"reason\": \"Could not find key SSEType inside struct at path /Resources/EnrollmentAudit/Properties/SSESpecification[L:132,C:28]\"\n                      },\n                      \"comparison\": [\n                        \"In\",\n                        false\n                      ]\n                    }\n                  }\n                }\n              }\n            }\n          ]\n        }\n      }\n    ],\n    \"not_applicable\": [],\n    \"compliant\": [\n      \"DYNAMODB_BILLING_MODE_RULE\",\n      \"DYNAMODB_TABLE_MUST_BE_ENCRYPTED\"\n    ]\n  }\n]",
+    "stderr": ""
+  }
+}

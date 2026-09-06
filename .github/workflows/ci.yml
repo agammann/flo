@@ -20,6 +20,14 @@ jobs:
       # Type-aware ESLint resolves workspace packages through their generated
       # declaration files, so a clean runner must build before lint/typecheck.
       - run: pnpm build
+      - run: pnpm build:customer
+      - run: pnpm build:enrollment
+      - run: node scripts/check-enrollment-state-plan.mjs
+      # Historical evidence integrity only. Current retention template requires
+      # fresh cfn-lint/Guard review; the default checker deliberately rejects it.
+      - run: node scripts/check-enrollment-policy-exceptions.mjs --historical
+      - run: node --test scripts/check-enrollment-policy-exceptions.test.mjs
+      - run: node --test scripts/enrollment-operator-boundary.test.mjs
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
@@ -37,6 +45,13 @@ jobs:
       - run: docker compose build mcp
       - run: docker compose up --no-build -d
       - run: node scripts/docker-smoke.mjs
+      - name: Smoke-test separate enrollment artifacts without network access
+        run: docker run --rm --network none flo-demo:local node scripts/smoke-enrollment-bundles.mjs /app/dist/customer-enrollment/request/index.mjs /app/dist/customer-enrollment/redemption/index.mjs
+      - name: Smoke-test private approval artifact without network access
+        run: docker run --rm --network none flo-demo:local node scripts/smoke-enrollment-approval-bundle.mjs /app/dist/customer-enrollment/approval/index.mjs
+      - run: docker compose -p flo-customer-test -f docker-compose.customer-test.yml up --abort-on-container-exit --exit-code-from customer-contract
+      - if: always()
+        run: docker compose -p flo-customer-test -f docker-compose.customer-test.yml down --volumes --remove-orphans
       - if: always()
         run: docker compose logs --no-color
       - if: always()
