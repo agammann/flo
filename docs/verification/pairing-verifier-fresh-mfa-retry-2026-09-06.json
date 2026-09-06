@@ -1,0 +1,84 @@
+{
+  "date": "2026-09-06",
+  "attempt": "fresh-MFA single retry",
+  "expiry": "2026-09-06T18:56:00.000Z",
+  "verifierSha256": "a48d0d8eed12578cf54b2dd8157e04e04cb294689ed9e32e13a3731930c1f45d",
+  "policyValidation": {
+    "validationPassed": true,
+    "simulations": [
+      {
+        "case": "allowed",
+        "decision": "allowed"
+      },
+      {
+        "case": "missingMfa",
+        "decision": "explicitDeny"
+      },
+      {
+        "case": "missingProjection",
+        "decision": "explicitDeny"
+      },
+      {
+        "case": "proof",
+        "decision": "explicitDeny"
+      },
+      {
+        "case": "expired",
+        "decision": "explicitDeny"
+      }
+    ],
+    "expiresAt": "2026-09-06T18:56:00.000Z"
+  },
+  "live": {
+    "executions": 1,
+    "syntheticReadsAttempted": 1,
+    "errorStage": "synthetic-probes",
+    "errorCode": "AccessDeniedException",
+    "privatePromptReached": false,
+    "realRequestReads": 0,
+    "requestsCreated": 0,
+    "approval": false,
+    "customerLinked": false
+  },
+  "session": {
+    "identityEvents": [
+      {
+        "time": "2026-09-06T18:29:25Z",
+        "region": "us-west-2",
+        "mfaAuthenticated": "true",
+        "sessionCreated": "2026-09-06T18:21:08Z"
+      },
+      {
+        "time": "2026-09-06T18:28:24Z",
+        "region": "us-west-2",
+        "mfaAuthenticated": "true",
+        "sessionCreated": "2026-09-06T18:21:08Z"
+      }
+    ],
+    "scope": "Management identity metadata only, not data reads"
+  },
+  "kms": {
+    "sanitizedKmsCorrelation": [
+      {
+        "time": "2026-09-06T18:29:25Z",
+        "errorCode": "AccessDenied",
+        "keyMatchesRequestOrError": true,
+        "tableContextMatches": false,
+        "subscriberContextMatches": false,
+        "explicitBoundaryDeny": true,
+        "decryptActionNamed": true
+      }
+    ],
+    "noCiphertextOrIdentityFingerprintsReturned": true
+  },
+  "cleanup": {
+    "cleanupVerified": true,
+    "inlinePolicies": [],
+    "boundaryRemoved": true,
+    "temporaryPolicyDeleted": true,
+    "remainingPolicy": "SignInLocalDevelopmentAccess",
+    "groups": []
+  },
+  "policyCorrectionApplied": false,
+  "publicRelease": false
+}

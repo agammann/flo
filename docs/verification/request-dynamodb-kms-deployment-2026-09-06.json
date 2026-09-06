@@ -1,0 +1,346 @@
+{
+  "date": "2026-09-06",
+  "status": "DEPLOYED_REQUEST_ONLY_HOSTED_SUCCESS",
+  "approval": "User explicitly approved the named change set, live verification and one signed-in request test.",
+  "execution": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "executedChangeSet": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-request-dynamodb-kms-review-20260906T193507Z/a269342f-8300-4b84-864d-dd9da456039a",
+      "response": {},
+      "requestedAt": "2026-09-06T19:40:51.255146+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "ExecuteChangeSet",
+        "status": "success"
+      }
+    ]
+  },
+  "liveReadback": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "stackStatus": "UPDATE_COMPLETE",
+      "policyVersion": "v5",
+      "policyMatches": true,
+      "updatedAt": "2026-09-06T19:40:55+00:00",
+      "gates": [
+        {
+          "ParameterKey": "EnableRedemption",
+          "ParameterValue": "false"
+        },
+        {
+          "ParameterKey": "EnableApproval",
+          "ParameterValue": "false"
+        },
+        {
+          "ParameterKey": "EnableEnrollment",
+          "ParameterValue": "true"
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      }
+    ]
+  },
+  "functions": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "functions": [
+        {
+          "kind": "request",
+          "version": "3",
+          "codeSha256": "OCL+oXzDNLN2Axvyl0dWUzr7i698S6UlIKKzQ9QQh/4=",
+          "state": "Active",
+          "lastUpdateStatus": "Successful",
+          "role": "arn:aws:iam::114599789754:role/flo-customer-enrollment-RequestRole-LPnqKCZ2cZSK",
+          "gates": {
+            "FLO_ENROLLMENT_ENABLED": "true"
+          }
+        },
+        {
+          "kind": "approval",
+          "version": "3",
+          "codeSha256": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM=",
+          "state": "Active",
+          "lastUpdateStatus": "Successful",
+          "role": "arn:aws:iam::114599789754:role/flo-customer-enrollment-ApprovalRole-wvLVawLnTqSU",
+          "gates": {
+            "FLO_PRIVATE_APPROVAL_ENABLED": "false"
+          }
+        },
+        {
+          "kind": "redemption",
+          "version": "3",
+          "codeSha256": "nXIUeJbldwMnzh8Mb2oMlSnp2u5JUs3GtpaAek48tlQ=",
+          "state": "Active",
+          "lastUpdateStatus": "Successful",
+          "role": "arn:aws:iam::114599789754:role/flo-customer-enrollment-RedemptionRole-MYVEkFY2DErc",
+          "gates": {
+            "FLO_ENROLLMENT_ENABLED": "false"
+          }
+        }
+      ],
+      "requestRoleBoundary": {
+        "PermissionsBoundaryType": "Policy",
+        "PermissionsBoundaryArn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RequestBoundary-ZRxKvHtuLqmA"
+      }
+    },
+    "api_calls": [
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "GetRole",
+        "status": "success"
+      }
+    ]
+  },
+  "hosted": {
+    "signedInUnlinked": true,
+    "requestClicks": 1,
+    "startedAt": "2026-09-06T19:43:12.063Z",
+    "visibleStatus": "Request created. Wait for independent operator verification; repair access is still blocked.",
+    "privateCodeRecorded": false,
+    "displayedExpiryLocal": "12:48:15 PM",
+    "customerLinked": false,
+    "approvalAttempted": false,
+    "redemptionAttempted": false
+  },
+  "logs": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "access": [
+        {
+          "timestamp": 1788723794066,
+          "requestId": "DStM5jYHvHcEMTw=",
+          "status": "200",
+          "latency": "1213"
+        }
+      ],
+      "runtime": [
+        {
+          "timestamp": 1788723794092,
+          "type": "platform.start",
+          "requestId": "95206085-6c3a-4b77-8637-386d0eadd379",
+          "version": "3"
+        },
+        {
+          "timestamp": 1788723795289,
+          "type": "platform.report",
+          "requestId": "95206085-6c3a-4b77-8637-386d0eadd379",
+          "status": "success",
+          "metrics": {
+            "durationMs": 1196.178,
+            "billedDurationMs": 1197,
+            "memorySizeMB": 256,
+            "maxMemoryUsedMB": 110
+          }
+        }
+      ],
+      "boundedInterval": [
+        "2026-09-06T19:43:10Z",
+        "2026-09-06T19:43:25Z"
+      ],
+      "truncated": false
+    },
+    "api_calls": [
+      {
+        "service": "logs",
+        "operation": "FilterLogEvents",
+        "status": "success",
+        "n_items": {
+          "events": 1,
+          "searchedLogStreams": 0
+        }
+      },
+      {
+        "service": "logs",
+        "operation": "FilterLogEvents",
+        "status": "success",
+        "n_items": {
+          "events": 2,
+          "searchedLogStreams": 0
+        }
+      }
+    ]
+  },
+  "credentialFreeChecks": {
+    "time": "2026-09-06T19:44:50.018Z",
+    "maximumRequests": 12,
+    "actualRequests": 12,
+    "credentialFree": true,
+    "passed": true,
+    "results": [
+      {
+        "name": "existing homepage",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 662
+      },
+      {
+        "name": "pairing page",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 149
+      },
+      {
+        "name": "pairing script",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 114
+      },
+      {
+        "name": "no customer session",
+        "expected": 401,
+        "actual": 401,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 96
+      },
+      {
+        "name": "privacy notice",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 80
+      },
+      {
+        "name": "terms",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 81
+      },
+      {
+        "name": "request without session",
+        "expected": 401,
+        "actual": 401,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 100
+      },
+      {
+        "name": "request without origin",
+        "expected": 403,
+        "actual": 403,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 95
+      },
+      {
+        "name": "request wrong content type",
+        "expected": 415,
+        "actual": 415,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 93
+      },
+      {
+        "name": "request invalid schema",
+        "expected": 400,
+        "actual": 400,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 94
+      },
+      {
+        "name": "redemption route absent",
+        "expected": 404,
+        "actual": 404,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 111
+      },
+      {
+        "name": "official Alexa authorization not configured",
+        "expected": 401,
+        "actual": 401,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 130
+      }
+    ]
+  },
+  "limitations": [
+    "Gateway log format has requestId/status/latency only; correlation uses bounded time and request Lambda activity, not route in the log.",
+    "No direct customer/enrollment-table read or ownership mapping in this test.",
+    "Approval/redemption remain disabled and require their own KMS correction, designation and live tests.",
+    "No fresh source push, GitHub Actions, video publication or Devpost submission in this increment."
+  ]
+}

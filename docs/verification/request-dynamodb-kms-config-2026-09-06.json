@@ -1,0 +1,15 @@
+{
+  "account": "114599789754",
+  "region": "us-west-2",
+  "tables": {
+    "auth": "flo-customer-staging-AuthState-17UXOCYCV0R2C",
+    "links": "flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+    "requests": "flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK",
+    "approvals": "flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT",
+    "audit": "flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3"
+  },
+  "logGroup": "/aws/lambda/flo-customer-enrollment-request",
+  "lambdaEnvironmentKeyArn": "arn:aws:kms:us-west-2:114599789754:key/57e62ad6-a638-40c9-9af6-df42a6418968",
+  "requestDynamoKeyArn": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4",
+  "redemptionVersionArn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:3"
+}

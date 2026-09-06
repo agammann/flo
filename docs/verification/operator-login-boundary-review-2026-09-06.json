@@ -1,0 +1,1452 @@
+{
+  "status": "REVIEW_ONLY_NOT_ATTACHED",
+  "date": "2026-09-06",
+  "boundary": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "MaximumExactVersionWithFreshMfa",
+        "Effect": "Allow",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+        "Condition": {
+          "ArnEquals": {
+            "aws:PrincipalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+          },
+          "Bool": {
+            "aws:MultiFactorAuthPresent": "true"
+          },
+          "Null": {
+            "aws:MultiFactorAuthAge": "false"
+          },
+          "NumericGreaterThanEquals": {
+            "aws:MultiFactorAuthAge": "0"
+          },
+          "NumericLessThanEquals": {
+            "aws:MultiFactorAuthAge": "900"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-09-06T18:00:00.000Z"
+          }
+        }
+      },
+      {
+        "Sid": "DenyOtherCapabilities",
+        "Effect": "Deny",
+        "NotAction": [
+          "lambda:InvokeFunction",
+          "signin:AuthorizeOAuth2Access",
+          "signin:CreateOAuth2Token"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Sid": "DenyOtherFunctionsAndVersions",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "NotResource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2"
+      },
+      {
+        "Sid": "DenyOtherPrincipals",
+        "Effect": "Deny",
+        "Action": [
+          "lambda:InvokeFunction",
+          "signin:AuthorizeOAuth2Access",
+          "signin:CreateOAuth2Token"
+        ],
+        "Resource": "*",
+        "Condition": {
+          "ArnNotEquals": {
+            "aws:PrincipalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+          }
+        }
+      },
+      {
+        "Sid": "DenyMissingOrFalseMfa",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "*",
+        "Condition": {
+          "BoolIfExists": {
+            "aws:MultiFactorAuthPresent": "false"
+          }
+        }
+      },
+      {
+        "Sid": "DenyMissingMfaAge",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "*",
+        "Condition": {
+          "Null": {
+            "aws:MultiFactorAuthAge": "true"
+          }
+        }
+      },
+      {
+        "Sid": "DenyStaleMfa",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "*",
+        "Condition": {
+          "NumericGreaterThan": {
+            "aws:MultiFactorAuthAge": "900"
+          }
+        }
+      },
+      {
+        "Sid": "DenyInvalidMfaAge",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "*",
+        "Condition": {
+          "NumericLessThan": {
+            "aws:MultiFactorAuthAge": "0"
+          }
+        }
+      },
+      {
+        "Sid": "MaximumSameAccountLocalCliLogin",
+        "Effect": "Allow",
+        "Action": [
+          "signin:AuthorizeOAuth2Access",
+          "signin:CreateOAuth2Token"
+        ],
+        "Resource": "arn:aws:signin:us-west-2:114599789754:oauth2/public-client/localhost",
+        "Condition": {
+          "ArnEquals": {
+            "aws:PrincipalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+          }
+        }
+      },
+      {
+        "Sid": "DenyOtherLoginTargets",
+        "Effect": "Deny",
+        "Action": [
+          "signin:AuthorizeOAuth2Access",
+          "signin:CreateOAuth2Token"
+        ],
+        "NotResource": "arn:aws:signin:us-west-2:114599789754:oauth2/public-client/localhost"
+      },
+      {
+        "Sid": "DenyExpiredInvocationWindow",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "*",
+        "Condition": {
+          "DateGreaterThanEquals": {
+            "aws:CurrentTime": "2026-09-06T18:00:00.000Z"
+          }
+        }
+      },
+      {
+        "Sid": "DenyMissingInvocationTime",
+        "Effect": "Deny",
+        "Action": "lambda:InvokeFunction",
+        "Resource": "*",
+        "Condition": {
+          "Null": {
+            "aws:CurrentTime": "true"
+          }
+        }
+      }
+    ]
+  },
+  "baseline": {
+    "Id": "IamPolicyAutopilot",
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "lambda:InvokeFunction"
+        ],
+        "Resource": [
+          "arn:aws:lambda:us-west-2:114599789754:function:*"
+        ]
+      }
+    ]
+  },
+  "simulation": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "simulationOnly": true,
+      "allMatch": true,
+      "cases": [
+        {
+          "name": "fresh",
+          "expected": "allowed",
+          "decisions": [
+            "allowed"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "age900",
+          "expected": "allowed",
+          "decisions": [
+            "allowed"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "age901",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "missingAge",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "negativeAge",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "noMfa",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "falseMfa",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "wrongUser",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "oldVersion",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "latestVersion",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "unqualified",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "expired",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "missingTime",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "tableWrite",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "changeFunction",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "assumeRole",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "signin:AuthorizeOAuth2Access:local",
+          "expected": "allowed",
+          "decisions": [
+            "allowed"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "signin:AuthorizeOAuth2Access:remote",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "signin:AuthorizeOAuth2Access:wrongRegion",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "signin:AuthorizeOAuth2Access:wrongAccount",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "signin:AuthorizeOAuth2Access:wrongPrincipal",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "signin:CreateOAuth2Token:local",
+          "expected": "allowed",
+          "decisions": [
+            "allowed"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "signin:CreateOAuth2Token:remote",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "signin:CreateOAuth2Token:wrongRegion",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "signin:CreateOAuth2Token:wrongAccount",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        },
+        {
+          "name": "signin:CreateOAuth2Token:wrongPrincipal",
+          "expected": "explicitDeny",
+          "decisions": [
+            "explicitDeny"
+          ],
+          "matches": true,
+          "missingContext": [
+            []
+          ]
+        }
+      ],
+      "caseInputs": [
+        {
+          "name": "fresh",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "0"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "allowed"
+        },
+        {
+          "name": "age900",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "900"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "allowed"
+        },
+        {
+          "name": "age901",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "901"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "missingAge",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "negativeAge",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "-1"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "noMfa",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "falseMfa",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "false"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "0"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "wrongUser",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator-other"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "0"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "oldVersion",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:1",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "0"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "latestVersion",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:$LATEST",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "0"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "unqualified",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "0"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "expired",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "0"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T18:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "missingTime",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+          "action": "lambda:InvokeFunction",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "0"
+              ],
+              "ContextKeyType": "numeric"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "tableWrite",
+          "resource": "arn:aws:dynamodb:us-west-2:114599789754:table/synthetic",
+          "action": "dynamodb:PutItem",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "0"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "changeFunction",
+          "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval",
+          "action": "lambda:UpdateFunctionConfiguration",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "0"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "assumeRole",
+          "resource": "arn:aws:iam::114599789754:role/synthetic",
+          "action": "sts:AssumeRole",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthPresent",
+              "ContextKeyValues": [
+                "true"
+              ],
+              "ContextKeyType": "boolean"
+            },
+            {
+              "ContextKeyName": "aws:MultiFactorAuthAge",
+              "ContextKeyValues": [
+                "0"
+              ],
+              "ContextKeyType": "numeric"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "signin:AuthorizeOAuth2Access:local",
+          "resource": "arn:aws:signin:us-west-2:114599789754:oauth2/public-client/localhost",
+          "action": "signin:AuthorizeOAuth2Access",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "allowed"
+        },
+        {
+          "name": "signin:AuthorizeOAuth2Access:remote",
+          "resource": "arn:aws:signin:us-west-2:114599789754:oauth2/public-client/remote",
+          "action": "signin:AuthorizeOAuth2Access",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "signin:AuthorizeOAuth2Access:wrongRegion",
+          "resource": "arn:aws:signin:us-east-2:114599789754:oauth2/public-client/localhost",
+          "action": "signin:AuthorizeOAuth2Access",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "signin:AuthorizeOAuth2Access:wrongAccount",
+          "resource": "arn:aws:signin:us-west-2:999999999999:oauth2/public-client/localhost",
+          "action": "signin:AuthorizeOAuth2Access",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "signin:AuthorizeOAuth2Access:wrongPrincipal",
+          "resource": "arn:aws:signin:us-west-2:114599789754:oauth2/public-client/localhost",
+          "action": "signin:AuthorizeOAuth2Access",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator-other"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "signin:CreateOAuth2Token:local",
+          "resource": "arn:aws:signin:us-west-2:114599789754:oauth2/public-client/localhost",
+          "action": "signin:CreateOAuth2Token",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "allowed"
+        },
+        {
+          "name": "signin:CreateOAuth2Token:remote",
+          "resource": "arn:aws:signin:us-west-2:114599789754:oauth2/public-client/remote",
+          "action": "signin:CreateOAuth2Token",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "signin:CreateOAuth2Token:wrongRegion",
+          "resource": "arn:aws:signin:us-east-2:114599789754:oauth2/public-client/localhost",
+          "action": "signin:CreateOAuth2Token",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "signin:CreateOAuth2Token:wrongAccount",
+          "resource": "arn:aws:signin:us-west-2:999999999999:oauth2/public-client/localhost",
+          "action": "signin:CreateOAuth2Token",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        },
+        {
+          "name": "signin:CreateOAuth2Token:wrongPrincipal",
+          "resource": "arn:aws:signin:us-west-2:114599789754:oauth2/public-client/localhost",
+          "action": "signin:CreateOAuth2Token",
+          "context": [
+            {
+              "ContextKeyName": "aws:PrincipalArn",
+              "ContextKeyValues": [
+                "arn:aws:iam::114599789754:user/flo/flo-staging-operator-other"
+              ],
+              "ContextKeyType": "string"
+            },
+            {
+              "ContextKeyName": "aws:CurrentTime",
+              "ContextKeyValues": [
+                "2026-09-06T17:00:00Z"
+              ],
+              "ContextKeyType": "date"
+            }
+          ],
+          "expected": "explicitDeny"
+        }
+      ],
+      "loginPolicyVersion": "v3"
+    },
+    "api_calls": [
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "SimulateCustomPolicy",
+        "status": "success",
+        "n_items": {
+          "EvaluationResults": 1
+        }
+      }
+    ]
+  }
+}

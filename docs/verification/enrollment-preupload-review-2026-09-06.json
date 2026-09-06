@@ -1,0 +1,348 @@
+{
+  "checkedAt": "2026-09-06T14:31:59.155427+00:00",
+  "scope": "Read-only pre-upload review; no uploads or change sets created.",
+  "live": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "scope": "Read-only artifact configuration, prefix inventory and existing API stage/routes",
+      "results": [
+        {
+          "check": "bucket_location",
+          "response": {
+            "LocationConstraint": "us-west-2"
+          }
+        },
+        {
+          "check": "bucket_versioning",
+          "response": {
+            "Status": "Enabled"
+          }
+        },
+        {
+          "check": "bucket_encryption",
+          "response": {
+            "ServerSideEncryptionConfiguration": {
+              "Rules": [
+                {
+                  "ApplyServerSideEncryptionByDefault": {
+                    "SSEAlgorithm": "AES256"
+                  },
+                  "BucketKeyEnabled": false,
+                  "BlockedEncryptionTypes": {
+                    "EncryptionType": [
+                      "SSE-C"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "check": "bucket_public_block",
+          "response": {
+            "PublicAccessBlockConfiguration": {
+              "BlockPublicAcls": true,
+              "IgnorePublicAcls": true,
+              "BlockPublicPolicy": true,
+              "RestrictPublicBuckets": true
+            }
+          }
+        },
+        {
+          "check": "bucket_policy",
+          "response": {
+            "Policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"DenyInsecureTransport\",\"Effect\":\"Deny\",\"Principal\":\"*\",\"Action\":\"s3:*\",\"Resource\":[\"arn:aws:s3:::flo-customer-artifacts-artifacts-wiyewwqt3d1r\",\"arn:aws:s3:::flo-customer-artifacts-artifacts-wiyewwqt3d1r/*\"],\"Condition\":{\"Bool\":{\"aws:SecureTransport\":\"false\"}}}]}"
+          }
+        },
+        {
+          "check": "bucket_ownership",
+          "response": {
+            "OwnershipControls": {
+              "Rules": [
+                {
+                  "ObjectOwnership": "BucketOwnerEnforced"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "check": "enrollment_objects",
+          "response": {
+            "Prefix": "flo-enrollment/"
+          }
+        },
+        {
+          "check": "stage",
+          "response": {
+            "AccessLogSettings": {
+              "DestinationArn": "arn:aws:logs:us-west-2:114599789754:log-group:flo-customer-staging-AccessLogs-cLu3brPSgZes",
+              "Format": "{\"requestId\":\"$context.requestId\",\"status\":\"$context.status\",\"latency\":\"$context.responseLatency\"}"
+            },
+            "AutoDeploy": true,
+            "CreatedDate": "2026-09-06T00:48:30+00:00",
+            "DefaultRouteSettings": {
+              "DetailedMetricsEnabled": false,
+              "ThrottlingBurstLimit": 5,
+              "ThrottlingRateLimit": 2
+            },
+            "DeploymentId": "hzpk3h",
+            "LastDeploymentStatusMessage": "Successfully deployed stage with deployment ID 'hzpk3h'",
+            "LastUpdatedDate": "2026-09-06T00:49:17+00:00",
+            "RouteSettings": {},
+            "StageName": "$default",
+            "StageVariables": {},
+            "Tags": {
+              "aws:cloudformation:stack-id": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-staging/1001b5f0-a988-11f1-ac90-06f537c629f7",
+              "aws:cloudformation:stack-name": "flo-customer-staging",
+              "aws:cloudformation:logical-id": "CustomerStage"
+            }
+          }
+        },
+        {
+          "check": "routes",
+          "response": {
+            "Items": [
+              {
+                "ApiKeyRequired": false,
+                "AuthorizationScopes": [],
+                "AuthorizationType": "NONE",
+                "RequestModels": {},
+                "RouteId": "9v2n2sm",
+                "RouteKey": "$default",
+                "Target": "integrations/qfwnq4s"
+              }
+            ]
+          }
+        },
+        {
+          "check": "lambda_capacity",
+          "response": {
+            "AccountLimit": {
+              "TotalCodeSize": 322122547200,
+              "CodeSizeUnzipped": 262144000,
+              "CodeSizeZipped": 52428800,
+              "ConcurrentExecutions": 1000,
+              "UnreservedConcurrentExecutions": 995
+            },
+            "AccountUsage": {
+              "TotalCodeSize": 617754,
+              "FunctionCount": 2
+            }
+          }
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "s3",
+        "operation": "GetBucketLocation",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "GetBucketVersioning",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "GetBucketEncryption",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "GetPublicAccessBlock",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "GetBucketPolicy",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "GetBucketOwnershipControls",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "ListObjectsV2",
+        "status": "success"
+      },
+      {
+        "service": "apigatewayv2",
+        "operation": "GetStage",
+        "status": "success"
+      },
+      {
+        "service": "apigatewayv2",
+        "operation": "GetRoutes",
+        "status": "success",
+        "n_items": {
+          "Items": 1
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetAccountSettings",
+        "status": "success"
+      }
+    ]
+  },
+  "prices": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "checked_at": "2026-09-06T14:31:59.155427+00:00",
+      "pricing": [
+        {
+          "name": "standard_storage",
+          "products": [
+            {
+              "product": {
+                "productFamily": "Storage",
+                "attributes": {
+                  "volumeType": "Standard",
+                  "storageClass": "General Purpose",
+                  "regionCode": "us-west-2",
+                  "servicecode": "AmazonS3",
+                  "durability": "99.999999999%",
+                  "usagetype": "USW2-TimedStorage-ByteHrs",
+                  "locationType": "AWS Region",
+                  "location": "US West (Oregon)",
+                  "servicename": "Amazon Simple Storage Service",
+                  "availability": "99.99%",
+                  "operation": ""
+                },
+                "sku": "Z3FQZG73HYSPVABR"
+              },
+              "serviceCode": "AmazonS3",
+              "terms": {
+                "OnDemand": {
+                  "Z3FQZG73HYSPVABR.JRTCKXETXF": {
+                    "priceDimensions": {
+                      "Z3FQZG73HYSPVABR.JRTCKXETXF.PXJDJ3YRG3": {
+                        "unit": "GB-Mo",
+                        "endRange": "Inf",
+                        "description": "$0.021 per GB - storage used / month over 500 TB",
+                        "appliesTo": [],
+                        "rateCode": "Z3FQZG73HYSPVABR.JRTCKXETXF.PXJDJ3YRG3",
+                        "beginRange": "512000",
+                        "pricePerUnit": {
+                          "USD": "0.0210000000"
+                        }
+                      },
+                      "Z3FQZG73HYSPVABR.JRTCKXETXF.PGHJ3S3EYE": {
+                        "unit": "GB-Mo",
+                        "endRange": "51200",
+                        "description": "$0.023 per GB - first 50 TB / month of storage used",
+                        "appliesTo": [],
+                        "rateCode": "Z3FQZG73HYSPVABR.JRTCKXETXF.PGHJ3S3EYE",
+                        "beginRange": "0",
+                        "pricePerUnit": {
+                          "USD": "0.0230000000"
+                        }
+                      },
+                      "Z3FQZG73HYSPVABR.JRTCKXETXF.D42MF2PVJS": {
+                        "unit": "GB-Mo",
+                        "endRange": "512000",
+                        "description": "$0.022 per GB - next 450 TB / month of storage used",
+                        "appliesTo": [],
+                        "rateCode": "Z3FQZG73HYSPVABR.JRTCKXETXF.D42MF2PVJS",
+                        "beginRange": "51200",
+                        "pricePerUnit": {
+                          "USD": "0.0220000000"
+                        }
+                      }
+                    },
+                    "sku": "Z3FQZG73HYSPVABR",
+                    "effectiveDate": "2026-08-01T00:00:00Z",
+                    "offerTermCode": "JRTCKXETXF",
+                    "termAttributes": {}
+                  }
+                }
+              },
+              "version": "20260831092225",
+              "publicationDate": "2026-08-31T09:22:25Z"
+            }
+          ]
+        },
+        {
+          "name": "standard_put",
+          "products": [
+            {
+              "product": {
+                "productFamily": "API Request",
+                "attributes": {
+                  "regionCode": "us-west-2",
+                  "servicecode": "AmazonS3",
+                  "groupDescription": "PUT/COPY/POST or LIST requests",
+                  "usagetype": "USW2-Requests-Tier1",
+                  "locationType": "AWS Region",
+                  "location": "US West (Oregon)",
+                  "servicename": "Amazon Simple Storage Service",
+                  "operation": "",
+                  "group": "S3-API-Tier1"
+                },
+                "sku": "D4PMUVH6F64HK2D6"
+              },
+              "serviceCode": "AmazonS3",
+              "terms": {
+                "OnDemand": {
+                  "D4PMUVH6F64HK2D6.JRTCKXETXF": {
+                    "priceDimensions": {
+                      "D4PMUVH6F64HK2D6.JRTCKXETXF.6YS6EN2CT7": {
+                        "unit": "Requests",
+                        "endRange": "Inf",
+                        "description": "$0.005 per 1,000 PUT, COPY, POST, or LIST requests",
+                        "appliesTo": [],
+                        "rateCode": "D4PMUVH6F64HK2D6.JRTCKXETXF.6YS6EN2CT7",
+                        "beginRange": "0",
+                        "pricePerUnit": {
+                          "USD": "0.0000050000"
+                        }
+                      }
+                    },
+                    "sku": "D4PMUVH6F64HK2D6",
+                    "effectiveDate": "2026-08-01T00:00:00Z",
+                    "offerTermCode": "JRTCKXETXF",
+                    "termAttributes": {}
+                  }
+                }
+              },
+              "version": "20260831092225",
+              "publicationDate": "2026-08-31T09:22:25Z"
+            }
+          ]
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "pricing",
+        "operation": "GetProducts",
+        "status": "success",
+        "n_items": {
+          "PriceList": 1
+        }
+      },
+      {
+        "service": "pricing",
+        "operation": "GetProducts",
+        "status": "success",
+        "n_items": {
+          "PriceList": 1
+        }
+      }
+    ]
+  },
+  "calculation": {
+    "totalZipBytes": 1065173,
+    "totalMiB": 1.0158281326293945,
+    "storageUSDPerGBMonth": 0.023,
+    "threeZipsStorageUSDPerMonth": 0.00002281645219773054,
+    "threePutsUSD": 0.000015000000000000002
+  }
+}

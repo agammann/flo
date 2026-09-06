@@ -34,11 +34,6 @@
       "AllowedPattern": "arn:aws:kms:us-west-2:[0-9]{12}:key/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}",
       "Description": "Verified existing alias/aws/lambda key ARN in this account/region. Boundary scope only; does not change function encryption or create a key."
     },
-    "RequestDynamoKeyArn": {
-      "Type": "String",
-      "AllowedPattern": "arn:aws:kms:us-west-2:[0-9]{12}:key/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}",
-      "Description": "Verified existing shared KMS key of AuthTable, LinksTable and RequestsTable; distinct from LambdaEnvironmentKeyArn. Request boundary only; no key or table changes."
-    },
     "ArtifactBucket": {
       "Type": "String",
       "AllowedPattern": "[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]",
@@ -161,6 +156,11 @@
       "Type": "String",
       "AllowedPattern": "[A-Za-z0-9+/]{43}=",
       "Description": "Base64 SHA-256 of exact uploaded ZIP; Lambda version publication checks it."
+    },
+    "RequestDynamoKeyArn": {
+      "Type": "String",
+      "AllowedPattern": "arn:aws:kms:us-west-2:[0-9]{12}:key/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}",
+      "Description": "Verified existing shared KMS key of AuthTable, LinksTable and RequestsTable; distinct from LambdaEnvironmentKeyArn. Request boundary only; no key or table changes."
     }
   },
   "Conditions": {
@@ -429,6 +429,20 @@
               }
             },
             {
+              "Sid": "DenyNonTransactionalWrites",
+              "Effect": "Deny",
+              "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem"
+              ],
+              "Resource": "*",
+              "Condition": {
+                "StringNotEquals": {
+                  "dynamodb:EnclosingOperation": "TransactWriteItems"
+                }
+              }
+            },
+            {
               "Sid": "AllowRequestDynamoDecrypt",
               "Effect": "Allow",
               "Action": "kms:Decrypt",
@@ -506,20 +520,6 @@
                   "kms:EncryptionContext:aws:dynamodb:subscriberId": {
                     "Ref": "AWS::AccountId"
                   }
-                }
-              }
-            },
-            {
-              "Sid": "DenyNonTransactionalWrites",
-              "Effect": "Deny",
-              "Action": [
-                "dynamodb:PutItem",
-                "dynamodb:UpdateItem"
-              ],
-              "Resource": "*",
-              "Condition": {
-                "StringNotEquals": {
-                  "dynamodb:EnclosingOperation": "TransactWriteItems"
                 }
               }
             }

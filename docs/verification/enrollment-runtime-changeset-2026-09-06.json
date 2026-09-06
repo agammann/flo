@@ -1,0 +1,743 @@
+{
+  "status": "CHANGE_SET_READY_NOT_EXECUTED",
+  "sourceCommit": "86139591cdc6f0c10b89055dba078788101e14f7",
+  "templateSha256": "a037959dc25edbb0063fdff78a03bb0815c512b308ecd5408c47c3a58fc56dde",
+  "upload": {
+    "artifacts": [
+      {
+        "role": "request",
+        "key": "flo-enrollment/request/3822fea17cc334b376031bf2974756533afb8baf7c4ba52520a2b343d41087fe.zip",
+        "response": {
+          "AcceptRanges": "bytes",
+          "LastModified": "2026-09-06T14:37:30+00:00",
+          "ContentLength": 381833,
+          "ChecksumSHA256": "OCL+oXzDNLN2Axvyl0dWUzr7i698S6UlIKKzQ9QQh/4=",
+          "ChecksumType": "FULL_OBJECT",
+          "ETag": "\"4d4a90245c10c132f4a003d8b96d15ee\"",
+          "VersionId": "pDJYZlwxmDpZWHvP7s5X9I0E6hoxtbx3",
+          "ContentType": "application/zip",
+          "ServerSideEncryption": "AES256",
+          "Metadata": {}
+        }
+      },
+      {
+        "role": "redemption",
+        "key": "flo-enrollment/redemption/9d72147896e5770327ce1f0c6f6a0c9529e9daee4952cdc6b696807a4e3cb654.zip",
+        "response": {
+          "AcceptRanges": "bytes",
+          "LastModified": "2026-09-06T14:37:31+00:00",
+          "ContentLength": 343735,
+          "ChecksumSHA256": "nXIUeJbldwMnzh8Mb2oMlSnp2u5JUs3GtpaAek48tlQ=",
+          "ChecksumType": "FULL_OBJECT",
+          "ETag": "\"d4653e33a1fbd7d89e9d08d77bc63d2a\"",
+          "VersionId": "9LGMg3B2vKZVtX7sDhuRJt91NuLE1fdT",
+          "ContentType": "application/zip",
+          "ServerSideEncryption": "AES256",
+          "Metadata": {}
+        }
+      },
+      {
+        "role": "approval",
+        "key": "flo-enrollment/approval/98b962142feb83f9ca8e4a03dd18a12c0c198e8ed15a0e321a414842cfc60d33.zip",
+        "response": {
+          "AcceptRanges": "bytes",
+          "LastModified": "2026-09-06T14:37:31+00:00",
+          "ContentLength": 339605,
+          "ChecksumSHA256": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM=",
+          "ChecksumType": "FULL_OBJECT",
+          "ETag": "\"734a641818b44af88b8c65f231cf774f\"",
+          "VersionId": "H_J.f3_uo0_XhbMl4HzQsm7aBw4UYl38",
+          "ContentType": "application/zip",
+          "ServerSideEncryption": "AES256",
+          "Metadata": {}
+        }
+      }
+    ],
+    "apiCalls": [
+      {
+        "service": "s3",
+        "operation": "HeadObject",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "HeadObject",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "HeadObject",
+        "status": "success"
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      }
+    ]
+  },
+  "create": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "create_change_set": {
+        "Id": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-enrollment-runtime-review-20260906T143900Z/466decba-5303-4a2c-acaf-343cf5714aaa",
+        "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment/ac1ab770-aa00-11f1-9ac0-02cd968e7605"
+      },
+      "executed": false
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "CreateChangeSet",
+        "status": "success"
+      }
+    ]
+  },
+  "plan": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "change_set": {
+        "ChangeSetName": "flo-enrollment-runtime-review-20260906T143900Z",
+        "ChangeSetId": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-enrollment-runtime-review-20260906T143900Z/466decba-5303-4a2c-acaf-343cf5714aaa",
+        "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment/ac1ab770-aa00-11f1-9ac0-02cd968e7605",
+        "StackName": "flo-customer-enrollment",
+        "Description": "Review-only isolated enrollment runtime; all processing and public routes disabled. No execution authorized.",
+        "Parameters": [
+          {
+            "ParameterKey": "RedemptionArtifactVersion",
+            "ParameterValue": "9LGMg3B2vKZVtX7sDhuRJt91NuLE1fdT"
+          },
+          {
+            "ParameterKey": "ApprovalCodeSha256",
+            "ParameterValue": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM="
+          },
+          {
+            "ParameterKey": "AuthTable",
+            "ParameterValue": "flo-customer-staging-AuthState-17UXOCYCV0R2C"
+          },
+          {
+            "ParameterKey": "RequestCodeSha256",
+            "ParameterValue": "OCL+oXzDNLN2Axvyl0dWUzr7i698S6UlIKKzQ9QQh/4="
+          },
+          {
+            "ParameterKey": "LwaClientId",
+            "ParameterValue": "[redacted from evidence]"
+          },
+          {
+            "ParameterKey": "ReleaseId",
+            "ParameterValue": "review-20260906-8613959"
+          },
+          {
+            "ParameterKey": "EnableApproval",
+            "ParameterValue": "false"
+          },
+          {
+            "ParameterKey": "ApprovalsTable",
+            "ParameterValue": "flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT"
+          },
+          {
+            "ParameterKey": "RequestArtifactKey",
+            "ParameterValue": "flo-enrollment/request/3822fea17cc334b376031bf2974756533afb8baf7c4ba52520a2b343d41087fe.zip"
+          },
+          {
+            "ParameterKey": "LinksTable",
+            "ParameterValue": "flo-customer-staging-CustomerLinks-RL0X18FE6W9W"
+          },
+          {
+            "ParameterKey": "ArtifactBucket",
+            "ParameterValue": "flo-customer-artifacts-artifacts-wiyewwqt3d1r"
+          },
+          {
+            "ParameterKey": "ExistingApiId",
+            "ParameterValue": "i4ceh4qpdg"
+          },
+          {
+            "ParameterKey": "StateSecretArn",
+            "ParameterValue": "arn:aws:secretsmanager:us-west-2:114599789754:secret:StateEncryptionKey-mGZvNejXxrn2-nqgYZa"
+          },
+          {
+            "ParameterKey": "RedemptionArtifactKey",
+            "ParameterValue": "flo-enrollment/redemption/9d72147896e5770327ce1f0c6f6a0c9529e9daee4952cdc6b696807a4e3cb654.zip"
+          },
+          {
+            "ParameterKey": "ApprovalArtifactVersion",
+            "ParameterValue": "H_J.f3_uo0_XhbMl4HzQsm7aBw4UYl38"
+          },
+          {
+            "ParameterKey": "ApprovalDesignation",
+            "ParameterValue": "[redacted from evidence]"
+          },
+          {
+            "ParameterKey": "EnableEnrollment",
+            "ParameterValue": "false"
+          },
+          {
+            "ParameterKey": "ApprovalArtifactKey",
+            "ParameterValue": "flo-enrollment/approval/98b962142feb83f9ca8e4a03dd18a12c0c198e8ed15a0e321a414842cfc60d33.zip"
+          },
+          {
+            "ParameterKey": "PublishRoutes",
+            "ParameterValue": "false"
+          },
+          {
+            "ParameterKey": "RedemptionCodeSha256",
+            "ParameterValue": "nXIUeJbldwMnzh8Mb2oMlSnp2u5JUs3GtpaAek48tlQ="
+          },
+          {
+            "ParameterKey": "RequestsTable",
+            "ParameterValue": "flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          },
+          {
+            "ParameterKey": "AuditTable",
+            "ParameterValue": "flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3"
+          },
+          {
+            "ParameterKey": "PublicOrigin",
+            "ParameterValue": "https://i4ceh4qpdg.execute-api.us-west-2.amazonaws.com"
+          },
+          {
+            "ParameterKey": "RequestArtifactVersion",
+            "ParameterValue": "pDJYZlwxmDpZWHvP7s5X9I0E6hoxtbx3"
+          }
+        ],
+        "CreationTime": "2026-09-06T14:38:49.068000+00:00",
+        "ExecutionStatus": "AVAILABLE",
+        "Status": "CREATE_COMPLETE",
+        "NotificationARNs": [],
+        "RollbackConfiguration": {},
+        "Capabilities": [
+          "CAPABILITY_IAM"
+        ],
+        "Changes": [
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "ApprovalBaseline",
+              "ResourceType": "AWS::IAM::ManagedPolicy",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "ApprovalBoundary",
+              "ResourceType": "AWS::IAM::ManagedPolicy",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "ApprovalFunction",
+              "ResourceType": "AWS::Lambda::Function",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "ApprovalLogs",
+              "ResourceType": "AWS::Logs::LogGroup",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "ApprovalRole",
+              "ResourceType": "AWS::IAM::Role",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "ApprovalVersion",
+              "ResourceType": "AWS::Lambda::Version",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "RedemptionBaseline",
+              "ResourceType": "AWS::IAM::ManagedPolicy",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "RedemptionBoundary",
+              "ResourceType": "AWS::IAM::ManagedPolicy",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "RedemptionFunction",
+              "ResourceType": "AWS::Lambda::Function",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "RedemptionLogs",
+              "ResourceType": "AWS::Logs::LogGroup",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "RedemptionRole",
+              "ResourceType": "AWS::IAM::Role",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "RedemptionVersion",
+              "ResourceType": "AWS::Lambda::Version",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "RequestBaseline",
+              "ResourceType": "AWS::IAM::ManagedPolicy",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "RequestBoundary",
+              "ResourceType": "AWS::IAM::ManagedPolicy",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "RequestFunction",
+              "ResourceType": "AWS::Lambda::Function",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "RequestLogs",
+              "ResourceType": "AWS::Logs::LogGroup",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "RequestRole",
+              "ResourceType": "AWS::IAM::Role",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "RequestVersion",
+              "ResourceType": "AWS::Lambda::Version",
+              "Scope": [],
+              "Details": []
+            }
+          }
+        ],
+        "IncludeNestedStacks": false,
+        "DeploymentConfig": {
+          "Mode": "STANDARD",
+          "DisableRollback": false
+        }
+      }
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "DescribeChangeSet",
+        "status": "success",
+        "n_items": {
+          "Parameters": 24,
+          "NotificationARNs": 0,
+          "Capabilities": 1,
+          "Changes": 18
+        }
+      }
+    ]
+  },
+  "validation": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "events": {
+        "OperationEvents": [
+          {
+            "EventId": "8c26ebb2-1430-407d-a651-152caf1fca7f",
+            "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment/ac1ab770-aa00-11f1-9ac0-02cd968e7605",
+            "OperationId": "466decba-5303-4a2c-acaf-343cf5714aaa",
+            "OperationType": "CREATE_CHANGESET",
+            "OperationStatus": "SUCCEEDED",
+            "EventType": "STACK_EVENT",
+            "Timestamp": "2026-09-06T14:38:54.376000+00:00",
+            "StartTime": "2026-09-06T14:38:49.132000+00:00",
+            "EndTime": "2026-09-06T14:38:54.376000+00:00"
+          },
+          {
+            "EventId": "d6bce42b-c98b-4700-9bc3-d1811dad1de8",
+            "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment/ac1ab770-aa00-11f1-9ac0-02cd968e7605",
+            "OperationId": "466decba-5303-4a2c-acaf-343cf5714aaa",
+            "OperationType": "CREATE_CHANGESET",
+            "OperationStatus": "IN_PROGRESS",
+            "EventType": "STACK_EVENT",
+            "Timestamp": "2026-09-06T14:38:49.132000+00:00",
+            "StartTime": "2026-09-06T14:38:49.132000+00:00"
+          }
+        ]
+      },
+      "stack": [
+        {
+          "name": "flo-customer-enrollment",
+          "status": "REVIEW_IN_PROGRESS"
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "DescribeEvents",
+        "status": "success",
+        "n_items": {
+          "OperationEvents": 2
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      }
+    ]
+  },
+  "pricing": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "checked_at": "2026-09-06T14:40:42.839012+00:00",
+      "rates": [
+        {
+          "label": "lambda_duration",
+          "products": [
+            {
+              "product": {
+                "productFamily": "Serverless",
+                "attributes": {
+                  "regionCode": "us-west-2",
+                  "servicecode": "AWSLambda",
+                  "groupDescription": "Invocation duration weighted by memory assigned to function, measured in GB-s",
+                  "usagetype": "USW2-Lambda-GB-Second",
+                  "locationType": "AWS Region",
+                  "location": "US West (Oregon)",
+                  "servicename": "AWS Lambda",
+                  "operation": "",
+                  "group": "AWS-Lambda-Duration"
+                },
+                "sku": "XCU6U9G4FCKZQWG9"
+              },
+              "serviceCode": "AWSLambda",
+              "terms": {
+                "OnDemand": {
+                  "XCU6U9G4FCKZQWG9.JRTCKXETXF": {
+                    "priceDimensions": {
+                      "XCU6U9G4FCKZQWG9.JRTCKXETXF.CUKFZ388N3": {
+                        "unit": "Lambda-GB-Second",
+                        "endRange": "6000000000",
+                        "description": "AWS Lambda - Total Compute - US West (Oregon)-Tier-1",
+                        "appliesTo": [],
+                        "rateCode": "XCU6U9G4FCKZQWG9.JRTCKXETXF.CUKFZ388N3",
+                        "beginRange": "0",
+                        "pricePerUnit": {
+                          "USD": "0.0000166667"
+                        }
+                      },
+                      "XCU6U9G4FCKZQWG9.JRTCKXETXF.V7R92EXG27": {
+                        "unit": "Lambda-GB-Second",
+                        "endRange": "Inf",
+                        "description": "AWS Lambda - Total Compute - US West (Oregon)-Tier-3",
+                        "appliesTo": [],
+                        "rateCode": "XCU6U9G4FCKZQWG9.JRTCKXETXF.V7R92EXG27",
+                        "beginRange": "15000000000",
+                        "pricePerUnit": {
+                          "USD": "0.0000133334"
+                        }
+                      },
+                      "XCU6U9G4FCKZQWG9.JRTCKXETXF.QZE2SB4KVB": {
+                        "unit": "Lambda-GB-Second",
+                        "endRange": "15000000000",
+                        "description": "AWS Lambda - Total Compute - US West (Oregon)-Tier-2",
+                        "appliesTo": [],
+                        "rateCode": "XCU6U9G4FCKZQWG9.JRTCKXETXF.QZE2SB4KVB",
+                        "beginRange": "6000000000",
+                        "pricePerUnit": {
+                          "USD": "0.0000150000"
+                        }
+                      }
+                    },
+                    "sku": "XCU6U9G4FCKZQWG9",
+                    "effectiveDate": "2026-08-01T00:00:00Z",
+                    "offerTermCode": "JRTCKXETXF",
+                    "termAttributes": {}
+                  }
+                }
+              },
+              "version": "20260831092318",
+              "publicationDate": "2026-08-31T09:23:18Z"
+            }
+          ]
+        },
+        {
+          "label": "lambda_requests",
+          "products": [
+            {
+              "product": {
+                "productFamily": "Serverless",
+                "attributes": {
+                  "regionCode": "us-west-2",
+                  "servicecode": "AWSLambda",
+                  "groupDescription": "Invocation call for a Lambda function",
+                  "usagetype": "USW2-Request",
+                  "locationType": "AWS Region",
+                  "location": "US West (Oregon)",
+                  "servicename": "AWS Lambda",
+                  "operation": "",
+                  "group": "AWS-Lambda-Requests"
+                },
+                "sku": "ZWHFK83WS2P4WZR6"
+              },
+              "serviceCode": "AWSLambda",
+              "terms": {
+                "OnDemand": {
+                  "ZWHFK83WS2P4WZR6.JRTCKXETXF": {
+                    "priceDimensions": {
+                      "ZWHFK83WS2P4WZR6.JRTCKXETXF.6YS6EN2CT7": {
+                        "unit": "Request",
+                        "endRange": "Inf",
+                        "description": "AWS Lambda - Total Requests - US West (Oregon)",
+                        "appliesTo": [],
+                        "rateCode": "ZWHFK83WS2P4WZR6.JRTCKXETXF.6YS6EN2CT7",
+                        "beginRange": "0",
+                        "pricePerUnit": {
+                          "USD": "0.0000002000"
+                        }
+                      }
+                    },
+                    "sku": "ZWHFK83WS2P4WZR6",
+                    "effectiveDate": "2026-08-01T00:00:00Z",
+                    "offerTermCode": "JRTCKXETXF",
+                    "termAttributes": {}
+                  }
+                }
+              },
+              "version": "20260831092318",
+              "publicationDate": "2026-08-31T09:23:18Z"
+            }
+          ]
+        },
+        {
+          "label": "logs_ingestion",
+          "products": [
+            {
+              "product": {
+                "productFamily": "Data Payload",
+                "attributes": {
+                  "regionCode": "us-west-2",
+                  "servicecode": "AmazonCloudWatch",
+                  "groupDescription": "Existing system, application, and custom log files",
+                  "usagetype": "USW2-DataProcessing-Bytes",
+                  "locationType": "AWS Region",
+                  "location": "US West (Oregon)",
+                  "servicename": "AmazonCloudWatch",
+                  "operation": "PutLogEvents",
+                  "version": "Current",
+                  "group": "Ingested Logs",
+                  "logsDestination": "Amazon CloudWatch Logs"
+                },
+                "sku": "CWY7X4MZ4F3MP5SD"
+              },
+              "serviceCode": "AmazonCloudWatch",
+              "terms": {
+                "OnDemand": {
+                  "CWY7X4MZ4F3MP5SD.JRTCKXETXF": {
+                    "priceDimensions": {
+                      "CWY7X4MZ4F3MP5SD.JRTCKXETXF.6YS6EN2CT7": {
+                        "unit": "GB",
+                        "endRange": "Inf",
+                        "description": "$0.50 per GB custom log data ingested in Standard log class - US West (Oregon)",
+                        "appliesTo": [],
+                        "rateCode": "CWY7X4MZ4F3MP5SD.JRTCKXETXF.6YS6EN2CT7",
+                        "beginRange": "0",
+                        "pricePerUnit": {
+                          "USD": "0.5000000000"
+                        }
+                      }
+                    },
+                    "sku": "CWY7X4MZ4F3MP5SD",
+                    "effectiveDate": "2026-08-01T00:00:00Z",
+                    "offerTermCode": "JRTCKXETXF",
+                    "termAttributes": {}
+                  }
+                }
+              },
+              "version": "20260831092148",
+              "publicationDate": "2026-08-31T09:21:48Z"
+            }
+          ]
+        },
+        {
+          "label": "logs_storage",
+          "products": [
+            {
+              "product": {
+                "productFamily": "Storage Snapshot",
+                "attributes": {
+                  "storageMedia": "Amazon S3",
+                  "regionCode": "us-west-2",
+                  "servicecode": "AmazonCloudWatch",
+                  "groupDescription": "Amazon CloudWatch Logs Storage Current version",
+                  "usagetype": "USW2-TimedStorage-ByteHrs",
+                  "locationType": "AWS Region",
+                  "location": "US West (Oregon)",
+                  "servicename": "AmazonCloudWatch",
+                  "operation": "",
+                  "version": "Current",
+                  "group": "Amazon CloudWatch Standard Storage pricing current"
+                },
+                "sku": "MN45SJANDTCPR9QA"
+              },
+              "serviceCode": "AmazonCloudWatch",
+              "terms": {
+                "OnDemand": {
+                  "MN45SJANDTCPR9QA.JRTCKXETXF": {
+                    "priceDimensions": {
+                      "MN45SJANDTCPR9QA.JRTCKXETXF.6YS6EN2CT7": {
+                        "unit": "GB-Mo",
+                        "endRange": "Inf",
+                        "description": "$0.03 per GB-mo of log storage - US West (Oregon)",
+                        "appliesTo": [],
+                        "rateCode": "MN45SJANDTCPR9QA.JRTCKXETXF.6YS6EN2CT7",
+                        "beginRange": "0",
+                        "pricePerUnit": {
+                          "USD": "0.0300000000"
+                        }
+                      }
+                    },
+                    "sku": "MN45SJANDTCPR9QA",
+                    "effectiveDate": "2026-08-01T00:00:00Z",
+                    "offerTermCode": "JRTCKXETXF",
+                    "termAttributes": {}
+                  }
+                }
+              },
+              "version": "20260831092148",
+              "publicationDate": "2026-08-31T09:21:48Z"
+            }
+          ]
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "pricing",
+        "operation": "GetProducts",
+        "status": "success",
+        "n_items": {
+          "PriceList": 1
+        }
+      },
+      {
+        "service": "pricing",
+        "operation": "GetProducts",
+        "status": "success",
+        "n_items": {
+          "PriceList": 1
+        }
+      },
+      {
+        "service": "pricing",
+        "operation": "GetProducts",
+        "status": "success",
+        "n_items": {
+          "PriceList": 1
+        }
+      },
+      {
+        "service": "pricing",
+        "operation": "GetProducts",
+        "status": "success",
+        "n_items": {
+          "PriceList": 1
+        }
+      }
+    ]
+  },
+  "costFigures": {
+    "lambda_duration": 0.0000166667,
+    "lambda_requests": 2e-7,
+    "logs_ingestion": 0.5,
+    "logs_storage": 0.03,
+    "lambdaUSDPerMillionRequests": 0.19999999999999998,
+    "illustrative12Calls20Seconds256MB": 0.0010024020000000001
+  }
+}

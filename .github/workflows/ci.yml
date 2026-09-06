@@ -22,15 +22,12 @@ jobs:
       - run: pnpm build
       - run: pnpm build:customer
       - run: pnpm build:enrollment
-      - run: python3 -m unittest discover -s scripts -p 'test_package_customer_enrollment.py' -v
+      - run: python3 -m unittest discover -s scripts -p 'test_*.py' -v
       - run: node scripts/check-enrollment-state-plan.mjs
       # Historical evidence integrity only. Current retention template requires
       # fresh cfn-lint/Guard review; the default checker deliberately rejects it.
       - run: node scripts/check-enrollment-policy-exceptions.mjs --historical
-      - run: node --test scripts/check-enrollment-policy-exceptions.test.mjs
-      - run: node --test scripts/enrollment-operator-boundary.test.mjs
-      - run: node --test scripts/enrollment-runtime-boundary.test.mjs
-      - run: node --test scripts/enrollment-runtime-template.test.mjs
+      - run: node --test scripts/*.test.mjs
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test

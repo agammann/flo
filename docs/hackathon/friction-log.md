@@ -1,5 +1,71 @@
 # Hackathon friction log
 
+## 2026-09-06 UTC — Request-only runtime correction verified in the hosted flow
+
+- **Technology:** CloudFormation, IAM boundary, DynamoDB/KMS, Login with Amazon.
+- **Attempt:** Deploy the separately approved request-only correction, refresh the website session, and create exactly one pending pairing request.
+- **Expected:** Request succeeds without approving or linking a customer; rejected inputs and disabled private stages remain gated.
+- **Actual:** UPDATE_COMPLETE; deployed boundary v5 exactly matches review. Browser shows the pending-verification message; bounded API log reports HTTP 200 and request Lambda version 3 succeeds. All 12 credential-free hosted checks passed.
+- **Documentation/evidence used:** [Sanitized deployment and hosted evidence](../verification/request-dynamodb-kms-deployment-2026-09-06.md), live IAM/function readback, bounded CloudWatch logs.
+- **Workaround:** No further relaxation or retry. Keep the private code out of logs/evidence; let its server-enforced lifetime expire. Private approval/redemption require separate KMS review before enablement.
+- **Suggested improvement:** Provide a complete multi-service KMS boundary example and explicitly distinguish session identity, pending enrollment and approved customer ownership.
+- **Impact:** Request-stage blocker resolved; ownership linking and official Alexa+ validation remain separate unfinished steps.
+
+## 2026-09-06 UTC — Separate request runtime KMS branches reviewed
+
+- **Technology:** IAM boundaries, DynamoDB encryption, Lambda environment keys, CloudFormation.
+- **Attempt:** Correct the request-role downstream KMS denial without modifying private approval/redemption or application resources.
+- **Expected:** Exact key/account/service/table constraints permit only the intended database leg and preserve all other denials.
+- **Actual:** Both AWS simulation suites passed (64/64 and 65/65); cfn-lint has no findings; Guard retains the same three scoped exceptions. The review-only change set contains one in-place RequestBoundary modification, no other resource changes, and no pre-deployment validation errors. Live execution remains untested.
+- **Documentation used:** AWS DynamoDB encryption usage notes, KMS ViaService conditions, service-authorization reference, and [exact review evidence](../verification/request-dynamodb-kms-review-2026-09-06.md).
+- **Workaround:** Scope Lambda context denials to the environment key and add a separate exact-key DynamoDB branch with independent missing/wrong-context denials. Keep approval and redemption disabled.
+- **Suggested improvement:** Add a permissions-boundary example covering both KMS contexts and explain scalar condition matching for multiple allowed table names. Surface application HTTP errors alongside platform success reports.
+- **Impact:** Request-only correction is ready for separate execution approval; this does not establish customer ownership linking or Alexa+ account linking.
+
+## 2026-09-06 UTC — Successful verifier exposes separate runtime KMS dependency
+
+- **Technology:** IAM boundaries, Lambda, DynamoDB and KMS.
+- **Attempt:** Execute the reviewed operator correction, then one request-only browser test.
+- **Expected:** Projected synthetic read succeeds, forbidden reads fail, and the isolated request service creates one short-lived pending request.
+- **Actual:** All three operator probes passed; CloudTrail confirmed the permitted service-mediated decrypt. The browser request returned 503 because the request Lambda's different boundary permits only Lambda-environment decryption and explicitly rejects DynamoDB decryption.
+- **Documentation/evidence used:** Live policy readback, sanitized CloudTrail events, API Gateway status logs, and the local runtime boundary generator.
+- **Workaround:** Stop without retry, exit private input, remove temporary grants first, and verify complete cleanup. Prepare the separate runtime correction before another request; do not relax data ownership or claim successful pairing.
+- **Suggested improvement:** Provide an end-to-end boundary example that distinguishes Lambda environment decryption from DynamoDB encryption dependencies. Include application HTTP status alongside Lambda runtime success in test evidence.
+- **Impact:** Operator KMS validation is complete; private request observation and customer linking remain incomplete.
+
+## 2026-09-06 UTC — DynamoDB downstream KMS permission boundary
+
+- **Technology:** DynamoDB encryption, KMS, IAM permissions boundaries, and policy simulation.
+- **Attempt:** Run a projected synthetic-key read using a freshly MFA-authenticated temporary verifier.
+- **Expected:** The narrowly authorized GetItem can read its six permitted non-proof attributes.
+- **Actual:** The previous live attempt reached DynamoDB but the boundary explicitly denied its downstream kms:Decrypt. The denied CloudTrail event omitted requestParameters; absent encryption-context evidence must not be interpreted as a context mismatch.
+- **Documentation used:** AWS DynamoDB encryption usage notes, KMS ViaService conditions, and the published KMS service-authorization reference.
+- **Workaround:** Prepared a review-only exact-key, DynamoDB-mediated Decrypt correction with independent missing/wrong context denials. Kept the finite window and fresh-MFA checks on every DynamoDB read because table keys may be cached. Both complete 57-case AWS simulation suites passed; live operator execution remains unverified and separately gated.
+- **Suggested improvement:** Include a projected-read permissions-boundary example covering service-mediated KMS dependencies and explain which denied-event fields may be absent.
+- **Impact:** Delayed the private verifier test without changing customer links or expanding repair access. Four initial simulation fixtures used the wrong service ARN type; corrected them, added fixture checks, and reran both full suites rather than treating implicit denials as sufficient evidence.
+
+## 2026-09-06 UTC — Successful disabled checks filtered by system log level
+
+- **Technology:** Lambda JSON system-log filtering and CloudWatch Logs.
+- **Attempt:** Verify operational log delivery after the approved KMS boundary repair using disabled-state invocations.
+- **Expected:** Successful invocations provide observable start/report records in the exact function log groups.
+- **Actual:** SystemLogLevel WARN filtered normal platform records, and the disabled handlers emitted no application logs. Successful invocation responses therefore did not establish CloudWatch delivery.
+- **Documentation:** [Lambda log-level filtering](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-cloudwatchlogs-log-level.html) and observed function configuration.
+- **Workaround:** After separate review and owner approval, set system INFO while retaining application WARN, JSON format, exact own-group permissions and seven-day retention. Publish new immutable versions and retain the old versions.
+- **Suggested improvement:** Include a payload-free successful-invocation log-delivery check in setup guidance, distinguishing invocation Tail from records ingested into CloudWatch.
+- **Impact:** Version 2 of all three functions returned the intended disabled response. Actual GetLogEvents readback matched each invocation's start and successful report. Logging delivery is verified without widening log permissions; enabled enrollment remains unverified. [Execution evidence](../verification/enrollment-system-logs-deployment-2026-09-06.md).
+
+## 2026-09-06 UTC — Lambda startup denied by maximum-permission boundary
+
+- **Technology:** Lambda environment encryption, AWS-managed KMS key, IAM permissions boundaries, CloudTrail.
+- **Attempt:** Execute the separately approved disabled enrollment runtime and invoke approval version 1 with synthetic input.
+- **Expected:** Handler returns its disabled-state response without accessing customer state.
+- **Actual:** Lambda failed before the handler with `KMSAccessDeniedException`; the boundary's deny of all unlisted actions also denied startup decryption. No successful handler test resulted.
+- **Documentation:** [Lambda environment encryption](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html), [KMS least privilege](https://docs.aws.amazon.com/kms/latest/developerguide/least-privilege.html), and actual Encrypt/CreateGrant CloudTrail events for the three functions.
+- **Workaround:** Admit only `kms:Decrypt` against the verified existing Lambda key, requiring the exact caller account and own function encryption context. Keep explicit denies for other keys and wrong/missing contexts. The unchanged Autopilot application baselines are not a complete description of service-managed startup dependencies. The correction was first tested and reviewed, then deployed only after separate owner approval.
+- **Suggested improvement:** Document an explicit-deny boundary example for default Lambda environment encryption, including the exact startup context and a validation case separate from application SDK analysis.
+- **Impact:** Infrastructure creation initially passed but startup verification was blocked. Local regressions and 57 AWS boundary-simulator decisions passed for the proposed correction. After separate owner approval, the correction was deployed and all three published functions returned their intended disabled-state responses. Enabled enrollment and log delivery remain unverified. [Execution evidence](../verification/enrollment-kms-deployment-2026-09-06.md).
+
 ## 2026-09-06 UTC — Scoped log-permission simulation discrepancy
 
 - **Technology:** IAM SimulateCustomPolicy, CloudWatch Logs, IAM Policy Autopilot 0.3.0.
@@ -7,7 +73,7 @@
 - **Expected:** The exact allowed log stream should match; unrelated streams should be denied.
 - **Actual:** Table and Lambda-version cases matched expectations, but log cases returned implicit deny, including a separate minimal exact-resource Allow control. No cause has been established.
 - **Documentation:** [IAM simulator](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html) and [Logs service reference](https://servicereference.us-east-1.amazonaws.com/v1/logs/logs.json).
-- **Workaround:** None applied. Preserve the discrepancy and keep runtime route enablement gated pending official-tooling/live-role log verification. Do not expand log resources merely to obtain a simulator pass.
+- **Workaround:** No permission expansion applied. Preserve the unexplained simulator discrepancy. A later, separately approved INFO system-log update and version-2 checks established actual own-group log delivery for all three functions. This does not explain or repair the simulator result. [Live delivery evidence](../verification/enrollment-system-logs-deployment-2026-09-06.md).
 - **Suggested improvement:** Surface why an otherwise matching exact-resource control has no matching statements, including unsupported simulation cases if applicable.
 - **Impact:** Runtime deployment readiness remains incomplete; no live policy or customer access was changed. [Evidence](../verification/enrollment-runtime-boundary-2026-09-06.json).
 

@@ -1,0 +1,367 @@
+{
+  "status": "LIVE_OPERATOR_DISABLED_VERSION_VERIFIED_CLEANUP_COMPLETE",
+  "date": "2026-09-06",
+  "scope": {
+    "account": "114599789754",
+    "region": "us-west-2",
+    "operator": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+    "functionArn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+    "maximumDryRuns": 4,
+    "actualDryRuns": 4,
+    "maximumSynchronousInvocations": 1,
+    "actualSynchronousInvocations": 1,
+    "automaticRetries": 0,
+    "customerLinksCreated": 0,
+    "routesEnabled": false
+  },
+  "freshMfaMetadata": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "checkedAt": "2026-09-06T17:01:08.643357+00:00",
+      "operatorEvents": [
+        {
+          "eventId": "80e98955-45fd-4f96-b9f3-2d6dbaee2e43",
+          "eventTime": "2026-09-06T16:58:13+00:00",
+          "sessionCreationDate": "2026-09-06T16:57:42Z",
+          "mfaAuthenticated": "true",
+          "sessionAgeSecondsAtCheck": 206.643357,
+          "freshMetadata": true
+        }
+      ],
+      "freshSessionMetadataVerified": true
+    },
+    "api_calls": [
+      {
+        "service": "cloudtrail",
+        "operation": "LookupEvents",
+        "status": "success",
+        "n_items": {
+          "Events": 1
+        }
+      }
+    ]
+  },
+  "setup": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "boundaryVerifiedBeforeGrant": true,
+      "grantVerified": true,
+      "disabledVersionVerified": true,
+      "verifiedAt": "2026-09-06T17:02:02.080949+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListUserPolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListAttachedUserPolicies",
+        "status": "success",
+        "n_items": {
+          "AttachedPolicies": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListGroupsForUser",
+        "status": "success",
+        "n_items": {
+          "Groups": 0
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "CreatePolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "PutUserPermissionsBoundary",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "PutUserPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetUserPolicy",
+        "status": "success"
+      }
+    ]
+  },
+  "initialDryRun": {
+    "chunk_id": "b18edc",
+    "wall_time_seconds": 1.7648215999999999,
+    "exit_code": 1,
+    "original_token_count": 101,
+    "output": "\r\naws: [ERROR]: An error occurred (AccessDeniedException) when calling the Invoke operation (reached max retries: 0): User: arn:aws:iam::114599789754:user/flo/flo-staging-operator is not authorized to perform: lambda:InvokeFunction on resource: arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2 because no identity-based policy allows the lambda:InvokeFunction action\r\n"
+  },
+  "grantReadback": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "userArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+      "boundary": {
+        "PermissionsBoundaryType": "Policy",
+        "PermissionsBoundaryArn": "arn:aws:iam::114599789754:policy/flo/FloOperatorDisabledV2Boundary20260906"
+      },
+      "grant": {
+        "UserName": "flo-staging-operator",
+        "PolicyName": "FloDisabledApprovalV2ControlledTest20260906",
+        "PolicyDocument": {
+          "Id": "IamPolicyAutopilot",
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:InvokeFunction"
+              ],
+              "Resource": [
+                "arn:aws:lambda:us-west-2:114599789754:function:*"
+              ]
+            }
+          ]
+        }
+      },
+      "attached": {
+        "AttachedPolicies": [
+          {
+            "PolicyName": "SignInLocalDevelopmentAccess",
+            "PolicyArn": "arn:aws:iam::aws:policy/SignInLocalDevelopmentAccess"
+          }
+        ]
+      },
+      "verifiedAt": "2026-09-06T17:02:57.927936+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetUserPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListAttachedUserPolicies",
+        "status": "success",
+        "n_items": {
+          "AttachedPolicies": 1
+        }
+      }
+    ]
+  },
+  "exactVersionFollowupDryRun": {
+    "chunk_id": "3bb464",
+    "wall_time_seconds": 1.8568872,
+    "exit_code": 0,
+    "original_token_count": 8,
+    "output": "{\r\n    \"StatusCode\": 204\r\n}\r\n"
+  },
+  "negativeDryRuns": [
+    {
+      "chunk_id": "640ab9",
+      "wall_time_seconds": 1.8558729999999999,
+      "exit_code": 1,
+      "original_token_count": 102,
+      "output": "\r\naws: [ERROR]: An error occurred (AccessDeniedException) when calling the Invoke operation (reached max retries: 0): User: arn:aws:iam::114599789754:user/flo/flo-staging-operator is not authorized to perform: lambda:InvokeFunction on resource: arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:$LATEST because no identity-based policy allows the lambda:InvokeFunction action\r\n"
+    },
+    {
+      "chunk_id": "3fb89d",
+      "wall_time_seconds": 1.8227442,
+      "exit_code": 1,
+      "original_token_count": 113,
+      "output": "\r\naws: [ERROR]: An error occurred (AccessDeniedException) when calling the Invoke operation (reached max retries: 0): User: arn:aws:iam::114599789754:user/flo/flo-staging-operator is not authorized to perform: lambda:InvokeFunction on resource: arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval with an explicit deny in a permissions boundary: arn:aws:iam::114599789754:policy/flo/FloOperatorDisabledV2Boundary20260906\r\n"
+    }
+  ],
+  "preinvoke": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "version": "2",
+      "codeSha256": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM=",
+      "approvalEnabled": false,
+      "checkedAt": "2026-09-06T17:06:14.797667+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      }
+    ]
+  },
+  "invocation": {
+    "chunk_id": "a3fdd9",
+    "wall_time_seconds": 2.4223803999999998,
+    "exit_code": 0,
+    "original_token_count": 27,
+    "output": "{\r\n    \"StatusCode\": 200,\r\n    \"ExecutedVersion\": \"2\"\r\n}\r\nVerified disabled response: ok=false, status=503\r\n"
+  },
+  "cleanup": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "cleanupVerified": true,
+      "userArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+      "boundaryAttached": false,
+      "inlinePolicies": [],
+      "groups": [],
+      "attachedPolicies": [
+        {
+          "PolicyName": "SignInLocalDevelopmentAccess",
+          "PolicyArn": "arn:aws:iam::aws:policy/SignInLocalDevelopmentAccess"
+        }
+      ],
+      "temporaryManagedPolicyAbsent": true,
+      "verifiedAt": "2026-09-06T17:07:05.108344+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "iam",
+        "operation": "DeleteUserPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListUserPolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "DeleteUserPermissionsBoundary",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "DeletePolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListAttachedUserPolicies",
+        "status": "success",
+        "n_items": {
+          "AttachedPolicies": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListUserPolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListGroupsForUser",
+        "status": "success",
+        "n_items": {
+          "Groups": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListPolicies",
+        "status": "success",
+        "n_items": {
+          "Policies": 0
+        }
+      }
+    ]
+  },
+  "endState": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "stackName": "flo-customer-enrollment",
+      "stackStatus": "UPDATE_COMPLETE",
+      "gates": {
+        "EnableApproval": "false",
+        "EnableEnrollment": "false",
+        "PublishRoutes": "false"
+      },
+      "approvalVersion": "2",
+      "approvalEnabled": "false",
+      "codeSha256": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM=",
+      "verifiedAt": "2026-09-06T17:08:12.702416+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 5
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      }
+    ]
+  },
+  "limitations": [
+    "Initial exact-version authorization was denied; a later check succeeded without policy changes. IAM propagation is a plausible explanation, not a proved cause.",
+    "The latest-version denial did not identify the boundary as its reason; do not treat it as isolated proof of the boundary mechanism.",
+    "Fresh MFA metadata plus successful real authorization is verified. Enabled approval, customer ownership mapping, hosted enrollment and Alexa+ account linking are not proved.",
+    "An initial final-state lookup used a nonexistent stack name; corrected discovery verified flo-customer-enrollment."
+  ]
+}

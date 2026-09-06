@@ -1,0 +1,297 @@
+{
+  "status": "ACTUAL_AUTHORIZATION_DENIED_CLEANUP_VERIFIED",
+  "date": "2026-09-06",
+  "dryRunCalls": 1,
+  "functionExecutions": 0,
+  "automaticRetries": 0,
+  "preflight": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "preflightPassed": true,
+      "userArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+      "attachedPolicies": [
+        {
+          "PolicyName": "SignInLocalDevelopmentAccess",
+          "PolicyArn": "arn:aws:iam::aws:policy/SignInLocalDevelopmentAccess"
+        }
+      ],
+      "inlinePolicies": [],
+      "groups": [],
+      "boundaryAttached": false,
+      "disabledFunctionArn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+      "codeSha256": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM=",
+      "existingFloPolicies": []
+    },
+    "api_calls": [
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListAttachedUserPolicies",
+        "status": "success",
+        "n_items": {
+          "AttachedPolicies": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListUserPolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListGroupsForUser",
+        "status": "success",
+        "n_items": {
+          "Groups": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListPolicies",
+        "status": "success",
+        "n_items": {
+          "Policies": 0
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      }
+    ]
+  },
+  "boundary": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "boundaryArn": "arn:aws:iam::114599789754:policy/flo/FloOperatorDisabledV2Boundary20260906",
+      "boundaryVerified": true,
+      "identityGrantAdded": false,
+      "expiresAt": "2026-09-06T18:00:00.000Z"
+    },
+    "api_calls": [
+      {
+        "service": "iam",
+        "operation": "CreatePolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "PutUserPermissionsBoundary",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      }
+    ]
+  },
+  "grant": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "grantVerified": true,
+      "policyName": "FloDisabledApprovalV2ControlledTest20260906",
+      "boundaryVerifiedBeforeGrant": true,
+      "verifiedAt": "2026-09-06T16:45:04.123024+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "PutUserPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetUserPolicy",
+        "status": "success"
+      }
+    ]
+  },
+  "localOperatorDryRun": {
+    "chunk_id": "3cb217",
+    "wall_time_seconds": 1.8011428999999999,
+    "exit_code": 1,
+    "original_token_count": 113,
+    "output": "\r\naws: [ERROR]: An error occurred (AccessDeniedException) when calling the Invoke operation (reached max retries: 0): User: arn:aws:iam::114599789754:user/flo/flo-staging-operator is not authorized to perform: lambda:InvokeFunction on resource: arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2 with an explicit deny in a permissions boundary: arn:aws:iam::114599789754:policy/flo/FloOperatorDisabledV2Boundary20260906\r\n"
+  },
+  "cleanup": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "cleanupVerified": true,
+      "grantRemovedBeforeBoundary": true,
+      "temporaryManagedPolicyDeleted": true,
+      "boundaryAttached": false,
+      "inlinePolicies": [],
+      "groups": [],
+      "remainingAttachedPolicies": [
+        {
+          "PolicyName": "SignInLocalDevelopmentAccess",
+          "PolicyArn": "arn:aws:iam::aws:policy/SignInLocalDevelopmentAccess"
+        }
+      ],
+      "verifiedAt": "2026-09-06T16:46:04.623698+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "iam",
+        "operation": "DeleteUserPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListUserPolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "DeleteUserPermissionsBoundary",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "DeletePolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListAttachedUserPolicies",
+        "status": "success",
+        "n_items": {
+          "AttachedPolicies": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListUserPolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListGroupsForUser",
+        "status": "success",
+        "n_items": {
+          "Groups": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListPolicies",
+        "status": "success",
+        "n_items": {
+          "Policies": 0
+        }
+      }
+    ]
+  },
+  "cloudTrailMetadata": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "region": "us-west-2",
+      "matchingOperatorIdentityEvents": [
+        {
+          "eventId": "4fbe7483-e503-47ba-8af1-a7f5acab3493",
+          "eventTime": "2026-09-06T16:43:15+00:00",
+          "eventName": "GetCallerIdentity",
+          "principalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+          "identityType": "IAMUser",
+          "sessionCreationDate": "2026-09-06T16:26:31Z",
+          "mfaAuthenticated": "true"
+        },
+        {
+          "eventId": "e86fc786-4012-451c-90ac-79704e2e630c",
+          "eventTime": "2026-09-06T16:27:04+00:00",
+          "eventName": "GetCallerIdentity",
+          "principalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+          "identityType": "IAMUser",
+          "sessionCreationDate": "2026-09-06T16:26:31Z",
+          "mfaAuthenticated": "true"
+        }
+      ],
+      "limit": "CloudTrail delivery can lag; these attributes are not proof of IAM request condition keys."
+    },
+    "api_calls": [
+      {
+        "service": "cloudtrail",
+        "operation": "LookupEvents",
+        "status": "success",
+        "n_items": {
+          "Events": 5
+        }
+      }
+    ]
+  },
+  "finalCloud": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "stackStatus": "UPDATE_COMPLETE",
+      "gates": {
+        "EnableApproval": "false",
+        "EnableEnrollment": "false",
+        "PublishRoutes": "false"
+      },
+      "functionVersion": "2",
+      "approvalEnabled": false,
+      "codeSha256": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM="
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      }
+    ]
+  }
+}

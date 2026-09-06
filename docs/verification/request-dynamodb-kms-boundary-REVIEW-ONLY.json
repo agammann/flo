@@ -1,0 +1,246 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyEveryOtherCapability",
+      "Effect": "Deny",
+      "NotAction": [
+        "dynamodb:GetItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "lambda:InvokeFunction",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowdynamodbGetItem",
+      "Effect": "Allow",
+      "Action": "dynamodb:GetItem",
+      "Resource": [
+        "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C"
+      ]
+    },
+    {
+      "Sid": "DenyOtherdynamodbGetItemResources",
+      "Effect": "Deny",
+      "Action": "dynamodb:GetItem",
+      "NotResource": [
+        "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C"
+      ]
+    },
+    {
+      "Sid": "AllowdynamodbConditionCheckItem",
+      "Effect": "Allow",
+      "Action": "dynamodb:ConditionCheckItem",
+      "Resource": [
+        "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+        "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W"
+      ]
+    },
+    {
+      "Sid": "DenyOtherdynamodbConditionCheckItemResources",
+      "Effect": "Deny",
+      "Action": "dynamodb:ConditionCheckItem",
+      "NotResource": [
+        "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+        "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W"
+      ]
+    },
+    {
+      "Sid": "AllowdynamodbPutItem",
+      "Effect": "Allow",
+      "Action": "dynamodb:PutItem",
+      "Resource": [
+        "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+      ]
+    },
+    {
+      "Sid": "DenyOtherdynamodbPutItemResources",
+      "Effect": "Deny",
+      "Action": "dynamodb:PutItem",
+      "NotResource": [
+        "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+      ]
+    },
+    {
+      "Sid": "AllowdynamodbUpdateItem",
+      "Effect": "Allow",
+      "Action": "dynamodb:UpdateItem",
+      "Resource": [
+        "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+      ]
+    },
+    {
+      "Sid": "DenyOtherdynamodbUpdateItemResources",
+      "Effect": "Deny",
+      "Action": "dynamodb:UpdateItem",
+      "NotResource": [
+        "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+      ]
+    },
+    {
+      "Sid": "AllowlogsCreateLogStream",
+      "Effect": "Allow",
+      "Action": "logs:CreateLogStream",
+      "Resource": [
+        "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:*"
+      ]
+    },
+    {
+      "Sid": "DenyOtherlogsCreateLogStreamResources",
+      "Effect": "Deny",
+      "Action": "logs:CreateLogStream",
+      "NotResource": [
+        "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:*"
+      ]
+    },
+    {
+      "Sid": "AllowlogsPutLogEvents",
+      "Effect": "Allow",
+      "Action": "logs:PutLogEvents",
+      "Resource": [
+        "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:*"
+      ]
+    },
+    {
+      "Sid": "DenyOtherlogsPutLogEventsResources",
+      "Effect": "Deny",
+      "Action": "logs:PutLogEvents",
+      "NotResource": [
+        "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:*"
+      ]
+    },
+    {
+      "Sid": "AllowlambdaInvokeFunction",
+      "Effect": "Allow",
+      "Action": "lambda:InvokeFunction",
+      "Resource": [
+        "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:3"
+      ]
+    },
+    {
+      "Sid": "DenyOtherlambdaInvokeFunctionResources",
+      "Effect": "Deny",
+      "Action": "lambda:InvokeFunction",
+      "NotResource": [
+        "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:3"
+      ]
+    },
+    {
+      "Sid": "AllowOwnEnvironmentDecrypt",
+      "Effect": "Allow",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:us-west-2:114599789754:key/57e62ad6-a638-40c9-9af6-df42a6418968",
+      "Condition": {
+        "StringEquals": {
+          "kms:CallerAccount": "114599789754",
+          "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request"
+        }
+      }
+    },
+    {
+      "Sid": "DenyOtherEnvironmentKeys",
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "NotResource": [
+        "arn:aws:kms:us-west-2:114599789754:key/57e62ad6-a638-40c9-9af6-df42a6418968",
+        "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+      ]
+    },
+    {
+      "Sid": "DenyWrongDecryptAccount",
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:CallerAccount": "114599789754"
+        }
+      }
+    },
+    {
+      "Sid": "DenyWrongDecryptFunction",
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:us-west-2:114599789754:key/57e62ad6-a638-40c9-9af6-df42a6418968",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request"
+        }
+      }
+    },
+    {
+      "Sid": "AllowRequestDynamoDecrypt",
+      "Effect": "Allow",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4",
+      "Condition": {
+        "StringEquals": {
+          "kms:CallerAccount": "114599789754",
+          "kms:ViaService": "dynamodb.us-west-2.amazonaws.com",
+          "kms:EncryptionContext:aws:dynamodb:tableName": [
+            "flo-customer-staging-AuthState-17UXOCYCV0R2C",
+            "flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+            "flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          ],
+          "kms:EncryptionContext:aws:dynamodb:subscriberId": "114599789754"
+        }
+      }
+    },
+    {
+      "Sid": "DenyRequestDynamoContext0",
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:ViaService": "dynamodb.us-west-2.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "DenyRequestDynamoContext1",
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:EncryptionContext:aws:dynamodb:tableName": [
+            "flo-customer-staging-AuthState-17UXOCYCV0R2C",
+            "flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+            "flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyRequestDynamoContext2",
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:EncryptionContext:aws:dynamodb:subscriberId": "114599789754"
+        }
+      }
+    },
+    {
+      "Sid": "DenyNonTransactionalWrites",
+      "Effect": "Deny",
+      "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "dynamodb:EnclosingOperation": "TransactWriteItems"
+        }
+      }
+    }
+  ]
+}

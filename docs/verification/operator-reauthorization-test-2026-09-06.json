@@ -1,0 +1,212 @@
+{
+  "status": "REAUTHORIZED_OLDER_SESSION_DENIED_CLEANUP_VERIFIED",
+  "date": "2026-09-06",
+  "setup": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "preflightPassed": true,
+      "boundaryVerifiedBeforeGrant": true,
+      "grantVerified": true,
+      "disabledVersion": "2",
+      "verifiedAt": "2026-09-06T16:51:50.416196+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListUserPolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListAttachedUserPolicies",
+        "status": "success",
+        "n_items": {
+          "AttachedPolicies": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListGroupsForUser",
+        "status": "success",
+        "n_items": {
+          "Groups": 0
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "CreatePolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "PutUserPermissionsBoundary",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "PutUserPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetUserPolicy",
+        "status": "success"
+      }
+    ]
+  },
+  "dryRunCalls": 1,
+  "functionExecutions": 0,
+  "automaticRetries": 0,
+  "localOperatorDryRun": {
+    "chunk_id": "c009e6",
+    "wall_time_seconds": 1.6989197,
+    "exit_code": 1,
+    "original_token_count": 113,
+    "output": "\r\naws: [ERROR]: An error occurred (AccessDeniedException) when calling the Invoke operation (reached max retries: 0): User: arn:aws:iam::114599789754:user/flo/flo-staging-operator is not authorized to perform: lambda:InvokeFunction on resource: arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2 with an explicit deny in a permissions boundary: arn:aws:iam::114599789754:policy/flo/FloOperatorDisabledV2Boundary20260906\r\n"
+  },
+  "cleanup": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "cleanupVerified": true,
+      "remainingAttachedPolicies": [
+        {
+          "PolicyName": "SignInLocalDevelopmentAccess",
+          "PolicyArn": "arn:aws:iam::aws:policy/SignInLocalDevelopmentAccess"
+        }
+      ],
+      "inlinePolicies": [],
+      "groups": [],
+      "boundaryAttached": false,
+      "temporaryPolicyDeleted": true,
+      "verifiedAt": "2026-09-06T16:52:50.135807+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "iam",
+        "operation": "DeleteUserPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListUserPolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "DeleteUserPermissionsBoundary",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "DeletePolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetUser",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListAttachedUserPolicies",
+        "status": "success",
+        "n_items": {
+          "AttachedPolicies": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListUserPolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListGroupsForUser",
+        "status": "success",
+        "n_items": {
+          "Groups": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListPolicies",
+        "status": "success",
+        "n_items": {
+          "Policies": 0
+        }
+      }
+    ]
+  },
+  "cloudTrailMetadata": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "matchingOperatorEvents": [
+        {
+          "eventId": "6c2a9720-d579-46aa-b03c-035d32d3f945",
+          "eventTime": "2026-09-06T16:51:08+00:00",
+          "principalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+          "sessionCreationDate": "2026-09-06T16:26:31Z",
+          "mfaAuthenticated": "true"
+        },
+        {
+          "eventId": "c57948b2-795c-430c-8739-01275abc5fb5",
+          "eventTime": "2026-09-06T16:50:08+00:00",
+          "principalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+          "sessionCreationDate": "2026-09-06T16:26:31Z",
+          "mfaAuthenticated": "true"
+        }
+      ],
+      "limit": "CloudTrail session metadata does not disclose exact IAM condition evaluation."
+    },
+    "api_calls": [
+      {
+        "service": "cloudtrail",
+        "operation": "LookupEvents",
+        "status": "success",
+        "n_items": {
+          "Events": 2
+        }
+      }
+    ]
+  }
+}

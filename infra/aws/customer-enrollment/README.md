@@ -1,5 +1,29 @@
 # Flo enrollment deployment preparation
 
+## Current request KMS checkpoint — September 6, 2026 UTC
+
+**Deployed:** the exact reviewed request-only correction is UPDATE_COMPLETE;
+boundary v5 matches source and the single hosted signed-in request succeeded.
+All 12 credential-free post-deployment checks passed. Approval and redemption
+remain disabled and no customer was linked. See [deployment evidence](../../../docs/verification/request-dynamodb-kms-deployment-2026-09-06.md).
+The preparation paragraph immediately below records the preceding checkpoint.
+
+Request version 3 is deployed but the last signed-in request returned 503 from a
+separate downstream KMS boundary denial. The operator's projected synthetic read
+tests succeeded and its temporary grants were removed. A request-only correction
+is now implemented and validated, with an exact **unexecuted** change set modifying
+only RequestBoundary. See [current review and full policy](../../../docs/verification/request-dynamodb-kms-review-2026-09-06.md).
+Approval/redemption remain disabled; customer linking remains incomplete.
+
+For this correction use the reviewed compact update template, which preserves
+live pinned versions. The full runtime generator now requires RequestDynamoKeyArn:
+verify the same exact existing key on auth, links and requests tables; it must
+be distinct from the Lambda environment key. Never infer this parameter from an
+alias or weaken table context constraints. New deployments and private-handler
+KMS support require their own review.
+
+Earlier checkpoint descriptions below are historical, not current live status.
+
 **New runtime checkpoint:** a reproducible 27-resource runtime template and exact-capability boundaries now exist. Local tests pass; AWS table/function simulations match expectations, but log-permission simulation is unresolved. Approved isolated validation is complete: cfn-lint has zero findings; Guard has three failing, nineteen passing and twelve skipped policies. See [validation evidence and treatment](../../../docs/verification/enrollment-runtime-validation-2026-09-06.md) and [runtime plan](../../../docs/verification/enrollment-runtime-plan-2026-09-06.md). No runtime change set exists. This supersedes earlier statements below that no runtime template exists; it does not authorize deployment, operator access, customer mapping or route enablement.
 
 **Storage deployment update:** the owner subsequently approved the exact reviewed three-table plan. `flo-customer-enrollment-state` is now CREATE_COMPLETE and the three tables' settings were verified live. See [deployment evidence](../../../docs/verification/enrollment-state-deployment-2026-09-05.md). The draft/pending statements below describe the earlier preparation checkpoint. Runtime services, routes, IAM attachments and customer mappings remain undeployed; storage completion is not enrollment completion.

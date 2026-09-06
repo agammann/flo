@@ -1,0 +1,8 @@
+{
+  "Policies": [{"Policy": {"Id": "IamPolicyAutopilot", "Version": "2012-10-17", "Statement": [
+    {"Effect": "Allow", "Action": ["dynamodb:GetItem", "dynamodb:ReadDataForReplication"], "Resource": ["arn:aws:dynamodb:us-west-2:114599789754:table/*"]},
+    {"Effect": "Allow", "Action": ["kms:Decrypt"], "Resource": ["arn:aws:kms:us-west-2:114599789754:key/*"], "Condition": {"StringEquals": {"kms:ViaService": ["dynamodb.us-west-2.amazonaws.com"]}}},
+    {"Effect": "Allow", "Action": ["sts:GetCallerIdentity"], "Resource": ["*"]}
+  ]}, "PolicyType": "Identity"}],
+  "Warnings": [{"WarningType": "WildcardResource", "Location": {"PolicyIndex": 0, "StatementIndex": 2}, "Message": "Statement could not be scoped to specific resources and uses Resource \"*\". Review whether broad resource access is intended."}]
+}

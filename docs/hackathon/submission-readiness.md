@@ -2,6 +2,62 @@
 
 Audit date: 2026-09-04
 
+## Latest checkpoint — September 6, 2026
+
+**Fresh local release checks:** full build/typecheck/lint, 148 application tests
+(three platform skips), all 56 Node script tests and 25 Python tests passed.
+Actual Docker Compose startup, the real HTTP/MCP demo, isolated bundle smokes and
+DynamoDB Local transaction contracts also passed. See
+[release-source evidence](../verification/release-source-checkpoint-2026-09-06.md).
+This supersedes older Docker-unavailable statements, not the remaining hosted
+private-enrollment or official Alexa+ verification gates.
+
+**Request-only deployment verified:** the approved KMS correction is now
+UPDATE_COMPLETE, live boundary v5 matches the reviewed policy, and one real
+signed-in/unlinked request succeeded with HTTP 200 and the visible pending-
+verification message. All 12 post-deployment credential-free checks passed.
+Approval/redemption remain disabled; no customer was linked. See
+[deployment evidence](../verification/request-dynamodb-kms-deployment-2026-09-06.md).
+Earlier review-only/503 statements below are historical. Private approval and
+redemption verification, trusted designation, CI and release gates remain open.
+
+**Request KMS review:** the most recent signed-in enrollment request returned
+503, so successful hosted pairing is still unverified. A tested request-only
+permissions correction now has an unexecuted one-resource change set. Full build,
+typecheck and lint passed; application tests are 148 passed / three skipped and
+infrastructure-script tests are 56 passed. See [current review evidence](../verification/request-dynamodb-kms-review-2026-09-06.md).
+Approval/redemption stay disabled. No customer has been linked by this review;
+no fresh GitHub Actions run, video publication or Devpost submission is claimed.
+
+The [request-only enrollment deployment](../verification/enrollment-request-only-deployment-2026-09-06.md)
+is now `UPDATE_COMPLETE`: request version 3 is enabled; approval and redemption
+version 3 remain disabled. Exactly 12 additional credential-free hosted checks
+passed, including rejected enrollment inputs and the absent redemption route.
+No customer was linked. The obsolete unexecuted review plan was removed without
+removing deployed resources. This checkpoint does not establish a successful
+hosted ownership-link flow or permission to publish the video or submit Devpost.
+
+Final local recheck after this deployment: all 13 workspace build/typecheck
+configurations passed, full ESLint passed, application tests were 148 passed
+and three platform skips (151 total), and the combined runtime/operator/template/
+policy-exception suite passed 41 tests. No fresh CI or Docker run is claimed
+for this increment.
+
+Local Docker Desktop/Compose now works: the real six-service demo and isolated
+DynamoDB customer/enrollment contracts passed again. Windows build/typecheck/lint
+passed; the application suite remains 151 tests (148 passed, 3 platform skips),
+and the corrected boundary/template suite has 27 passing tests. The hosted staging site
+passed its 16 credential-free checks. Local AWS CLI identity is verified as
+`flo-staging-operator`, not root. A fresh-MFA live test now passes exact-version
+authorization and the disabled approval function's safe refusal. Two out-of-scope
+DryRuns were rejected. The temporary grant and boundary were removed; only sign-in
+permission remains attached. See [live evidence and next gate](../verification/operator-fresh-mfa-test-2026-09-06.md).
+
+Older CLI-unavailable, Docker-absent, table-count, test-count and deployment
+statements below are dated history, not the current inventory. No fresh GitHub
+Actions run, hosted enrollment success, official Alexa+ validation, replacement
+video or final submission is claimed by this checkpoint. Publication stays paused.
+
 ## Current release checkpoint — September 5, 2026 (Pacific)
 
 The dated sections below are historical. Current read-only checks found the customer and narrator stacks `UPDATE_COMPLETE`, the artifact stack `CREATE_COMPLETE`, and only the two existing Lambda functions in us-west-2. The hosted customer website passed all 16 pre-login asset/security/denial checks again. Real sign-in/sign-out was previously reported by the owner; this repeat did not authenticate a real person or establish a customer mapping.

@@ -1,0 +1,1248 @@
+{
+  "date": "2026-09-06",
+  "sourceCommit": "86139591cdc6f0c10b89055dba078788101e14f7",
+  "scope": "Execute exact approved change set and at most 12 synthetic synchronous disabled-state checks. No processing enablement or publication.",
+  "execute": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {},
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "ExecuteChangeSet",
+        "status": "success"
+      }
+    ]
+  },
+  "configuration": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "status": "CREATE_COMPLETE",
+      "configs": [
+        {
+          "FunctionArn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:1",
+          "Runtime": "nodejs22.x",
+          "Role": "arn:aws:iam::114599789754:role/flo-customer-enrollment-ApprovalRole-wvLVawLnTqSU",
+          "Handler": "index.handler",
+          "CodeSize": 339605,
+          "CodeSha256": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM=",
+          "Timeout": 10,
+          "MemorySize": 256,
+          "Version": "1",
+          "State": "Active",
+          "LastUpdateStatus": "Successful",
+          "LoggingConfig": {
+            "LogFormat": "JSON",
+            "ApplicationLogLevel": "WARN",
+            "SystemLogLevel": "WARN",
+            "LogGroup": "/aws/lambda/flo-customer-enrollment-approval"
+          },
+          "gates": {
+            "FLO_PRIVATE_APPROVAL_ENABLED": "false"
+          },
+          "stateKeyPresent": false,
+          "designationNull": true,
+          "concurrency": {
+            "ReservedConcurrentExecutions": 1
+          }
+        },
+        {
+          "FunctionArn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:1",
+          "Runtime": "nodejs22.x",
+          "Role": "arn:aws:iam::114599789754:role/flo-customer-enrollment-RedemptionRole-MYVEkFY2DErc",
+          "Handler": "index.handler",
+          "CodeSize": 343735,
+          "CodeSha256": "nXIUeJbldwMnzh8Mb2oMlSnp2u5JUs3GtpaAek48tlQ=",
+          "Timeout": 10,
+          "MemorySize": 256,
+          "Version": "1",
+          "State": "Active",
+          "LastUpdateStatus": "Successful",
+          "LoggingConfig": {
+            "LogFormat": "JSON",
+            "ApplicationLogLevel": "WARN",
+            "SystemLogLevel": "WARN",
+            "LogGroup": "/aws/lambda/flo-customer-enrollment-redemption"
+          },
+          "gates": {
+            "FLO_ENROLLMENT_ENABLED": "false"
+          },
+          "stateKeyPresent": true,
+          "designationNull": true,
+          "concurrency": {
+            "ReservedConcurrentExecutions": 1
+          }
+        },
+        {
+          "FunctionArn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request:1",
+          "Runtime": "nodejs22.x",
+          "Role": "arn:aws:iam::114599789754:role/flo-customer-enrollment-RequestRole-LPnqKCZ2cZSK",
+          "Handler": "index.handler",
+          "CodeSize": 381833,
+          "CodeSha256": "OCL+oXzDNLN2Axvyl0dWUzr7i698S6UlIKKzQ9QQh/4=",
+          "Timeout": 20,
+          "MemorySize": 256,
+          "Version": "1",
+          "State": "Active",
+          "LastUpdateStatus": "Successful",
+          "LoggingConfig": {
+            "LogFormat": "JSON",
+            "ApplicationLogLevel": "WARN",
+            "SystemLogLevel": "WARN",
+            "LogGroup": "/aws/lambda/flo-customer-enrollment-request"
+          },
+          "gates": {
+            "FLO_ENROLLMENT_ENABLED": "false"
+          },
+          "stateKeyPresent": true,
+          "designationNull": true,
+          "redemptionVersionArn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:1",
+          "concurrency": {
+            "ReservedConcurrentExecutions": 1
+          }
+        }
+      ],
+      "routes": [
+        {
+          "ApiKeyRequired": false,
+          "AuthorizationScopes": [],
+          "AuthorizationType": "NONE",
+          "RequestModels": {},
+          "RouteId": "9v2n2sm",
+          "RouteKey": "$default",
+          "Target": "integrations/qfwnq4s"
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "ListStackResources",
+        "status": "success",
+        "n_items": {
+          "StackResourceSummaries": 18
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConcurrency",
+        "status": "success"
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConcurrency",
+        "status": "success"
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConcurrency",
+        "status": "success"
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      },
+      {
+        "service": "apigatewayv2",
+        "operation": "GetRoutes",
+        "status": "success",
+        "n_items": {
+          "Items": 1
+        }
+      }
+    ]
+  },
+  "iamAndKeyMetadata": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "roles": [
+        {
+          "name": "flo-customer-enrollment-ApprovalRole-wvLVawLnTqSU",
+          "trust": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "lambda.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+              }
+            ]
+          },
+          "boundary": {
+            "PermissionsBoundaryType": "Policy",
+            "PermissionsBoundaryArn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-ApprovalBoundary-plkn3LDorvXU"
+          },
+          "attached": [
+            {
+              "PolicyName": "flo-customer-enrollment-ApprovalBaseline-mm9JMQgkjTr2",
+              "PolicyArn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-ApprovalBaseline-mm9JMQgkjTr2"
+            },
+            {
+              "PolicyName": "AWSLambdaBasicExecutionRole",
+              "PolicyArn": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+            }
+          ],
+          "inline": [],
+          "policies": [
+            {
+              "arn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-ApprovalBaseline-mm9JMQgkjTr2",
+              "document": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Action": [
+                      "dynamodb:ConditionCheckItem",
+                      "dynamodb:DeleteItem",
+                      "dynamodb:GetItem",
+                      "dynamodb:PutItem",
+                      "dynamodb:ReadDataForReplication",
+                      "dynamodb:UpdateItem"
+                    ],
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/*"
+                    ],
+                    "Effect": "Allow"
+                  },
+                  {
+                    "Condition": {
+                      "StringEquals": {
+                        "kms:ViaService": [
+                          "dynamodb.us-west-2.amazonaws.com"
+                        ]
+                      }
+                    },
+                    "Action": [
+                      "kms:Decrypt"
+                    ],
+                    "Resource": [
+                      "arn:aws:kms:us-west-2:114599789754:key/*"
+                    ],
+                    "Effect": "Allow"
+                  }
+                ],
+                "Id": "IamPolicyAutopilot"
+              }
+            },
+            {
+              "arn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-ApprovalBoundary-plkn3LDorvXU",
+              "document": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Resource": "*",
+                    "Effect": "Deny",
+                    "NotAction": [
+                      "dynamodb:GetItem",
+                      "dynamodb:ConditionCheckItem",
+                      "dynamodb:PutItem",
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "Sid": "DenyEveryOtherCapability"
+                  },
+                  {
+                    "Action": "dynamodb:GetItem",
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowdynamodbGetItem"
+                  },
+                  {
+                    "Action": "dynamodb:GetItem",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherdynamodbGetItemResources",
+                    "NotResource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+                    ]
+                  },
+                  {
+                    "Action": "dynamodb:ConditionCheckItem",
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowdynamodbConditionCheckItem"
+                  },
+                  {
+                    "Action": "dynamodb:ConditionCheckItem",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherdynamodbConditionCheckItemResources",
+                    "NotResource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+                    ]
+                  },
+                  {
+                    "Action": "dynamodb:PutItem",
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowdynamodbPutItem"
+                  },
+                  {
+                    "Action": "dynamodb:PutItem",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherdynamodbPutItemResources",
+                    "NotResource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3"
+                    ]
+                  },
+                  {
+                    "Action": "logs:CreateLogStream",
+                    "Resource": [
+                      "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-approval:log-stream:*"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowlogsCreateLogStream"
+                  },
+                  {
+                    "Action": "logs:CreateLogStream",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherlogsCreateLogStreamResources",
+                    "NotResource": [
+                      "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-approval:log-stream:*"
+                    ]
+                  },
+                  {
+                    "Action": "logs:PutLogEvents",
+                    "Resource": [
+                      "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-approval:log-stream:*"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowlogsPutLogEvents"
+                  },
+                  {
+                    "Action": "logs:PutLogEvents",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherlogsPutLogEventsResources",
+                    "NotResource": [
+                      "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-approval:log-stream:*"
+                    ]
+                  },
+                  {
+                    "Condition": {
+                      "StringNotEquals": {
+                        "dynamodb:EnclosingOperation": "TransactWriteItems"
+                      }
+                    },
+                    "Action": [
+                      "dynamodb:PutItem",
+                      "dynamodb:UpdateItem"
+                    ],
+                    "Resource": "*",
+                    "Effect": "Deny",
+                    "Sid": "DenyNonTransactionalWrites"
+                  }
+                ]
+              }
+            },
+            {
+              "arn": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              "document": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "logs:CreateLogGroup",
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "Resource": "*"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "flo-customer-enrollment-RedemptionRole-MYVEkFY2DErc",
+          "trust": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "lambda.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+              }
+            ]
+          },
+          "boundary": {
+            "PermissionsBoundaryType": "Policy",
+            "PermissionsBoundaryArn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RedemptionBoundary-fbazc5gSTyOD"
+          },
+          "attached": [
+            {
+              "PolicyName": "flo-customer-enrollment-RedemptionBaseline-AXxjCf1CAWy7",
+              "PolicyArn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RedemptionBaseline-AXxjCf1CAWy7"
+            },
+            {
+              "PolicyName": "AWSLambdaBasicExecutionRole",
+              "PolicyArn": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+            }
+          ],
+          "inline": [],
+          "policies": [
+            {
+              "arn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RedemptionBaseline-AXxjCf1CAWy7",
+              "document": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Action": [
+                      "dynamodb:ConditionCheckItem",
+                      "dynamodb:DeleteItem",
+                      "dynamodb:GetItem",
+                      "dynamodb:PutItem",
+                      "dynamodb:Query",
+                      "dynamodb:ReadDataForReplication",
+                      "dynamodb:UpdateItem",
+                      "dynamodb:WriteDataForReplication"
+                    ],
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/*"
+                    ],
+                    "Effect": "Allow"
+                  },
+                  {
+                    "Condition": {
+                      "StringEquals": {
+                        "kms:ViaService": [
+                          "dynamodb.us-west-2.amazonaws.com"
+                        ]
+                      }
+                    },
+                    "Action": [
+                      "kms:Decrypt"
+                    ],
+                    "Resource": [
+                      "arn:aws:kms:us-west-2:114599789754:key/*"
+                    ],
+                    "Effect": "Allow"
+                  }
+                ],
+                "Id": "IamPolicyAutopilot"
+              }
+            },
+            {
+              "arn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RedemptionBoundary-fbazc5gSTyOD",
+              "document": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Resource": "*",
+                    "Effect": "Deny",
+                    "NotAction": [
+                      "dynamodb:GetItem",
+                      "dynamodb:ConditionCheckItem",
+                      "dynamodb:PutItem",
+                      "dynamodb:UpdateItem",
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "Sid": "DenyEveryOtherCapability"
+                  },
+                  {
+                    "Action": "dynamodb:GetItem",
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowdynamodbGetItem"
+                  },
+                  {
+                    "Action": "dynamodb:GetItem",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherdynamodbGetItemResources",
+                    "NotResource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT"
+                    ]
+                  },
+                  {
+                    "Action": "dynamodb:ConditionCheckItem",
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowdynamodbConditionCheckItem"
+                  },
+                  {
+                    "Action": "dynamodb:ConditionCheckItem",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherdynamodbConditionCheckItemResources",
+                    "NotResource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT"
+                    ]
+                  },
+                  {
+                    "Action": "dynamodb:PutItem",
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowdynamodbPutItem"
+                  },
+                  {
+                    "Action": "dynamodb:PutItem",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherdynamodbPutItemResources",
+                    "NotResource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3"
+                    ]
+                  },
+                  {
+                    "Action": "dynamodb:UpdateItem",
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowdynamodbUpdateItem"
+                  },
+                  {
+                    "Action": "dynamodb:UpdateItem",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherdynamodbUpdateItemResources",
+                    "NotResource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+                    ]
+                  },
+                  {
+                    "Action": "logs:CreateLogStream",
+                    "Resource": [
+                      "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-redemption:log-stream:*"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowlogsCreateLogStream"
+                  },
+                  {
+                    "Action": "logs:CreateLogStream",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherlogsCreateLogStreamResources",
+                    "NotResource": [
+                      "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-redemption:log-stream:*"
+                    ]
+                  },
+                  {
+                    "Action": "logs:PutLogEvents",
+                    "Resource": [
+                      "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-redemption:log-stream:*"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowlogsPutLogEvents"
+                  },
+                  {
+                    "Action": "logs:PutLogEvents",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherlogsPutLogEventsResources",
+                    "NotResource": [
+                      "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-redemption:log-stream:*"
+                    ]
+                  },
+                  {
+                    "Condition": {
+                      "StringNotEquals": {
+                        "dynamodb:EnclosingOperation": "TransactWriteItems"
+                      }
+                    },
+                    "Action": [
+                      "dynamodb:PutItem",
+                      "dynamodb:UpdateItem"
+                    ],
+                    "Resource": "*",
+                    "Effect": "Deny",
+                    "Sid": "DenyNonTransactionalWrites"
+                  }
+                ]
+              }
+            },
+            {
+              "arn": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              "document": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "logs:CreateLogGroup",
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "Resource": "*"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "flo-customer-enrollment-RequestRole-LPnqKCZ2cZSK",
+          "trust": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "lambda.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+              }
+            ]
+          },
+          "boundary": {
+            "PermissionsBoundaryType": "Policy",
+            "PermissionsBoundaryArn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RequestBoundary-ZRxKvHtuLqmA"
+          },
+          "attached": [
+            {
+              "PolicyName": "flo-customer-enrollment-RequestBaseline-TyMclGrvfSRT",
+              "PolicyArn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RequestBaseline-TyMclGrvfSRT"
+            },
+            {
+              "PolicyName": "AWSLambdaBasicExecutionRole",
+              "PolicyArn": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+            }
+          ],
+          "inline": [],
+          "policies": [
+            {
+              "arn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RequestBaseline-TyMclGrvfSRT",
+              "document": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Action": [
+                      "dynamodb:ConditionCheckItem",
+                      "dynamodb:DeleteItem",
+                      "dynamodb:GetItem",
+                      "dynamodb:PutItem",
+                      "dynamodb:Query",
+                      "dynamodb:ReadDataForReplication",
+                      "dynamodb:UpdateItem",
+                      "dynamodb:WriteDataForReplication"
+                    ],
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/*"
+                    ],
+                    "Effect": "Allow"
+                  },
+                  {
+                    "Condition": {
+                      "StringEquals": {
+                        "kms:ViaService": [
+                          "dynamodb.us-west-2.amazonaws.com"
+                        ]
+                      }
+                    },
+                    "Action": [
+                      "kms:Decrypt"
+                    ],
+                    "Resource": [
+                      "arn:aws:kms:us-west-2:114599789754:key/*"
+                    ],
+                    "Effect": "Allow"
+                  },
+                  {
+                    "Action": [
+                      "lambda:InvokeFunction"
+                    ],
+                    "Resource": [
+                      "arn:aws:lambda:us-west-2:114599789754:function:*"
+                    ],
+                    "Effect": "Allow"
+                  }
+                ],
+                "Id": "IamPolicyAutopilot"
+              }
+            },
+            {
+              "arn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RequestBoundary-ZRxKvHtuLqmA",
+              "document": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Resource": "*",
+                    "Effect": "Deny",
+                    "NotAction": [
+                      "dynamodb:GetItem",
+                      "dynamodb:ConditionCheckItem",
+                      "dynamodb:PutItem",
+                      "dynamodb:UpdateItem",
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents",
+                      "lambda:InvokeFunction"
+                    ],
+                    "Sid": "DenyEveryOtherCapability"
+                  },
+                  {
+                    "Action": "dynamodb:GetItem",
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowdynamodbGetItem"
+                  },
+                  {
+                    "Action": "dynamodb:GetItem",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherdynamodbGetItemResources",
+                    "NotResource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C"
+                    ]
+                  },
+                  {
+                    "Action": "dynamodb:ConditionCheckItem",
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowdynamodbConditionCheckItem"
+                  },
+                  {
+                    "Action": "dynamodb:ConditionCheckItem",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherdynamodbConditionCheckItemResources",
+                    "NotResource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W"
+                    ]
+                  },
+                  {
+                    "Action": "dynamodb:PutItem",
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowdynamodbPutItem"
+                  },
+                  {
+                    "Action": "dynamodb:PutItem",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherdynamodbPutItemResources",
+                    "NotResource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+                    ]
+                  },
+                  {
+                    "Action": "dynamodb:UpdateItem",
+                    "Resource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowdynamodbUpdateItem"
+                  },
+                  {
+                    "Action": "dynamodb:UpdateItem",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherdynamodbUpdateItemResources",
+                    "NotResource": [
+                      "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+                    ]
+                  },
+                  {
+                    "Action": "logs:CreateLogStream",
+                    "Resource": [
+                      "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:*"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowlogsCreateLogStream"
+                  },
+                  {
+                    "Action": "logs:CreateLogStream",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherlogsCreateLogStreamResources",
+                    "NotResource": [
+                      "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:*"
+                    ]
+                  },
+                  {
+                    "Action": "logs:PutLogEvents",
+                    "Resource": [
+                      "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:*"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowlogsPutLogEvents"
+                  },
+                  {
+                    "Action": "logs:PutLogEvents",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherlogsPutLogEventsResources",
+                    "NotResource": [
+                      "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:*"
+                    ]
+                  },
+                  {
+                    "Action": "lambda:InvokeFunction",
+                    "Resource": [
+                      "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:1"
+                    ],
+                    "Effect": "Allow",
+                    "Sid": "AllowlambdaInvokeFunction"
+                  },
+                  {
+                    "Action": "lambda:InvokeFunction",
+                    "Effect": "Deny",
+                    "Sid": "DenyOtherlambdaInvokeFunctionResources",
+                    "NotResource": [
+                      "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:1"
+                    ]
+                  },
+                  {
+                    "Condition": {
+                      "StringNotEquals": {
+                        "dynamodb:EnclosingOperation": "TransactWriteItems"
+                      }
+                    },
+                    "Action": [
+                      "dynamodb:PutItem",
+                      "dynamodb:UpdateItem"
+                    ],
+                    "Resource": "*",
+                    "Effect": "Deny",
+                    "Sid": "DenyNonTransactionalWrites"
+                  }
+                ]
+              }
+            },
+            {
+              "arn": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              "document": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "logs:CreateLogGroup",
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "Resource": "*"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "keyMetadata": {
+        "AWSAccountId": "114599789754",
+        "KeyId": "57e62ad6-a638-40c9-9af6-df42a6418968",
+        "Arn": "arn:aws:kms:us-west-2:114599789754:key/57e62ad6-a638-40c9-9af6-df42a6418968",
+        "CreationDate": "2026-09-04T07:29:23.944000+00:00",
+        "Enabled": true,
+        "Description": "Default key that protects my Lambda functions when no other key is defined",
+        "KeyUsage": "ENCRYPT_DECRYPT",
+        "KeyState": "Enabled",
+        "Origin": "AWS_KMS",
+        "KeyManager": "AWS",
+        "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+        "KeySpec": "SYMMETRIC_DEFAULT",
+        "EncryptionAlgorithms": [
+          "SYMMETRIC_DEFAULT"
+        ],
+        "MultiRegion": false,
+        "CurrentKeyMaterialId": "89b5417e9526407a4aae693da5048a599e6c6081eb868e90adf38b6b182153bd"
+      },
+      "aliases": [
+        {
+          "AliasName": "alias/aws/lambda",
+          "AliasArn": "arn:aws:kms:us-west-2:114599789754:alias/aws/lambda",
+          "TargetKeyId": "57e62ad6-a638-40c9-9af6-df42a6418968",
+          "CreationDate": "2026-09-04T07:29:24.059000+00:00",
+          "LastUpdatedDate": "2026-09-04T07:29:24.059000+00:00"
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "ListStackResources",
+        "status": "success",
+        "n_items": {
+          "StackResourceSummaries": 18
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "GetRole",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListAttachedRolePolicies",
+        "status": "success",
+        "n_items": {
+          "AttachedPolicies": 2
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListRolePolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "GetRole",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListAttachedRolePolicies",
+        "status": "success",
+        "n_items": {
+          "AttachedPolicies": 2
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListRolePolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "GetRole",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "ListAttachedRolePolicies",
+        "status": "success",
+        "n_items": {
+          "AttachedPolicies": 2
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListRolePolicies",
+        "status": "success",
+        "n_items": {
+          "PolicyNames": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "kms",
+        "operation": "DescribeKey",
+        "status": "success"
+      },
+      {
+        "service": "kms",
+        "operation": "ListAliases",
+        "status": "success",
+        "n_items": {
+          "Aliases": 1
+        }
+      }
+    ]
+  },
+  "failedInvocation": {
+    "status": "error",
+    "error": "ClientError: An error occurred (KMSAccessDeniedException) when calling the Invoke operation (reached max retries: 3): Lambda was unable to decrypt the environment variables because KMS access was denied. Please check the function's KMS key settings. KMS Exception: AccessDeniedExceptionKMS Message: User: arn:aws:sts::114599789754:assumed-role/flo-customer-enrollment-ApprovalRole-wvLVawLnTqSU/flo-customer-enrollment-approval is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:us-west-2:114599789754:key/57e62ad6-a638-40c9-9af6-df42a6418968 with an explicit deny in a permissions boundary: arn:aws:iam::114599789754:policy/flo-customer-enrollment-ApprovalBoundary-plkn3LDorvXU (Service: Kms, Status Code: 400, Request ID: d4c9dc46-95ad-43b0-a629-ebbaa8a84db1) (SDK Attempt Count: 1)",
+    "stdout": "",
+    "stderr": "Error calling function call_boto3 with arguments {'service_name': 'lambda', 'operation_name': 'Invoke', 'region_name': 'us-west-2', 'params': {'FunctionName': 'arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:1', 'InvocationType': 'RequestResponse', 'Payload': '{}'}}: An error occurred (KMSAccessDeniedException) when calling the Invoke operation (reached max retries: 3): Lambda was unable to decrypt the environment variables because KMS access was denied. Please check the function's KMS key settings. KMS Exception: AccessDeniedExceptionKMS Message: User: arn:aws:sts::114599789754:assumed-role/flo-customer-enrollment-ApprovalRole-wvLVawLnTqSU/flo-customer-enrollment-approval is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:us-west-2:114599789754:key/57e62ad6-a638-40c9-9af6-df42a6418968 with an explicit deny in a permissions boundary: arn:aws:iam::114599789754:policy/flo-customer-enrollment-ApprovalBoundary-plkn3LDorvXU (Service: Kms, Status Code: 400, Request ID: d4c9dc46-95ad-43b0-a629-ebbaa8a84db1) (SDK Attempt Count: 1)\n",
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "ListStackResources",
+        "status": "success",
+        "n_items": {
+          "StackResourceSummaries": 18
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "Invoke",
+        "status": "error",
+        "error": "KMSAccessDeniedException: An error occurred (KMSAccessDeniedException) when calling the Invoke operation (reached max retries: 3): Lambda was unable to decrypt the environment variables because KMS access was denied. Please check the function's KMS key settings. KMS Exception: AccessDeniedExceptionKMS Message: User: arn:aws:sts::114599789754:assumed-role/flo-customer-enrollment-ApprovalRole-wvLVawLnTqSU/flo-customer-enrollment-approval is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:us-west-2:114599789754:key/57e62ad6-a638-40c9-9af6-df42a6418968 with an explicit deny in a permissions boundary: arn:aws:iam::114599789754:policy/flo-customer-enrollment-ApprovalBoundary-plkn3LDorvXU (Service: Kms, Status Code: 400, Request ID: d4c9dc46-95ad-43b0-a629-ebbaa8a84db1) (SDK Attempt Count: 1)"
+      }
+    ]
+  },
+  "finalRead": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "logs": [
+        {
+          "group": {
+            "logGroupName": "/aws/lambda/flo-customer-enrollment-approval",
+            "creationTime": 1788706158900,
+            "retentionInDays": 7,
+            "metricFilterCount": 0,
+            "arn": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-approval:*",
+            "storedBytes": 0,
+            "logGroupClass": "STANDARD",
+            "logGroupArn": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-approval",
+            "deletionProtectionEnabled": false,
+            "bearerTokenAuthenticationEnabled": false
+          },
+          "streams": []
+        },
+        {
+          "group": {
+            "logGroupName": "/aws/lambda/flo-customer-enrollment-redemption",
+            "creationTime": 1788706158964,
+            "retentionInDays": 7,
+            "metricFilterCount": 0,
+            "arn": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-redemption:*",
+            "storedBytes": 0,
+            "logGroupClass": "STANDARD",
+            "logGroupArn": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-redemption",
+            "deletionProtectionEnabled": false,
+            "bearerTokenAuthenticationEnabled": false
+          },
+          "streams": []
+        },
+        {
+          "group": {
+            "logGroupName": "/aws/lambda/flo-customer-enrollment-request",
+            "creationTime": 1788706158875,
+            "retentionInDays": 7,
+            "metricFilterCount": 0,
+            "arn": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:*",
+            "storedBytes": 0,
+            "logGroupClass": "STANDARD",
+            "logGroupArn": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request",
+            "deletionProtectionEnabled": false,
+            "bearerTokenAuthenticationEnabled": false
+          },
+          "streams": []
+        }
+      ],
+      "stacks": [
+        {
+          "name": "flo-customer-enrollment",
+          "status": "CREATE_COMPLETE",
+          "lastUpdated": "2026-09-06T14:49:14.445000+00:00"
+        },
+        {
+          "name": "flo-customer-staging",
+          "status": "UPDATE_COMPLETE",
+          "lastUpdated": "2026-09-06T03:00:49.569000+00:00"
+        },
+        {
+          "name": "flo-bedrock-narrator",
+          "status": "UPDATE_COMPLETE",
+          "lastUpdated": "2026-09-05T23:27:43.824000+00:00"
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "logs",
+        "operation": "DescribeLogGroups",
+        "status": "success",
+        "n_items": {
+          "logGroups": 3
+        }
+      },
+      {
+        "service": "logs",
+        "operation": "DescribeLogStreams",
+        "status": "success",
+        "n_items": {
+          "logStreams": 0
+        }
+      },
+      {
+        "service": "logs",
+        "operation": "DescribeLogStreams",
+        "status": "success",
+        "n_items": {
+          "logStreams": 0
+        }
+      },
+      {
+        "service": "logs",
+        "operation": "DescribeLogStreams",
+        "status": "success",
+        "n_items": {
+          "logStreams": 0
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      }
+    ]
+  },
+  "tests": {
+    "build": "passed via pnpm test",
+    "tests": 151,
+    "passed": 148,
+    "failed": 0,
+    "skippedWindows": 3,
+    "typecheck": "passed",
+    "lint": "passed"
+  },
+  "limits": {
+    "explicitInvokeCalls": 1,
+    "connectorReportedRetries": 3,
+    "successfulHandlerChecks": 0,
+    "additionalInvocationsStopped": true,
+    "logDeliveryVerified": false,
+    "customerMappingCreated": false,
+    "permissionsWidened": false
+  }
+}

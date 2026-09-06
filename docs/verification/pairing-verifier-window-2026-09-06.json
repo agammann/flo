@@ -1,0 +1,81 @@
+{
+  "date": "2026-09-06",
+  "scope": "Approved temporary verifier access window; request-only, no customer approval or linking",
+  "expiresAt": "2026-09-06T18:42:00.000Z",
+  "attachedInOrder": [
+    "permissions boundary",
+    "verifier baseline inline grant",
+    "CloudShell inline grant"
+  ],
+  "validation": {
+    "accessAnalyzerFindings": 0,
+    "simulations": {
+      "allowed": "allowed",
+      "missingMfa": "explicitDeny",
+      "missingProjection": "explicitDeny",
+      "proof": "explicitDeny",
+      "expired": "explicitDeny"
+    }
+  },
+  "cloudShell": {
+    "operator": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+    "region": "us-west-2",
+    "opened": true,
+    "initialCreateAccessDeniedTimes": [
+      "2026-09-06T18:12:32Z",
+      "2026-09-06T18:12:49Z"
+    ],
+    "eventualRefreshSucceeded": true,
+    "verifierUploaded": true,
+    "uploadedSourceSha256": "69256a8fea038da79a666b928d89454a7b99e4a3379930c815320d14ce8ebd15",
+    "hashMatched": true,
+    "sdkImportsChecked": true
+  },
+  "liveVerifier": {
+    "executions": 1,
+    "result": "STOP verification unconfirmed",
+    "privatePromptReached": false,
+    "probePassesObserved": 0,
+    "syntheticReadAttempts": "0 or 1; generic failure did not identify stage",
+    "realPairingRequestsCreated": 0,
+    "realRequestReads": 0,
+    "retried": false
+  },
+  "sessionEvidence": {
+    "source": "CloudTrail GetCallerIdentity management events",
+    "mfaAuthenticated": true,
+    "sessionCreated": "2026-09-06T17:51:59Z",
+    "observedAt": [
+      "2026-09-06T18:14:01Z",
+      "2026-09-06T18:14:54Z"
+    ],
+    "inference": "Session age exceeded 900-second data boundary; consistent with failure, not proof of a specific DynamoDB denial."
+  },
+  "cleanup": {
+    "cleanupVerified": true,
+    "remainingInlinePolicies": [],
+    "boundaryRemoved": true,
+    "temporaryManagedPolicyDeleted": true,
+    "remainingAttachedPolicies": [
+      {
+        "PolicyName": "SignInLocalDevelopmentAccess",
+        "PolicyArn": "arn:aws:iam::aws:policy/SignInLocalDevelopmentAccess"
+      }
+    ],
+    "remainingGroups": [],
+    "restoredOperatorId": "AIDARVLVOAS5N5MWSFYR5"
+  },
+  "localFollowup": {
+    "diagnosticSourceSha256": "a48d0d8eed12578cf54b2dd8157e04e04cb294689ed9e32e13a3731930c1f45d",
+    "offlinePythonTests": 13,
+    "policyGeneratorTests": 6,
+    "deployed": false,
+    "reuploaded": false
+  },
+  "release": {
+    "customerApproval": false,
+    "customerLink": false,
+    "videoPublished": false,
+    "devpostSubmitted": false
+  }
+}

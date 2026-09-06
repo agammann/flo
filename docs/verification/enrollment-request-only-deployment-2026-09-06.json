@@ -1,0 +1,238 @@
+{
+  "scope": "Approved request-only deployment; no customer linking or publication",
+  "changeSet": "flo-request-only-fixed-review-20260906T1727Z",
+  "templateSha256": "56c436ff30adf883708bf0192f97ebcf48db74dec5e5f82ef4e1755ee56fd2a5",
+  "deployed": {
+    "verifiedAt": "2026-09-06T17:36:34.314327+00:00",
+    "stackStatus": "UPDATE_COMPLETE",
+    "functions": {
+      "Request": {
+        "arn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request:3",
+        "codeSha256": "OCL+oXzDNLN2Axvyl0dWUzr7i698S6UlIKKzQ9QQh/4=",
+        "state": "Active",
+        "flags": {
+          "FLO_ENROLLMENT_ENABLED": "true"
+        }
+      },
+      "Redemption": {
+        "arn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:3",
+        "codeSha256": "nXIUeJbldwMnzh8Mb2oMlSnp2u5JUs3GtpaAek48tlQ=",
+        "state": "Active",
+        "flags": {
+          "FLO_ENROLLMENT_ENABLED": "false"
+        }
+      },
+      "Approval": {
+        "arn": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:3",
+        "codeSha256": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM=",
+        "state": "Active",
+        "flags": {
+          "FLO_PRIVATE_APPROVAL_ENABLED": "false"
+        }
+      }
+    },
+    "routes": [
+      {
+        "route": "$default",
+        "target": "integrations/qfwnq4s"
+      },
+      {
+        "route": "GET /pairing.js",
+        "target": "integrations/ie1vc3g"
+      },
+      {
+        "route": "POST /enrollment/request",
+        "target": "integrations/ie1vc3g"
+      },
+      {
+        "route": "GET /pairing",
+        "target": "integrations/ie1vc3g"
+      }
+    ],
+    "stage": {
+      "limits": {
+        "DetailedMetricsEnabled": false,
+        "ThrottlingBurstLimit": 5,
+        "ThrottlingRateLimit": 2
+      },
+      "accessLogs": {
+        "DestinationArn": "arn:aws:logs:us-west-2:114599789754:log-group:flo-customer-staging-AccessLogs-cLu3brPSgZes",
+        "Format": "{\"requestId\":\"$context.requestId\",\"status\":\"$context.status\",\"latency\":\"$context.responseLatency\"}"
+      }
+    },
+    "operatorSignInOnly": true,
+    "requestBoundary": {
+      "arn": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RequestBoundary-ZRxKvHtuLqmA",
+      "version": "v4",
+      "invocationStatements": [
+        {
+          "Action": "lambda:InvokeFunction",
+          "Resource": [
+            "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:3"
+          ],
+          "Effect": "Allow",
+          "Sid": "AllowlambdaInvokeFunction"
+        },
+        {
+          "Action": "lambda:InvokeFunction",
+          "Effect": "Deny",
+          "Sid": "DenyOtherlambdaInvokeFunctionResources",
+          "NotResource": [
+            "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:3"
+          ]
+        }
+      ]
+    },
+    "passed": true
+  },
+  "http": {
+    "time": "2026-09-06T17:36:59.828Z",
+    "maximumRequests": 12,
+    "actualRequests": 12,
+    "credentialFree": true,
+    "passed": true,
+    "results": [
+      {
+        "name": "existing homepage",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 1142
+      },
+      {
+        "name": "pairing page",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 1182
+      },
+      {
+        "name": "pairing script",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 101
+      },
+      {
+        "name": "no customer session",
+        "expected": 401,
+        "actual": 401,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 93
+      },
+      {
+        "name": "privacy notice",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 103
+      },
+      {
+        "name": "terms",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 82
+      },
+      {
+        "name": "request without session",
+        "expected": 401,
+        "actual": 401,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 123
+      },
+      {
+        "name": "request without origin",
+        "expected": 403,
+        "actual": 403,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 162
+      },
+      {
+        "name": "request wrong content type",
+        "expected": 415,
+        "actual": 415,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 82
+      },
+      {
+        "name": "request invalid schema",
+        "expected": 400,
+        "actual": 400,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 94
+      },
+      {
+        "name": "redemption route absent",
+        "expected": 404,
+        "actual": 404,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 75
+      },
+      {
+        "name": "official Alexa authorization not configured",
+        "expected": 401,
+        "actual": 401,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 115
+      }
+    ]
+  },
+  "cleanup": {
+    "deletedChangeSet": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-request-only-review-20260906T1724Z/a35e1603-f15f-4e67-a9e0-4ddd7112b992",
+    "previousExecutionStatus": "OBSOLETE",
+    "deleteApiSucceeded": true,
+    "absenceVerification": "DescribeChangeSet returned ChangeSetNotFound",
+    "executedCorrectedPlanRetained": "DescribeChangeSet returned CREATE_COMPLETE / EXECUTE_COMPLETE"
+  },
+  "verificationCaveats": [
+    "IAM Resource/NotResource values normalized from one-item arrays; no live policy repair was needed.",
+    "ListChangeSets omitted the executed plan; its exact ARN was verified with DescribeChangeSet.",
+    "An unavailable ClientError name interrupted the cleanup wrapper after AWS had already returned ChangeSetNotFound. The API evidence independently confirms absence."
+  ],
+  "notPerformed": [
+    "Customer session access",
+    "Successful enrollment request",
+    "Approval or redemption",
+    "Customer mapping or repair mutation",
+    "Operator authorization grant",
+    "Video publication",
+    "Devpost submission"
+  ]
+}

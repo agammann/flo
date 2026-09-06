@@ -1,0 +1,337 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudshell:CreateEnvironment",
+        "cloudshell:DescribeEnvironments"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudshell:CreateSession",
+        "cloudshell:GetEnvironmentStatus",
+        "cloudshell:StartEnvironment",
+        "cloudshell:PutCredentials",
+        "cloudshell:GetFileUploadUrls"
+      ],
+      "Resource": "arn:aws:cloudshell:us-west-2:114599789754:environment/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "dynamodb:GetItem",
+      "Resource": "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK",
+      "Condition": {
+        "ForAllValues:StringEquals": {
+          "dynamodb:Attributes": [
+            "id",
+            "identityKey",
+            "purpose",
+            "expiresAt",
+            "status",
+            "ttl"
+          ]
+        },
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": "????????????????????????????????????????????????????????????????"
+        },
+        "StringEqualsIfExists": {
+          "dynamodb:Select": "SPECIFIC_ATTRIBUTES"
+        },
+        "Null": {
+          "dynamodb:Attributes": "false",
+          "dynamodb:LeadingKeys": "false"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "sts:GetCallerIdentity",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "signin:AuthorizeOAuth2Access",
+        "signin:CreateOAuth2Token"
+      ],
+      "Resource": "arn:aws:signin:us-west-2:114599789754:oauth2/public-client/localhost"
+    },
+    {
+      "Effect": "Deny",
+      "NotAction": [
+        "dynamodb:GetItem",
+        "kms:Decrypt",
+        "sts:GetCallerIdentity",
+        "cloudshell:CreateSession",
+        "cloudshell:GetEnvironmentStatus",
+        "cloudshell:StartEnvironment",
+        "cloudshell:PutCredentials",
+        "cloudshell:GetFileUploadUrls",
+        "cloudshell:CreateEnvironment",
+        "cloudshell:DescribeEnvironments",
+        "signin:AuthorizeOAuth2Access",
+        "signin:CreateOAuth2Token"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "*",
+      "Resource": "*",
+      "Condition": {
+        "ArnNotEquals": {
+          "aws:PrincipalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:GetItem",
+      "NotResource": "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "dynamodb:GetItem",
+        "kms:Decrypt",
+        "cloudshell:CreateSession",
+        "cloudshell:GetEnvironmentStatus",
+        "cloudshell:StartEnvironment",
+        "cloudshell:PutCredentials",
+        "cloudshell:GetFileUploadUrls",
+        "cloudshell:CreateEnvironment",
+        "cloudshell:DescribeEnvironments"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": "us-west-2"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "dynamodb:GetItem",
+        "kms:Decrypt",
+        "cloudshell:CreateSession",
+        "cloudshell:GetEnvironmentStatus",
+        "cloudshell:StartEnvironment",
+        "cloudshell:PutCredentials",
+        "cloudshell:GetFileUploadUrls",
+        "cloudshell:CreateEnvironment",
+        "cloudshell:DescribeEnvironments"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "DateGreaterThanEquals": {
+          "aws:CurrentTime": "2026-09-06T20:00:00.000Z"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "dynamodb:GetItem",
+        "kms:Decrypt",
+        "cloudshell:CreateSession",
+        "cloudshell:GetEnvironmentStatus",
+        "cloudshell:StartEnvironment",
+        "cloudshell:PutCredentials",
+        "cloudshell:GetFileUploadUrls",
+        "cloudshell:CreateEnvironment",
+        "cloudshell:DescribeEnvironments"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "aws:CurrentTime": "true"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:GetItem",
+      "Resource": "*",
+      "Condition": {
+        "BoolIfExists": {
+          "aws:MultiFactorAuthPresent": "false"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:GetItem",
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "aws:MultiFactorAuthAge": "true"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:GetItem",
+      "Resource": "*",
+      "Condition": {
+        "NumericGreaterThan": {
+          "aws:MultiFactorAuthAge": "900"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:GetItem",
+      "Resource": "*",
+      "Condition": {
+        "NumericLessThan": {
+          "aws:MultiFactorAuthAge": "0"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:GetItem",
+      "Resource": "*",
+      "Condition": {
+        "ForAnyValue:StringNotEquals": {
+          "dynamodb:Attributes": [
+            "id",
+            "identityKey",
+            "purpose",
+            "expiresAt",
+            "status",
+            "ttl"
+          ]
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:GetItem",
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "dynamodb:Attributes": "true"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:GetItem",
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "dynamodb:Select": "false"
+        },
+        "StringNotEquals": {
+          "dynamodb:Select": "SPECIFIC_ATTRIBUTES"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:GetItem",
+      "Resource": "*",
+      "Condition": {
+        "ForAnyValue:StringNotLike": {
+          "dynamodb:LeadingKeys": "????????????????????????????????????????????????????????????????"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:GetItem",
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "dynamodb:LeadingKeys": "true"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "NotResource": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:ViaService": "dynamodb.us-west-2.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:CallerAccount": "114599789754"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:EncryptionContext:aws:dynamodb:tableName": "flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:EncryptionContext:aws:dynamodb:subscriberId": "114599789754"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "cloudshell:CreateEnvironment",
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "cloudshell:VpcIds": "false"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "cloudshell:CreateEnvironment",
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "cloudshell:SubnetIds": "false"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "cloudshell:CreateEnvironment",
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "cloudshell:SecurityGroupIds": "false"
+        }
+      }
+    }
+  ]
+}

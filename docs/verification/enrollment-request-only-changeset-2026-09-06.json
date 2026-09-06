@@ -1,0 +1,2055 @@
+{
+  "date": "2026-09-06",
+  "status": "REVIEW_ONLY_NOT_EXECUTED",
+  "templateSha256": "56c436ff30adf883708bf0192f97ebcf48db74dec5e5f82ef4e1755ee56fd2a5",
+  "templateBytes": 50871,
+  "initialPreflight": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "identity": {
+        "UserId": "114599789754",
+        "Account": "114599789754",
+        "Arn": "arn:aws:iam::114599789754:root"
+      },
+      "stackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment/ac1ab770-aa00-11f1-9ac0-02cd968e7605",
+      "stackName": "flo-customer-enrollment",
+      "status": "UPDATE_COMPLETE",
+      "parameters": {
+        "RedemptionArtifactVersion": "9LGMg3B2vKZVtX7sDhuRJt91NuLE1fdT",
+        "ApprovalCodeSha256": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM=",
+        "AuthTable": "flo-customer-staging-AuthState-17UXOCYCV0R2C",
+        "RequestCodeSha256": "OCL+oXzDNLN2Axvyl0dWUzr7i698S6UlIKKzQ9QQh/4=",
+        "LwaClientId": "[REDACTED PUBLIC CLIENT IDENTIFIER]",
+        "LinksTable": "flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+        "ExistingApiId": "i4ceh4qpdg",
+        "StateSecretArn": "arn:aws:secretsmanager:us-west-2:114599789754:secret:StateEncryptionKey-mGZvNejXxrn2-nqgYZa",
+        "RedemptionArtifactKey": "flo-enrollment/redemption/9d72147896e5770327ce1f0c6f6a0c9529e9daee4952cdc6b696807a4e3cb654.zip",
+        "LambdaEnvironmentKeyArn": "arn:aws:kms:us-west-2:114599789754:key/57e62ad6-a638-40c9-9af6-df42a6418968",
+        "ApprovalArtifactKey": "flo-enrollment/approval/98b962142feb83f9ca8e4a03dd18a12c0c198e8ed15a0e321a414842cfc60d33.zip",
+        "RequestsTable": "flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK",
+        "AuditTable": "flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3",
+        "ReleaseId": "logging-review-20260906-8613959",
+        "EnableApproval": "false",
+        "ApprovalsTable": "flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT",
+        "RequestArtifactKey": "flo-enrollment/request/3822fea17cc334b376031bf2974756533afb8baf7c4ba52520a2b343d41087fe.zip",
+        "ArtifactBucket": "flo-customer-artifacts-artifacts-wiyewwqt3d1r",
+        "ApprovalArtifactVersion": "H_J.f3_uo0_XhbMl4HzQsm7aBw4UYl38",
+        "EnableEnrollment": "false",
+        "PublishRoutes": "false",
+        "RedemptionCodeSha256": "nXIUeJbldwMnzh8Mb2oMlSnp2u5JUs3GtpaAek48tlQ=",
+        "PublicOrigin": "https://i4ceh4qpdg.execute-api.us-west-2.amazonaws.com",
+        "RequestArtifactVersion": "pDJYZlwxmDpZWHvP7s5X9I0E6hoxtbx3"
+      },
+      "outputs": [
+        {
+          "OutputKey": "RequestVersionArn",
+          "OutputValue": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request:2",
+          "Description": "Exact numeric published version; not a grant to invoke it"
+        },
+        {
+          "OutputKey": "RedemptionVersionArn",
+          "OutputValue": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:2",
+          "Description": "Exact numeric published version; not a grant to invoke it"
+        },
+        {
+          "OutputKey": "ApprovalVersionArn",
+          "OutputValue": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+          "Description": "Exact numeric published version; not a grant to invoke it"
+        }
+      ],
+      "checkedAt": "2026-09-06T17:22:24.892936+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "sts",
+        "operation": "GetCallerIdentity",
+        "status": "success"
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 5
+        }
+      }
+    ]
+  },
+  "initialDiff": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "templateDifferencePaths": [
+        "/Conditions/ExposeRedemptionRoute",
+        "/Parameters/EnableRedemption",
+        "/Resources/RedeemPairingPermission/Condition",
+        "/Resources/RedeemPairingRoute/Condition",
+        "/Resources/RedemptionFunction/Properties/Environment/Variables/FLO_ENROLLMENT_ENABLED/Ref"
+      ],
+      "routes": [
+        {
+          "key": "$default",
+          "target": "integrations/qfwnq4s",
+          "authorization": "NONE"
+        }
+      ],
+      "stage": {
+        "defaultRouteSettings": {
+          "DetailedMetricsEnabled": false,
+          "ThrottlingBurstLimit": 5,
+          "ThrottlingRateLimit": 2
+        },
+        "routeSettings": {},
+        "accessLogs": {
+          "DestinationArn": "arn:aws:logs:us-west-2:114599789754:log-group:flo-customer-staging-AccessLogs-cLu3brPSgZes",
+          "Format": "{\"requestId\":\"$context.requestId\",\"status\":\"$context.status\",\"latency\":\"$context.responseLatency\"}"
+        }
+      },
+      "functions": [
+        {
+          "name": "flo-customer-enrollment-request",
+          "version": "2",
+          "state": "Active",
+          "sha256": "OCL+oXzDNLN2Axvyl0dWUzr7i698S6UlIKKzQ9QQh/4=",
+          "enrollmentEnabled": "false"
+        },
+        {
+          "name": "flo-customer-enrollment-redemption",
+          "version": "2",
+          "state": "Active",
+          "sha256": "nXIUeJbldwMnzh8Mb2oMlSnp2u5JUs3GtpaAek48tlQ=",
+          "enrollmentEnabled": "false"
+        },
+        {
+          "name": "flo-customer-enrollment-approval",
+          "version": "2",
+          "state": "Active",
+          "sha256": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM=",
+          "approvalEnabled": "false"
+        }
+      ],
+      "checkedAt": "2026-09-06T17:23:13.995585+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "GetTemplate",
+        "status": "success",
+        "n_items": {
+          "StagesAvailable": 2
+        }
+      },
+      {
+        "service": "apigatewayv2",
+        "operation": "GetRoutes",
+        "status": "success",
+        "n_items": {
+          "Items": 1
+        }
+      },
+      {
+        "service": "apigatewayv2",
+        "operation": "GetStage",
+        "status": "success"
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      }
+    ]
+  },
+  "superseded": {
+    "created": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "changeSet": {
+          "Id": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-request-only-review-20260906T1724Z/a35e1603-f15f-4e67-a9e0-4ddd7112b992",
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment/ac1ab770-aa00-11f1-9ac0-02cd968e7605"
+        },
+        "changedParameters": {
+          "EnableEnrollment": "true",
+          "PublishRoutes": "true",
+          "EnableRedemption": "false",
+          "ReleaseId": "request-only-review-20260906-1724"
+        },
+        "preservedParameterNames": [
+          "RedemptionArtifactVersion",
+          "ApprovalCodeSha256",
+          "AuthTable",
+          "RequestCodeSha256",
+          "LwaClientId",
+          "LinksTable",
+          "ExistingApiId",
+          "StateSecretArn",
+          "RedemptionArtifactKey",
+          "ApprovalDesignation",
+          "LambdaEnvironmentKeyArn",
+          "ApprovalArtifactKey",
+          "RequestsTable",
+          "AuditTable",
+          "EnableApproval",
+          "ApprovalsTable",
+          "RequestArtifactKey",
+          "ArtifactBucket",
+          "ApprovalArtifactVersion",
+          "RedemptionCodeSha256",
+          "PublicOrigin",
+          "RequestArtifactVersion"
+        ],
+        "executed": false
+      },
+      "api_calls": [
+        {
+          "service": "cloudformation",
+          "operation": "DescribeStacks",
+          "status": "success",
+          "n_items": {
+            "Stacks": 1
+          }
+        },
+        {
+          "service": "cloudformation",
+          "operation": "CreateChangeSet",
+          "status": "success"
+        }
+      ]
+    },
+    "plan": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "ChangeSetId": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-request-only-review-20260906T1724Z/a35e1603-f15f-4e67-a9e0-4ddd7112b992",
+        "Status": "CREATE_COMPLETE",
+        "ExecutionStatus": "AVAILABLE",
+        "Changes": [
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "PolicyAction": "ReplaceAndRetain",
+              "Action": "Modify",
+              "LogicalResourceId": "ApprovalVersion",
+              "PhysicalResourceId": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+              "ResourceType": "AWS::Lambda::Version",
+              "Replacement": "True",
+              "Scope": [
+                "Properties"
+              ],
+              "Details": [
+                {
+                  "Target": {
+                    "Attribute": "Properties",
+                    "Name": "Description",
+                    "RequiresRecreation": "Always"
+                  },
+                  "Evaluation": "Static",
+                  "ChangeSource": "ParameterReference",
+                  "CausingEntity": "ReleaseId"
+                },
+                {
+                  "Target": {
+                    "Attribute": "Properties",
+                    "Name": "Description",
+                    "RequiresRecreation": "Always"
+                  },
+                  "Evaluation": "Dynamic",
+                  "ChangeSource": "DirectModification"
+                }
+              ]
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "PairingAssetPermission",
+              "ResourceType": "AWS::Lambda::Permission",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "PairingAssetRoute",
+              "ResourceType": "AWS::ApiGatewayV2::Route",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "PairingIntegration",
+              "ResourceType": "AWS::ApiGatewayV2::Integration",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "PairingPagePermission",
+              "ResourceType": "AWS::Lambda::Permission",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "PairingPageRoute",
+              "ResourceType": "AWS::ApiGatewayV2::Route",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "PolicyAction": "ReplaceAndRetain",
+              "Action": "Modify",
+              "LogicalResourceId": "RedemptionVersion",
+              "PhysicalResourceId": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:2",
+              "ResourceType": "AWS::Lambda::Version",
+              "Replacement": "True",
+              "Scope": [
+                "Properties"
+              ],
+              "Details": [
+                {
+                  "Target": {
+                    "Attribute": "Properties",
+                    "Name": "Description",
+                    "RequiresRecreation": "Always"
+                  },
+                  "Evaluation": "Static",
+                  "ChangeSource": "ParameterReference",
+                  "CausingEntity": "ReleaseId"
+                },
+                {
+                  "Target": {
+                    "Attribute": "Properties",
+                    "Name": "Description",
+                    "RequiresRecreation": "Always"
+                  },
+                  "Evaluation": "Dynamic",
+                  "ChangeSource": "DirectModification"
+                }
+              ]
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Modify",
+              "LogicalResourceId": "RequestBoundary",
+              "PhysicalResourceId": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RequestBoundary-ZRxKvHtuLqmA",
+              "ResourceType": "AWS::IAM::ManagedPolicy",
+              "Replacement": "False",
+              "Scope": [
+                "Properties"
+              ],
+              "Details": [
+                {
+                  "Target": {
+                    "Attribute": "Properties",
+                    "Name": "PolicyDocument",
+                    "RequiresRecreation": "Never"
+                  },
+                  "Evaluation": "Static",
+                  "ChangeSource": "ResourceReference",
+                  "CausingEntity": "RedemptionVersion"
+                }
+              ]
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Modify",
+              "LogicalResourceId": "RequestFunction",
+              "PhysicalResourceId": "flo-customer-enrollment-request",
+              "ResourceType": "AWS::Lambda::Function",
+              "Replacement": "False",
+              "Scope": [
+                "Properties"
+              ],
+              "Details": [
+                {
+                  "Target": {
+                    "Attribute": "Properties",
+                    "Name": "Environment",
+                    "RequiresRecreation": "Never"
+                  },
+                  "Evaluation": "Static",
+                  "ChangeSource": "ParameterReference",
+                  "CausingEntity": "EnableEnrollment"
+                },
+                {
+                  "Target": {
+                    "Attribute": "Properties",
+                    "Name": "Environment",
+                    "RequiresRecreation": "Never"
+                  },
+                  "Evaluation": "Static",
+                  "ChangeSource": "ResourceReference",
+                  "CausingEntity": "RedemptionVersion"
+                },
+                {
+                  "Target": {
+                    "Attribute": "Properties",
+                    "Name": "Environment",
+                    "RequiresRecreation": "Never"
+                  },
+                  "Evaluation": "Dynamic",
+                  "ChangeSource": "DirectModification"
+                }
+              ]
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "PolicyAction": "ReplaceAndRetain",
+              "Action": "Modify",
+              "LogicalResourceId": "RequestVersion",
+              "PhysicalResourceId": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request:2",
+              "ResourceType": "AWS::Lambda::Version",
+              "Replacement": "True",
+              "Scope": [
+                "Properties"
+              ],
+              "Details": [
+                {
+                  "Target": {
+                    "Attribute": "Properties",
+                    "Name": "Description",
+                    "RequiresRecreation": "Always"
+                  },
+                  "Evaluation": "Static",
+                  "ChangeSource": "ParameterReference",
+                  "CausingEntity": "ReleaseId"
+                },
+                {
+                  "Target": {
+                    "Attribute": "Properties",
+                    "Name": "Description",
+                    "RequiresRecreation": "Always"
+                  },
+                  "Evaluation": "Dynamic",
+                  "ChangeSource": "DirectModification"
+                }
+              ]
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "StartPairingPermission",
+              "ResourceType": "AWS::Lambda::Permission",
+              "Scope": [],
+              "Details": []
+            }
+          },
+          {
+            "Type": "Resource",
+            "ResourceChange": {
+              "Action": "Add",
+              "LogicalResourceId": "StartPairingRoute",
+              "ResourceType": "AWS::ApiGatewayV2::Route",
+              "Scope": [],
+              "Details": []
+            }
+          }
+        ],
+        "CreationTime": "2026-09-06T17:23:53.989000+00:00"
+      },
+      "api_calls": [
+        {
+          "service": "cloudformation",
+          "operation": "DescribeChangeSet",
+          "status": "success",
+          "n_items": {
+            "Parameters": 26,
+            "NotificationARNs": 0,
+            "Capabilities": 1,
+            "Changes": 12
+          }
+        }
+      ]
+    },
+    "reason": "Global ReleaseId changed all Version descriptions without corresponding approval/redemption function configuration changes. Not executed; recommend removing this obsolete review-only change set with approval."
+  },
+  "correction": "Bind Function.Description and Version.Description to same ReleaseId so publication has real qualifying configuration update.",
+  "localValidation": {
+    "lint": {
+      "version": "1.52.1",
+      "exit": 0,
+      "output": []
+    },
+    "guardVersion": "3.2.1",
+    "guard": [
+      {
+        "name": "/input/runtime.template.json",
+        "metadata": {},
+        "status": "FAIL",
+        "not_compliant": [
+          {
+            "Rule": {
+              "name": "CLOUDWATCH_LOG_GROUP_ENCRYPTED",
+              "metadata": {},
+              "messages": {
+                "custom_message": null,
+                "error_message": null
+              },
+              "checks": [
+                {
+                  "Clause": {
+                    "Unary": {
+                      "check": {
+                        "UnResolved": {
+                          "value": {
+                            "traversed_to": {
+                              "path": "/Resources/RequestLogs/Properties",
+                              "value": {
+                                "LogGroupName": {
+                                  "Fn::Sub": "/aws/lambda/${AWS::StackName}-request"
+                                },
+                                "RetentionInDays": 7
+                              }
+                            },
+                            "remaining_query": "KmsKeyId",
+                            "reason": "Could not find key KmsKeyId inside struct at path /Resources/RequestLogs/Properties[L:521,C:20]"
+                          },
+                          "comparison": [
+                            "Exists",
+                            false
+                          ]
+                        }
+                      },
+                      "context": " %cloudwatch_logs[*].Properties.KmsKeyId EXISTS  ",
+                      "messages": {
+                        "custom_message": "\n    Violation: CloudWatch Log LogsGroup does not have KmsKeyId set.\n    Fix: Set the KmsKeyId parameter to a ARN.\n  ",
+                        "error_message": "Check was not compliant as property [KmsKeyId] is missing. Value traversed to [Path=/Resources/RequestLogs/Properties[L:521,C:20] Value={\"LogGroupName\":{\"Fn::Sub\":\"/aws/lambda/${AWS::StackName}-request\"},\"RetentionInDays\":7}]."
+                      }
+                    }
+                  }
+                },
+                {
+                  "Clause": {
+                    "Unary": {
+                      "check": {
+                        "UnResolved": {
+                          "value": {
+                            "traversed_to": {
+                              "path": "/Resources/RedemptionLogs/Properties",
+                              "value": {
+                                "LogGroupName": {
+                                  "Fn::Sub": "/aws/lambda/${AWS::StackName}-redemption"
+                                },
+                                "RetentionInDays": 7
+                              }
+                            },
+                            "remaining_query": "KmsKeyId",
+                            "reason": "Could not find key KmsKeyId inside struct at path /Resources/RedemptionLogs/Properties[L:934,C:20]"
+                          },
+                          "comparison": [
+                            "Exists",
+                            false
+                          ]
+                        }
+                      },
+                      "context": " %cloudwatch_logs[*].Properties.KmsKeyId EXISTS  ",
+                      "messages": {
+                        "custom_message": "\n    Violation: CloudWatch Log LogsGroup does not have KmsKeyId set.\n    Fix: Set the KmsKeyId parameter to a ARN.\n  ",
+                        "error_message": "Check was not compliant as property [KmsKeyId] is missing. Value traversed to [Path=/Resources/RedemptionLogs/Properties[L:934,C:20] Value={\"LogGroupName\":{\"Fn::Sub\":\"/aws/lambda/${AWS::StackName}-redemption\"},\"RetentionInDays\":7}]."
+                      }
+                    }
+                  }
+                },
+                {
+                  "Clause": {
+                    "Unary": {
+                      "check": {
+                        "UnResolved": {
+                          "value": {
+                            "traversed_to": {
+                              "path": "/Resources/ApprovalLogs/Properties",
+                              "value": {
+                                "LogGroupName": {
+                                  "Fn::Sub": "/aws/lambda/${AWS::StackName}-approval"
+                                },
+                                "RetentionInDays": 7
+                              }
+                            },
+                            "remaining_query": "KmsKeyId",
+                            "reason": "Could not find key KmsKeyId inside struct at path /Resources/ApprovalLogs/Properties[L:1318,C:20]"
+                          },
+                          "comparison": [
+                            "Exists",
+                            false
+                          ]
+                        }
+                      },
+                      "context": " %cloudwatch_logs[*].Properties.KmsKeyId EXISTS  ",
+                      "messages": {
+                        "custom_message": "\n    Violation: CloudWatch Log LogsGroup does not have KmsKeyId set.\n    Fix: Set the KmsKeyId parameter to a ARN.\n  ",
+                        "error_message": "Check was not compliant as property [KmsKeyId] is missing. Value traversed to [Path=/Resources/ApprovalLogs/Properties[L:1318,C:20] Value={\"LogGroupName\":{\"Fn::Sub\":\"/aws/lambda/${AWS::StackName}-approval\"},\"RetentionInDays\":7}]."
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "Rule": {
+              "name": "LAMBDA_DLQ_CHECK",
+              "metadata": {},
+              "messages": {
+                "custom_message": null,
+                "error_message": null
+              },
+              "checks": [
+                {
+                  "Clause": {
+                    "Unary": {
+                      "check": {
+                        "UnResolved": {
+                          "value": {
+                            "traversed_to": {
+                              "path": "/Resources/RequestFunction/Properties",
+                              "value": {
+                                "FunctionName": {
+                                  "Fn::Sub": "${AWS::StackName}-request"
+                                },
+                                "Description": {
+                                  "Fn::Sub": "Reviewed request release ${ReleaseId}"
+                                },
+                                "Runtime": "nodejs22.x",
+                                "Handler": "index.handler",
+                                "Architectures": [
+                                  "x86_64"
+                                ],
+                                "Role": {
+                                  "Fn::GetAtt": [
+                                    "RequestRole",
+                                    "Arn"
+                                  ]
+                                },
+                                "MemorySize": 256,
+                                "Timeout": 20,
+                                "ReservedConcurrentExecutions": 1,
+                                "Code": {
+                                  "S3Bucket": {
+                                    "Ref": "ArtifactBucket"
+                                  },
+                                  "S3Key": {
+                                    "Ref": "RequestArtifactKey"
+                                  },
+                                  "S3ObjectVersion": {
+                                    "Ref": "RequestArtifactVersion"
+                                  }
+                                },
+                                "Environment": {
+                                  "Variables": {
+                                    "FLO_CUSTOMER_AUTH_TABLE": {
+                                      "Ref": "AuthTable"
+                                    },
+                                    "FLO_CUSTOMER_LINKS_TABLE": {
+                                      "Ref": "LinksTable"
+                                    },
+                                    "FLO_ENROLLMENT_REQUESTS_TABLE": {
+                                      "Ref": "RequestsTable"
+                                    },
+                                    "FLO_ENROLLMENT_APPROVALS_TABLE": {
+                                      "Ref": "ApprovalsTable"
+                                    },
+                                    "FLO_ENROLLMENT_AUDIT_TABLE": {
+                                      "Ref": "AuditTable"
+                                    },
+                                    "FLO_ENROLLMENT_ENABLED": {
+                                      "Ref": "EnableEnrollment"
+                                    },
+                                    "FLO_AWS_ACCOUNT_ID": {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    "LWA_CLIENT_ID": {
+                                      "Ref": "LwaClientId"
+                                    },
+                                    "FLO_CUSTOMER_PUBLIC_ORIGIN": {
+                                      "Ref": "PublicOrigin"
+                                    },
+                                    "FLO_CUSTOMER_STATE_KEY": {
+                                      "Fn::Sub": "{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}"
+                                    },
+                                    "FLO_CUSTOMER_API_ID": {
+                                      "Ref": "ExistingApiId"
+                                    },
+                                    "FLO_REDEMPTION_FUNCTION_ARN": {
+                                      "Ref": "RedemptionVersion"
+                                    }
+                                  }
+                                },
+                                "LoggingConfig": {
+                                  "LogFormat": "JSON",
+                                  "ApplicationLogLevel": "WARN",
+                                  "SystemLogLevel": "INFO"
+                                }
+                              }
+                            },
+                            "remaining_query": "DeadLetterConfig.TargetArn",
+                            "reason": "Could not find key DeadLetterConfig inside struct at path /Resources/RequestFunction/Properties[L:534,C:20]"
+                          },
+                          "comparison": [
+                            "Empty",
+                            true
+                          ]
+                        }
+                      },
+                      "context": " %aws_lambda_functions_dlq[*].Properties.DeadLetterConfig.TargetArn not EMPTY  ",
+                      "messages": {
+                        "custom_message": "\n    Violation: All AWS Lambda Functions must have a dead-letter queue configured\n    Fix: Set the DeadLetterConfig.TargetAr Property to the Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic\n  ",
+                        "error_message": "Check was not compliant as property [DeadLetterConfig.TargetArn] is missing. Value traversed to [Path=/Resources/RequestFunction/Properties[L:534,C:20] Value={\"FunctionName\":{\"Fn::Sub\":\"${AWS::StackName}-request\"},\"Description\":{\"Fn::Sub\":\"Reviewed request release ${ReleaseId}\"},\"Runtime\":\"nodejs22.x\",\"Handler\":\"index.handler\",\"Architectures\":[\"x86_64\"],\"Role\":{\"Fn::GetAtt\":[\"RequestRole\",\"Arn\"]},\"MemorySize\":256,\"Timeout\":20,\"ReservedConcurrentExecutions\":1,\"Code\":{\"S3Bucket\":{\"Ref\":\"ArtifactBucket\"},\"S3Key\":{\"Ref\":\"RequestArtifactKey\"},\"S3ObjectVersion\":{\"Ref\":\"RequestArtifactVersion\"}},\"Environment\":{\"Variables\":{\"FLO_CUSTOMER_AUTH_TABLE\":{\"Ref\":\"AuthTable\"},\"FLO_CUSTOMER_LINKS_TABLE\":{\"Ref\":\"LinksTable\"},\"FLO_ENROLLMENT_REQUESTS_TABLE\":{\"Ref\":\"RequestsTable\"},\"FLO_ENROLLMENT_APPROVALS_TABLE\":{\"Ref\":\"ApprovalsTable\"},\"FLO_ENROLLMENT_AUDIT_TABLE\":{\"Ref\":\"AuditTable\"},\"FLO_ENROLLMENT_ENABLED\":{\"Ref\":\"EnableEnrollment\"},\"FLO_AWS_ACCOUNT_ID\":{\"Ref\":\"AWS::AccountId\"},\"LWA_CLIENT_ID\":{\"Ref\":\"LwaClientId\"},\"FLO_CUSTOMER_PUBLIC_ORIGIN\":{\"Ref\":\"PublicOrigin\"},\"FLO_CUSTOMER_STATE_KEY\":{\"Fn::Sub\":\"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\"},\"FLO_CUSTOMER_API_ID\":{\"Ref\":\"ExistingApiId\"},\"FLO_REDEMPTION_FUNCTION_ARN\":{\"Ref\":\"RedemptionVersion\"}}},\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"ApplicationLogLevel\":\"WARN\",\"SystemLogLevel\":\"INFO\"}}]."
+                      }
+                    }
+                  }
+                },
+                {
+                  "Clause": {
+                    "Unary": {
+                      "check": {
+                        "UnResolved": {
+                          "value": {
+                            "traversed_to": {
+                              "path": "/Resources/RedemptionFunction/Properties",
+                              "value": {
+                                "FunctionName": {
+                                  "Fn::Sub": "${AWS::StackName}-redemption"
+                                },
+                                "Description": {
+                                  "Fn::Sub": "Reviewed redemption release ${ReleaseId}"
+                                },
+                                "Runtime": "nodejs22.x",
+                                "Handler": "index.handler",
+                                "Architectures": [
+                                  "x86_64"
+                                ],
+                                "Role": {
+                                  "Fn::GetAtt": [
+                                    "RedemptionRole",
+                                    "Arn"
+                                  ]
+                                },
+                                "MemorySize": 256,
+                                "Timeout": 10,
+                                "ReservedConcurrentExecutions": 1,
+                                "Code": {
+                                  "S3Bucket": {
+                                    "Ref": "ArtifactBucket"
+                                  },
+                                  "S3Key": {
+                                    "Ref": "RedemptionArtifactKey"
+                                  },
+                                  "S3ObjectVersion": {
+                                    "Ref": "RedemptionArtifactVersion"
+                                  }
+                                },
+                                "Environment": {
+                                  "Variables": {
+                                    "FLO_CUSTOMER_AUTH_TABLE": {
+                                      "Ref": "AuthTable"
+                                    },
+                                    "FLO_CUSTOMER_LINKS_TABLE": {
+                                      "Ref": "LinksTable"
+                                    },
+                                    "FLO_ENROLLMENT_REQUESTS_TABLE": {
+                                      "Ref": "RequestsTable"
+                                    },
+                                    "FLO_ENROLLMENT_APPROVALS_TABLE": {
+                                      "Ref": "ApprovalsTable"
+                                    },
+                                    "FLO_ENROLLMENT_AUDIT_TABLE": {
+                                      "Ref": "AuditTable"
+                                    },
+                                    "FLO_ENROLLMENT_ENABLED": {
+                                      "Ref": "EnableRedemption"
+                                    },
+                                    "FLO_AWS_ACCOUNT_ID": {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    "LWA_CLIENT_ID": {
+                                      "Ref": "LwaClientId"
+                                    },
+                                    "FLO_CUSTOMER_PUBLIC_ORIGIN": {
+                                      "Ref": "PublicOrigin"
+                                    },
+                                    "FLO_CUSTOMER_STATE_KEY": {
+                                      "Fn::Sub": "{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}"
+                                    }
+                                  }
+                                },
+                                "LoggingConfig": {
+                                  "LogFormat": "JSON",
+                                  "ApplicationLogLevel": "WARN",
+                                  "SystemLogLevel": "INFO"
+                                }
+                              }
+                            },
+                            "remaining_query": "DeadLetterConfig.TargetArn",
+                            "reason": "Could not find key DeadLetterConfig inside struct at path /Resources/RedemptionFunction/Properties[L:947,C:20]"
+                          },
+                          "comparison": [
+                            "Empty",
+                            true
+                          ]
+                        }
+                      },
+                      "context": " %aws_lambda_functions_dlq[*].Properties.DeadLetterConfig.TargetArn not EMPTY  ",
+                      "messages": {
+                        "custom_message": "\n    Violation: All AWS Lambda Functions must have a dead-letter queue configured\n    Fix: Set the DeadLetterConfig.TargetAr Property to the Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic\n  ",
+                        "error_message": "Check was not compliant as property [DeadLetterConfig.TargetArn] is missing. Value traversed to [Path=/Resources/RedemptionFunction/Properties[L:947,C:20] Value={\"FunctionName\":{\"Fn::Sub\":\"${AWS::StackName}-redemption\"},\"Description\":{\"Fn::Sub\":\"Reviewed redemption release ${ReleaseId}\"},\"Runtime\":\"nodejs22.x\",\"Handler\":\"index.handler\",\"Architectures\":[\"x86_64\"],\"Role\":{\"Fn::GetAtt\":[\"RedemptionRole\",\"Arn\"]},\"MemorySize\":256,\"Timeout\":10,\"ReservedConcurrentExecutions\":1,\"Code\":{\"S3Bucket\":{\"Ref\":\"ArtifactBucket\"},\"S3Key\":{\"Ref\":\"RedemptionArtifactKey\"},\"S3ObjectVersion\":{\"Ref\":\"RedemptionArtifactVersion\"}},\"Environment\":{\"Variables\":{\"FLO_CUSTOMER_AUTH_TABLE\":{\"Ref\":\"AuthTable\"},\"FLO_CUSTOMER_LINKS_TABLE\":{\"Ref\":\"LinksTable\"},\"FLO_ENROLLMENT_REQUESTS_TABLE\":{\"Ref\":\"RequestsTable\"},\"FLO_ENROLLMENT_APPROVALS_TABLE\":{\"Ref\":\"ApprovalsTable\"},\"FLO_ENROLLMENT_AUDIT_TABLE\":{\"Ref\":\"AuditTable\"},\"FLO_ENROLLMENT_ENABLED\":{\"Ref\":\"EnableRedemption\"},\"FLO_AWS_ACCOUNT_ID\":{\"Ref\":\"AWS::AccountId\"},\"LWA_CLIENT_ID\":{\"Ref\":\"LwaClientId\"},\"FLO_CUSTOMER_PUBLIC_ORIGIN\":{\"Ref\":\"PublicOrigin\"},\"FLO_CUSTOMER_STATE_KEY\":{\"Fn::Sub\":\"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\"}}},\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"ApplicationLogLevel\":\"WARN\",\"SystemLogLevel\":\"INFO\"}}]."
+                      }
+                    }
+                  }
+                },
+                {
+                  "Clause": {
+                    "Unary": {
+                      "check": {
+                        "UnResolved": {
+                          "value": {
+                            "traversed_to": {
+                              "path": "/Resources/ApprovalFunction/Properties",
+                              "value": {
+                                "FunctionName": {
+                                  "Fn::Sub": "${AWS::StackName}-approval"
+                                },
+                                "Description": {
+                                  "Fn::Sub": "Reviewed approval release ${ReleaseId}"
+                                },
+                                "Runtime": "nodejs22.x",
+                                "Handler": "index.handler",
+                                "Architectures": [
+                                  "x86_64"
+                                ],
+                                "Role": {
+                                  "Fn::GetAtt": [
+                                    "ApprovalRole",
+                                    "Arn"
+                                  ]
+                                },
+                                "MemorySize": 256,
+                                "Timeout": 10,
+                                "ReservedConcurrentExecutions": 1,
+                                "Code": {
+                                  "S3Bucket": {
+                                    "Ref": "ArtifactBucket"
+                                  },
+                                  "S3Key": {
+                                    "Ref": "ApprovalArtifactKey"
+                                  },
+                                  "S3ObjectVersion": {
+                                    "Ref": "ApprovalArtifactVersion"
+                                  }
+                                },
+                                "Environment": {
+                                  "Variables": {
+                                    "FLO_CUSTOMER_AUTH_TABLE": {
+                                      "Ref": "AuthTable"
+                                    },
+                                    "FLO_CUSTOMER_LINKS_TABLE": {
+                                      "Ref": "LinksTable"
+                                    },
+                                    "FLO_ENROLLMENT_REQUESTS_TABLE": {
+                                      "Ref": "RequestsTable"
+                                    },
+                                    "FLO_ENROLLMENT_APPROVALS_TABLE": {
+                                      "Ref": "ApprovalsTable"
+                                    },
+                                    "FLO_ENROLLMENT_AUDIT_TABLE": {
+                                      "Ref": "AuditTable"
+                                    },
+                                    "FLO_PRIVATE_APPROVAL_ENABLED": {
+                                      "Ref": "EnableApproval"
+                                    },
+                                    "FLO_PRIVATE_APPROVAL_DESIGNATION": {
+                                      "Ref": "ApprovalDesignation"
+                                    }
+                                  }
+                                },
+                                "LoggingConfig": {
+                                  "LogFormat": "JSON",
+                                  "ApplicationLogLevel": "WARN",
+                                  "SystemLogLevel": "INFO"
+                                }
+                              }
+                            },
+                            "remaining_query": "DeadLetterConfig.TargetArn",
+                            "reason": "Could not find key DeadLetterConfig inside struct at path /Resources/ApprovalFunction/Properties[L:1331,C:20]"
+                          },
+                          "comparison": [
+                            "Empty",
+                            true
+                          ]
+                        }
+                      },
+                      "context": " %aws_lambda_functions_dlq[*].Properties.DeadLetterConfig.TargetArn not EMPTY  ",
+                      "messages": {
+                        "custom_message": "\n    Violation: All AWS Lambda Functions must have a dead-letter queue configured\n    Fix: Set the DeadLetterConfig.TargetAr Property to the Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic\n  ",
+                        "error_message": "Check was not compliant as property [DeadLetterConfig.TargetArn] is missing. Value traversed to [Path=/Resources/ApprovalFunction/Properties[L:1331,C:20] Value={\"FunctionName\":{\"Fn::Sub\":\"${AWS::StackName}-approval\"},\"Description\":{\"Fn::Sub\":\"Reviewed approval release ${ReleaseId}\"},\"Runtime\":\"nodejs22.x\",\"Handler\":\"index.handler\",\"Architectures\":[\"x86_64\"],\"Role\":{\"Fn::GetAtt\":[\"ApprovalRole\",\"Arn\"]},\"MemorySize\":256,\"Timeout\":10,\"ReservedConcurrentExecutions\":1,\"Code\":{\"S3Bucket\":{\"Ref\":\"ArtifactBucket\"},\"S3Key\":{\"Ref\":\"ApprovalArtifactKey\"},\"S3ObjectVersion\":{\"Ref\":\"ApprovalArtifactVersion\"}},\"Environment\":{\"Variables\":{\"FLO_CUSTOMER_AUTH_TABLE\":{\"Ref\":\"AuthTable\"},\"FLO_CUSTOMER_LINKS_TABLE\":{\"Ref\":\"LinksTable\"},\"FLO_ENROLLMENT_REQUESTS_TABLE\":{\"Ref\":\"RequestsTable\"},\"FLO_ENROLLMENT_APPROVALS_TABLE\":{\"Ref\":\"ApprovalsTable\"},\"FLO_ENROLLMENT_AUDIT_TABLE\":{\"Ref\":\"AuditTable\"},\"FLO_PRIVATE_APPROVAL_ENABLED\":{\"Ref\":\"EnableApproval\"},\"FLO_PRIVATE_APPROVAL_DESIGNATION\":{\"Ref\":\"ApprovalDesignation\"}}},\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"ApplicationLogLevel\":\"WARN\",\"SystemLogLevel\":\"INFO\"}}]."
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "Rule": {
+              "name": "LAMBDA_INSIDE_VPC",
+              "metadata": {},
+              "messages": {
+                "custom_message": null,
+                "error_message": null
+              },
+              "checks": [
+                {
+                  "Clause": {
+                    "Unary": {
+                      "check": {
+                        "UnResolved": {
+                          "value": {
+                            "traversed_to": {
+                              "path": "/Resources/RequestFunction/Properties",
+                              "value": {
+                                "FunctionName": {
+                                  "Fn::Sub": "${AWS::StackName}-request"
+                                },
+                                "Description": {
+                                  "Fn::Sub": "Reviewed request release ${ReleaseId}"
+                                },
+                                "Runtime": "nodejs22.x",
+                                "Handler": "index.handler",
+                                "Architectures": [
+                                  "x86_64"
+                                ],
+                                "Role": {
+                                  "Fn::GetAtt": [
+                                    "RequestRole",
+                                    "Arn"
+                                  ]
+                                },
+                                "MemorySize": 256,
+                                "Timeout": 20,
+                                "ReservedConcurrentExecutions": 1,
+                                "Code": {
+                                  "S3Bucket": {
+                                    "Ref": "ArtifactBucket"
+                                  },
+                                  "S3Key": {
+                                    "Ref": "RequestArtifactKey"
+                                  },
+                                  "S3ObjectVersion": {
+                                    "Ref": "RequestArtifactVersion"
+                                  }
+                                },
+                                "Environment": {
+                                  "Variables": {
+                                    "FLO_CUSTOMER_AUTH_TABLE": {
+                                      "Ref": "AuthTable"
+                                    },
+                                    "FLO_CUSTOMER_LINKS_TABLE": {
+                                      "Ref": "LinksTable"
+                                    },
+                                    "FLO_ENROLLMENT_REQUESTS_TABLE": {
+                                      "Ref": "RequestsTable"
+                                    },
+                                    "FLO_ENROLLMENT_APPROVALS_TABLE": {
+                                      "Ref": "ApprovalsTable"
+                                    },
+                                    "FLO_ENROLLMENT_AUDIT_TABLE": {
+                                      "Ref": "AuditTable"
+                                    },
+                                    "FLO_ENROLLMENT_ENABLED": {
+                                      "Ref": "EnableEnrollment"
+                                    },
+                                    "FLO_AWS_ACCOUNT_ID": {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    "LWA_CLIENT_ID": {
+                                      "Ref": "LwaClientId"
+                                    },
+                                    "FLO_CUSTOMER_PUBLIC_ORIGIN": {
+                                      "Ref": "PublicOrigin"
+                                    },
+                                    "FLO_CUSTOMER_STATE_KEY": {
+                                      "Fn::Sub": "{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}"
+                                    },
+                                    "FLO_CUSTOMER_API_ID": {
+                                      "Ref": "ExistingApiId"
+                                    },
+                                    "FLO_REDEMPTION_FUNCTION_ARN": {
+                                      "Ref": "RedemptionVersion"
+                                    }
+                                  }
+                                },
+                                "LoggingConfig": {
+                                  "LogFormat": "JSON",
+                                  "ApplicationLogLevel": "WARN",
+                                  "SystemLogLevel": "INFO"
+                                }
+                              }
+                            },
+                            "remaining_query": "VpcConfig.SecurityGroupIds",
+                            "reason": "Could not find key VpcConfig inside struct at path /Resources/RequestFunction/Properties[L:534,C:20]"
+                          },
+                          "comparison": [
+                            "Empty",
+                            true
+                          ]
+                        }
+                      },
+                      "context": " %aws_lambda_functions_inside_vpc[*].Properties.VpcConfig.SecurityGroupIds not EMPTY  ",
+                      "messages": {
+                        "custom_message": "",
+                        "error_message": "Check was not compliant as property [VpcConfig.SecurityGroupIds] is missing. Value traversed to [Path=/Resources/RequestFunction/Properties[L:534,C:20] Value={\"FunctionName\":{\"Fn::Sub\":\"${AWS::StackName}-request\"},\"Description\":{\"Fn::Sub\":\"Reviewed request release ${ReleaseId}\"},\"Runtime\":\"nodejs22.x\",\"Handler\":\"index.handler\",\"Architectures\":[\"x86_64\"],\"Role\":{\"Fn::GetAtt\":[\"RequestRole\",\"Arn\"]},\"MemorySize\":256,\"Timeout\":20,\"ReservedConcurrentExecutions\":1,\"Code\":{\"S3Bucket\":{\"Ref\":\"ArtifactBucket\"},\"S3Key\":{\"Ref\":\"RequestArtifactKey\"},\"S3ObjectVersion\":{\"Ref\":\"RequestArtifactVersion\"}},\"Environment\":{\"Variables\":{\"FLO_CUSTOMER_AUTH_TABLE\":{\"Ref\":\"AuthTable\"},\"FLO_CUSTOMER_LINKS_TABLE\":{\"Ref\":\"LinksTable\"},\"FLO_ENROLLMENT_REQUESTS_TABLE\":{\"Ref\":\"RequestsTable\"},\"FLO_ENROLLMENT_APPROVALS_TABLE\":{\"Ref\":\"ApprovalsTable\"},\"FLO_ENROLLMENT_AUDIT_TABLE\":{\"Ref\":\"AuditTable\"},\"FLO_ENROLLMENT_ENABLED\":{\"Ref\":\"EnableEnrollment\"},\"FLO_AWS_ACCOUNT_ID\":{\"Ref\":\"AWS::AccountId\"},\"LWA_CLIENT_ID\":{\"Ref\":\"LwaClientId\"},\"FLO_CUSTOMER_PUBLIC_ORIGIN\":{\"Ref\":\"PublicOrigin\"},\"FLO_CUSTOMER_STATE_KEY\":{\"Fn::Sub\":\"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\"},\"FLO_CUSTOMER_API_ID\":{\"Ref\":\"ExistingApiId\"},\"FLO_REDEMPTION_FUNCTION_ARN\":{\"Ref\":\"RedemptionVersion\"}}},\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"ApplicationLogLevel\":\"WARN\",\"SystemLogLevel\":\"INFO\"}}]."
+                      }
+                    }
+                  }
+                },
+                {
+                  "Clause": {
+                    "Unary": {
+                      "check": {
+                        "UnResolved": {
+                          "value": {
+                            "traversed_to": {
+                              "path": "/Resources/RedemptionFunction/Properties",
+                              "value": {
+                                "FunctionName": {
+                                  "Fn::Sub": "${AWS::StackName}-redemption"
+                                },
+                                "Description": {
+                                  "Fn::Sub": "Reviewed redemption release ${ReleaseId}"
+                                },
+                                "Runtime": "nodejs22.x",
+                                "Handler": "index.handler",
+                                "Architectures": [
+                                  "x86_64"
+                                ],
+                                "Role": {
+                                  "Fn::GetAtt": [
+                                    "RedemptionRole",
+                                    "Arn"
+                                  ]
+                                },
+                                "MemorySize": 256,
+                                "Timeout": 10,
+                                "ReservedConcurrentExecutions": 1,
+                                "Code": {
+                                  "S3Bucket": {
+                                    "Ref": "ArtifactBucket"
+                                  },
+                                  "S3Key": {
+                                    "Ref": "RedemptionArtifactKey"
+                                  },
+                                  "S3ObjectVersion": {
+                                    "Ref": "RedemptionArtifactVersion"
+                                  }
+                                },
+                                "Environment": {
+                                  "Variables": {
+                                    "FLO_CUSTOMER_AUTH_TABLE": {
+                                      "Ref": "AuthTable"
+                                    },
+                                    "FLO_CUSTOMER_LINKS_TABLE": {
+                                      "Ref": "LinksTable"
+                                    },
+                                    "FLO_ENROLLMENT_REQUESTS_TABLE": {
+                                      "Ref": "RequestsTable"
+                                    },
+                                    "FLO_ENROLLMENT_APPROVALS_TABLE": {
+                                      "Ref": "ApprovalsTable"
+                                    },
+                                    "FLO_ENROLLMENT_AUDIT_TABLE": {
+                                      "Ref": "AuditTable"
+                                    },
+                                    "FLO_ENROLLMENT_ENABLED": {
+                                      "Ref": "EnableRedemption"
+                                    },
+                                    "FLO_AWS_ACCOUNT_ID": {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    "LWA_CLIENT_ID": {
+                                      "Ref": "LwaClientId"
+                                    },
+                                    "FLO_CUSTOMER_PUBLIC_ORIGIN": {
+                                      "Ref": "PublicOrigin"
+                                    },
+                                    "FLO_CUSTOMER_STATE_KEY": {
+                                      "Fn::Sub": "{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}"
+                                    }
+                                  }
+                                },
+                                "LoggingConfig": {
+                                  "LogFormat": "JSON",
+                                  "ApplicationLogLevel": "WARN",
+                                  "SystemLogLevel": "INFO"
+                                }
+                              }
+                            },
+                            "remaining_query": "VpcConfig.SecurityGroupIds",
+                            "reason": "Could not find key VpcConfig inside struct at path /Resources/RedemptionFunction/Properties[L:947,C:20]"
+                          },
+                          "comparison": [
+                            "Empty",
+                            true
+                          ]
+                        }
+                      },
+                      "context": " %aws_lambda_functions_inside_vpc[*].Properties.VpcConfig.SecurityGroupIds not EMPTY  ",
+                      "messages": {
+                        "custom_message": "",
+                        "error_message": "Check was not compliant as property [VpcConfig.SecurityGroupIds] is missing. Value traversed to [Path=/Resources/RedemptionFunction/Properties[L:947,C:20] Value={\"FunctionName\":{\"Fn::Sub\":\"${AWS::StackName}-redemption\"},\"Description\":{\"Fn::Sub\":\"Reviewed redemption release ${ReleaseId}\"},\"Runtime\":\"nodejs22.x\",\"Handler\":\"index.handler\",\"Architectures\":[\"x86_64\"],\"Role\":{\"Fn::GetAtt\":[\"RedemptionRole\",\"Arn\"]},\"MemorySize\":256,\"Timeout\":10,\"ReservedConcurrentExecutions\":1,\"Code\":{\"S3Bucket\":{\"Ref\":\"ArtifactBucket\"},\"S3Key\":{\"Ref\":\"RedemptionArtifactKey\"},\"S3ObjectVersion\":{\"Ref\":\"RedemptionArtifactVersion\"}},\"Environment\":{\"Variables\":{\"FLO_CUSTOMER_AUTH_TABLE\":{\"Ref\":\"AuthTable\"},\"FLO_CUSTOMER_LINKS_TABLE\":{\"Ref\":\"LinksTable\"},\"FLO_ENROLLMENT_REQUESTS_TABLE\":{\"Ref\":\"RequestsTable\"},\"FLO_ENROLLMENT_APPROVALS_TABLE\":{\"Ref\":\"ApprovalsTable\"},\"FLO_ENROLLMENT_AUDIT_TABLE\":{\"Ref\":\"AuditTable\"},\"FLO_ENROLLMENT_ENABLED\":{\"Ref\":\"EnableRedemption\"},\"FLO_AWS_ACCOUNT_ID\":{\"Ref\":\"AWS::AccountId\"},\"LWA_CLIENT_ID\":{\"Ref\":\"LwaClientId\"},\"FLO_CUSTOMER_PUBLIC_ORIGIN\":{\"Ref\":\"PublicOrigin\"},\"FLO_CUSTOMER_STATE_KEY\":{\"Fn::Sub\":\"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\"}}},\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"ApplicationLogLevel\":\"WARN\",\"SystemLogLevel\":\"INFO\"}}]."
+                      }
+                    }
+                  }
+                },
+                {
+                  "Clause": {
+                    "Unary": {
+                      "check": {
+                        "UnResolved": {
+                          "value": {
+                            "traversed_to": {
+                              "path": "/Resources/ApprovalFunction/Properties",
+                              "value": {
+                                "FunctionName": {
+                                  "Fn::Sub": "${AWS::StackName}-approval"
+                                },
+                                "Description": {
+                                  "Fn::Sub": "Reviewed approval release ${ReleaseId}"
+                                },
+                                "Runtime": "nodejs22.x",
+                                "Handler": "index.handler",
+                                "Architectures": [
+                                  "x86_64"
+                                ],
+                                "Role": {
+                                  "Fn::GetAtt": [
+                                    "ApprovalRole",
+                                    "Arn"
+                                  ]
+                                },
+                                "MemorySize": 256,
+                                "Timeout": 10,
+                                "ReservedConcurrentExecutions": 1,
+                                "Code": {
+                                  "S3Bucket": {
+                                    "Ref": "ArtifactBucket"
+                                  },
+                                  "S3Key": {
+                                    "Ref": "ApprovalArtifactKey"
+                                  },
+                                  "S3ObjectVersion": {
+                                    "Ref": "ApprovalArtifactVersion"
+                                  }
+                                },
+                                "Environment": {
+                                  "Variables": {
+                                    "FLO_CUSTOMER_AUTH_TABLE": {
+                                      "Ref": "AuthTable"
+                                    },
+                                    "FLO_CUSTOMER_LINKS_TABLE": {
+                                      "Ref": "LinksTable"
+                                    },
+                                    "FLO_ENROLLMENT_REQUESTS_TABLE": {
+                                      "Ref": "RequestsTable"
+                                    },
+                                    "FLO_ENROLLMENT_APPROVALS_TABLE": {
+                                      "Ref": "ApprovalsTable"
+                                    },
+                                    "FLO_ENROLLMENT_AUDIT_TABLE": {
+                                      "Ref": "AuditTable"
+                                    },
+                                    "FLO_PRIVATE_APPROVAL_ENABLED": {
+                                      "Ref": "EnableApproval"
+                                    },
+                                    "FLO_PRIVATE_APPROVAL_DESIGNATION": {
+                                      "Ref": "ApprovalDesignation"
+                                    }
+                                  }
+                                },
+                                "LoggingConfig": {
+                                  "LogFormat": "JSON",
+                                  "ApplicationLogLevel": "WARN",
+                                  "SystemLogLevel": "INFO"
+                                }
+                              }
+                            },
+                            "remaining_query": "VpcConfig.SecurityGroupIds",
+                            "reason": "Could not find key VpcConfig inside struct at path /Resources/ApprovalFunction/Properties[L:1331,C:20]"
+                          },
+                          "comparison": [
+                            "Empty",
+                            true
+                          ]
+                        }
+                      },
+                      "context": " %aws_lambda_functions_inside_vpc[*].Properties.VpcConfig.SecurityGroupIds not EMPTY  ",
+                      "messages": {
+                        "custom_message": "",
+                        "error_message": "Check was not compliant as property [VpcConfig.SecurityGroupIds] is missing. Value traversed to [Path=/Resources/ApprovalFunction/Properties[L:1331,C:20] Value={\"FunctionName\":{\"Fn::Sub\":\"${AWS::StackName}-approval\"},\"Description\":{\"Fn::Sub\":\"Reviewed approval release ${ReleaseId}\"},\"Runtime\":\"nodejs22.x\",\"Handler\":\"index.handler\",\"Architectures\":[\"x86_64\"],\"Role\":{\"Fn::GetAtt\":[\"ApprovalRole\",\"Arn\"]},\"MemorySize\":256,\"Timeout\":10,\"ReservedConcurrentExecutions\":1,\"Code\":{\"S3Bucket\":{\"Ref\":\"ArtifactBucket\"},\"S3Key\":{\"Ref\":\"ApprovalArtifactKey\"},\"S3ObjectVersion\":{\"Ref\":\"ApprovalArtifactVersion\"}},\"Environment\":{\"Variables\":{\"FLO_CUSTOMER_AUTH_TABLE\":{\"Ref\":\"AuthTable\"},\"FLO_CUSTOMER_LINKS_TABLE\":{\"Ref\":\"LinksTable\"},\"FLO_ENROLLMENT_REQUESTS_TABLE\":{\"Ref\":\"RequestsTable\"},\"FLO_ENROLLMENT_APPROVALS_TABLE\":{\"Ref\":\"ApprovalsTable\"},\"FLO_ENROLLMENT_AUDIT_TABLE\":{\"Ref\":\"AuditTable\"},\"FLO_PRIVATE_APPROVAL_ENABLED\":{\"Ref\":\"EnableApproval\"},\"FLO_PRIVATE_APPROVAL_DESIGNATION\":{\"Ref\":\"ApprovalDesignation\"}}},\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"ApplicationLogLevel\":\"WARN\",\"SystemLogLevel\":\"INFO\"}}]."
+                      }
+                    }
+                  }
+                },
+                {
+                  "Clause": {
+                    "Unary": {
+                      "check": {
+                        "UnResolved": {
+                          "value": {
+                            "traversed_to": {
+                              "path": "/Resources/RequestFunction/Properties",
+                              "value": {
+                                "FunctionName": {
+                                  "Fn::Sub": "${AWS::StackName}-request"
+                                },
+                                "Description": {
+                                  "Fn::Sub": "Reviewed request release ${ReleaseId}"
+                                },
+                                "Runtime": "nodejs22.x",
+                                "Handler": "index.handler",
+                                "Architectures": [
+                                  "x86_64"
+                                ],
+                                "Role": {
+                                  "Fn::GetAtt": [
+                                    "RequestRole",
+                                    "Arn"
+                                  ]
+                                },
+                                "MemorySize": 256,
+                                "Timeout": 20,
+                                "ReservedConcurrentExecutions": 1,
+                                "Code": {
+                                  "S3Bucket": {
+                                    "Ref": "ArtifactBucket"
+                                  },
+                                  "S3Key": {
+                                    "Ref": "RequestArtifactKey"
+                                  },
+                                  "S3ObjectVersion": {
+                                    "Ref": "RequestArtifactVersion"
+                                  }
+                                },
+                                "Environment": {
+                                  "Variables": {
+                                    "FLO_CUSTOMER_AUTH_TABLE": {
+                                      "Ref": "AuthTable"
+                                    },
+                                    "FLO_CUSTOMER_LINKS_TABLE": {
+                                      "Ref": "LinksTable"
+                                    },
+                                    "FLO_ENROLLMENT_REQUESTS_TABLE": {
+                                      "Ref": "RequestsTable"
+                                    },
+                                    "FLO_ENROLLMENT_APPROVALS_TABLE": {
+                                      "Ref": "ApprovalsTable"
+                                    },
+                                    "FLO_ENROLLMENT_AUDIT_TABLE": {
+                                      "Ref": "AuditTable"
+                                    },
+                                    "FLO_ENROLLMENT_ENABLED": {
+                                      "Ref": "EnableEnrollment"
+                                    },
+                                    "FLO_AWS_ACCOUNT_ID": {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    "LWA_CLIENT_ID": {
+                                      "Ref": "LwaClientId"
+                                    },
+                                    "FLO_CUSTOMER_PUBLIC_ORIGIN": {
+                                      "Ref": "PublicOrigin"
+                                    },
+                                    "FLO_CUSTOMER_STATE_KEY": {
+                                      "Fn::Sub": "{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}"
+                                    },
+                                    "FLO_CUSTOMER_API_ID": {
+                                      "Ref": "ExistingApiId"
+                                    },
+                                    "FLO_REDEMPTION_FUNCTION_ARN": {
+                                      "Ref": "RedemptionVersion"
+                                    }
+                                  }
+                                },
+                                "LoggingConfig": {
+                                  "LogFormat": "JSON",
+                                  "ApplicationLogLevel": "WARN",
+                                  "SystemLogLevel": "INFO"
+                                }
+                              }
+                            },
+                            "remaining_query": "VpcConfig.SubnetIds",
+                            "reason": "Could not find key VpcConfig inside struct at path /Resources/RequestFunction/Properties[L:534,C:20]"
+                          },
+                          "comparison": [
+                            "Empty",
+                            true
+                          ]
+                        }
+                      },
+                      "context": " %aws_lambda_functions_inside_vpc[*].Properties.VpcConfig.SubnetIds not EMPTY  ",
+                      "messages": {
+                        "custom_message": "\n    Violation:  All AWS Lambda Functions must be configured with access to a VPC\n    Fix: set the VpcConfig.SecurityGroupIds and VpcConfig.SubnetIds parameters with a list of security groups and subnets.\n    Lambda creates an elastic network interface for each combination of security group and subnet in the function's VPC configuration.\n  ",
+                        "error_message": "Check was not compliant as property [VpcConfig.SubnetIds] is missing. Value traversed to [Path=/Resources/RequestFunction/Properties[L:534,C:20] Value={\"FunctionName\":{\"Fn::Sub\":\"${AWS::StackName}-request\"},\"Description\":{\"Fn::Sub\":\"Reviewed request release ${ReleaseId}\"},\"Runtime\":\"nodejs22.x\",\"Handler\":\"index.handler\",\"Architectures\":[\"x86_64\"],\"Role\":{\"Fn::GetAtt\":[\"RequestRole\",\"Arn\"]},\"MemorySize\":256,\"Timeout\":20,\"ReservedConcurrentExecutions\":1,\"Code\":{\"S3Bucket\":{\"Ref\":\"ArtifactBucket\"},\"S3Key\":{\"Ref\":\"RequestArtifactKey\"},\"S3ObjectVersion\":{\"Ref\":\"RequestArtifactVersion\"}},\"Environment\":{\"Variables\":{\"FLO_CUSTOMER_AUTH_TABLE\":{\"Ref\":\"AuthTable\"},\"FLO_CUSTOMER_LINKS_TABLE\":{\"Ref\":\"LinksTable\"},\"FLO_ENROLLMENT_REQUESTS_TABLE\":{\"Ref\":\"RequestsTable\"},\"FLO_ENROLLMENT_APPROVALS_TABLE\":{\"Ref\":\"ApprovalsTable\"},\"FLO_ENROLLMENT_AUDIT_TABLE\":{\"Ref\":\"AuditTable\"},\"FLO_ENROLLMENT_ENABLED\":{\"Ref\":\"EnableEnrollment\"},\"FLO_AWS_ACCOUNT_ID\":{\"Ref\":\"AWS::AccountId\"},\"LWA_CLIENT_ID\":{\"Ref\":\"LwaClientId\"},\"FLO_CUSTOMER_PUBLIC_ORIGIN\":{\"Ref\":\"PublicOrigin\"},\"FLO_CUSTOMER_STATE_KEY\":{\"Fn::Sub\":\"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\"},\"FLO_CUSTOMER_API_ID\":{\"Ref\":\"ExistingApiId\"},\"FLO_REDEMPTION_FUNCTION_ARN\":{\"Ref\":\"RedemptionVersion\"}}},\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"ApplicationLogLevel\":\"WARN\",\"SystemLogLevel\":\"INFO\"}}]."
+                      }
+                    }
+                  }
+                },
+                {
+                  "Clause": {
+                    "Unary": {
+                      "check": {
+                        "UnResolved": {
+                          "value": {
+                            "traversed_to": {
+                              "path": "/Resources/RedemptionFunction/Properties",
+                              "value": {
+                                "FunctionName": {
+                                  "Fn::Sub": "${AWS::StackName}-redemption"
+                                },
+                                "Description": {
+                                  "Fn::Sub": "Reviewed redemption release ${ReleaseId}"
+                                },
+                                "Runtime": "nodejs22.x",
+                                "Handler": "index.handler",
+                                "Architectures": [
+                                  "x86_64"
+                                ],
+                                "Role": {
+                                  "Fn::GetAtt": [
+                                    "RedemptionRole",
+                                    "Arn"
+                                  ]
+                                },
+                                "MemorySize": 256,
+                                "Timeout": 10,
+                                "ReservedConcurrentExecutions": 1,
+                                "Code": {
+                                  "S3Bucket": {
+                                    "Ref": "ArtifactBucket"
+                                  },
+                                  "S3Key": {
+                                    "Ref": "RedemptionArtifactKey"
+                                  },
+                                  "S3ObjectVersion": {
+                                    "Ref": "RedemptionArtifactVersion"
+                                  }
+                                },
+                                "Environment": {
+                                  "Variables": {
+                                    "FLO_CUSTOMER_AUTH_TABLE": {
+                                      "Ref": "AuthTable"
+                                    },
+                                    "FLO_CUSTOMER_LINKS_TABLE": {
+                                      "Ref": "LinksTable"
+                                    },
+                                    "FLO_ENROLLMENT_REQUESTS_TABLE": {
+                                      "Ref": "RequestsTable"
+                                    },
+                                    "FLO_ENROLLMENT_APPROVALS_TABLE": {
+                                      "Ref": "ApprovalsTable"
+                                    },
+                                    "FLO_ENROLLMENT_AUDIT_TABLE": {
+                                      "Ref": "AuditTable"
+                                    },
+                                    "FLO_ENROLLMENT_ENABLED": {
+                                      "Ref": "EnableRedemption"
+                                    },
+                                    "FLO_AWS_ACCOUNT_ID": {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    "LWA_CLIENT_ID": {
+                                      "Ref": "LwaClientId"
+                                    },
+                                    "FLO_CUSTOMER_PUBLIC_ORIGIN": {
+                                      "Ref": "PublicOrigin"
+                                    },
+                                    "FLO_CUSTOMER_STATE_KEY": {
+                                      "Fn::Sub": "{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}"
+                                    }
+                                  }
+                                },
+                                "LoggingConfig": {
+                                  "LogFormat": "JSON",
+                                  "ApplicationLogLevel": "WARN",
+                                  "SystemLogLevel": "INFO"
+                                }
+                              }
+                            },
+                            "remaining_query": "VpcConfig.SubnetIds",
+                            "reason": "Could not find key VpcConfig inside struct at path /Resources/RedemptionFunction/Properties[L:947,C:20]"
+                          },
+                          "comparison": [
+                            "Empty",
+                            true
+                          ]
+                        }
+                      },
+                      "context": " %aws_lambda_functions_inside_vpc[*].Properties.VpcConfig.SubnetIds not EMPTY  ",
+                      "messages": {
+                        "custom_message": "\n    Violation:  All AWS Lambda Functions must be configured with access to a VPC\n    Fix: set the VpcConfig.SecurityGroupIds and VpcConfig.SubnetIds parameters with a list of security groups and subnets.\n    Lambda creates an elastic network interface for each combination of security group and subnet in the function's VPC configuration.\n  ",
+                        "error_message": "Check was not compliant as property [VpcConfig.SubnetIds] is missing. Value traversed to [Path=/Resources/RedemptionFunction/Properties[L:947,C:20] Value={\"FunctionName\":{\"Fn::Sub\":\"${AWS::StackName}-redemption\"},\"Description\":{\"Fn::Sub\":\"Reviewed redemption release ${ReleaseId}\"},\"Runtime\":\"nodejs22.x\",\"Handler\":\"index.handler\",\"Architectures\":[\"x86_64\"],\"Role\":{\"Fn::GetAtt\":[\"RedemptionRole\",\"Arn\"]},\"MemorySize\":256,\"Timeout\":10,\"ReservedConcurrentExecutions\":1,\"Code\":{\"S3Bucket\":{\"Ref\":\"ArtifactBucket\"},\"S3Key\":{\"Ref\":\"RedemptionArtifactKey\"},\"S3ObjectVersion\":{\"Ref\":\"RedemptionArtifactVersion\"}},\"Environment\":{\"Variables\":{\"FLO_CUSTOMER_AUTH_TABLE\":{\"Ref\":\"AuthTable\"},\"FLO_CUSTOMER_LINKS_TABLE\":{\"Ref\":\"LinksTable\"},\"FLO_ENROLLMENT_REQUESTS_TABLE\":{\"Ref\":\"RequestsTable\"},\"FLO_ENROLLMENT_APPROVALS_TABLE\":{\"Ref\":\"ApprovalsTable\"},\"FLO_ENROLLMENT_AUDIT_TABLE\":{\"Ref\":\"AuditTable\"},\"FLO_ENROLLMENT_ENABLED\":{\"Ref\":\"EnableRedemption\"},\"FLO_AWS_ACCOUNT_ID\":{\"Ref\":\"AWS::AccountId\"},\"LWA_CLIENT_ID\":{\"Ref\":\"LwaClientId\"},\"FLO_CUSTOMER_PUBLIC_ORIGIN\":{\"Ref\":\"PublicOrigin\"},\"FLO_CUSTOMER_STATE_KEY\":{\"Fn::Sub\":\"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\"}}},\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"ApplicationLogLevel\":\"WARN\",\"SystemLogLevel\":\"INFO\"}}]."
+                      }
+                    }
+                  }
+                },
+                {
+                  "Clause": {
+                    "Unary": {
+                      "check": {
+                        "UnResolved": {
+                          "value": {
+                            "traversed_to": {
+                              "path": "/Resources/ApprovalFunction/Properties",
+                              "value": {
+                                "FunctionName": {
+                                  "Fn::Sub": "${AWS::StackName}-approval"
+                                },
+                                "Description": {
+                                  "Fn::Sub": "Reviewed approval release ${ReleaseId}"
+                                },
+                                "Runtime": "nodejs22.x",
+                                "Handler": "index.handler",
+                                "Architectures": [
+                                  "x86_64"
+                                ],
+                                "Role": {
+                                  "Fn::GetAtt": [
+                                    "ApprovalRole",
+                                    "Arn"
+                                  ]
+                                },
+                                "MemorySize": 256,
+                                "Timeout": 10,
+                                "ReservedConcurrentExecutions": 1,
+                                "Code": {
+                                  "S3Bucket": {
+                                    "Ref": "ArtifactBucket"
+                                  },
+                                  "S3Key": {
+                                    "Ref": "ApprovalArtifactKey"
+                                  },
+                                  "S3ObjectVersion": {
+                                    "Ref": "ApprovalArtifactVersion"
+                                  }
+                                },
+                                "Environment": {
+                                  "Variables": {
+                                    "FLO_CUSTOMER_AUTH_TABLE": {
+                                      "Ref": "AuthTable"
+                                    },
+                                    "FLO_CUSTOMER_LINKS_TABLE": {
+                                      "Ref": "LinksTable"
+                                    },
+                                    "FLO_ENROLLMENT_REQUESTS_TABLE": {
+                                      "Ref": "RequestsTable"
+                                    },
+                                    "FLO_ENROLLMENT_APPROVALS_TABLE": {
+                                      "Ref": "ApprovalsTable"
+                                    },
+                                    "FLO_ENROLLMENT_AUDIT_TABLE": {
+                                      "Ref": "AuditTable"
+                                    },
+                                    "FLO_PRIVATE_APPROVAL_ENABLED": {
+                                      "Ref": "EnableApproval"
+                                    },
+                                    "FLO_PRIVATE_APPROVAL_DESIGNATION": {
+                                      "Ref": "ApprovalDesignation"
+                                    }
+                                  }
+                                },
+                                "LoggingConfig": {
+                                  "LogFormat": "JSON",
+                                  "ApplicationLogLevel": "WARN",
+                                  "SystemLogLevel": "INFO"
+                                }
+                              }
+                            },
+                            "remaining_query": "VpcConfig.SubnetIds",
+                            "reason": "Could not find key VpcConfig inside struct at path /Resources/ApprovalFunction/Properties[L:1331,C:20]"
+                          },
+                          "comparison": [
+                            "Empty",
+                            true
+                          ]
+                        }
+                      },
+                      "context": " %aws_lambda_functions_inside_vpc[*].Properties.VpcConfig.SubnetIds not EMPTY  ",
+                      "messages": {
+                        "custom_message": "\n    Violation:  All AWS Lambda Functions must be configured with access to a VPC\n    Fix: set the VpcConfig.SecurityGroupIds and VpcConfig.SubnetIds parameters with a list of security groups and subnets.\n    Lambda creates an elastic network interface for each combination of security group and subnet in the function's VPC configuration.\n  ",
+                        "error_message": "Check was not compliant as property [VpcConfig.SubnetIds] is missing. Value traversed to [Path=/Resources/ApprovalFunction/Properties[L:1331,C:20] Value={\"FunctionName\":{\"Fn::Sub\":\"${AWS::StackName}-approval\"},\"Description\":{\"Fn::Sub\":\"Reviewed approval release ${ReleaseId}\"},\"Runtime\":\"nodejs22.x\",\"Handler\":\"index.handler\",\"Architectures\":[\"x86_64\"],\"Role\":{\"Fn::GetAtt\":[\"ApprovalRole\",\"Arn\"]},\"MemorySize\":256,\"Timeout\":10,\"ReservedConcurrentExecutions\":1,\"Code\":{\"S3Bucket\":{\"Ref\":\"ArtifactBucket\"},\"S3Key\":{\"Ref\":\"ApprovalArtifactKey\"},\"S3ObjectVersion\":{\"Ref\":\"ApprovalArtifactVersion\"}},\"Environment\":{\"Variables\":{\"FLO_CUSTOMER_AUTH_TABLE\":{\"Ref\":\"AuthTable\"},\"FLO_CUSTOMER_LINKS_TABLE\":{\"Ref\":\"LinksTable\"},\"FLO_ENROLLMENT_REQUESTS_TABLE\":{\"Ref\":\"RequestsTable\"},\"FLO_ENROLLMENT_APPROVALS_TABLE\":{\"Ref\":\"ApprovalsTable\"},\"FLO_ENROLLMENT_AUDIT_TABLE\":{\"Ref\":\"AuditTable\"},\"FLO_PRIVATE_APPROVAL_ENABLED\":{\"Ref\":\"EnableApproval\"},\"FLO_PRIVATE_APPROVAL_DESIGNATION\":{\"Ref\":\"ApprovalDesignation\"}}},\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"ApplicationLogLevel\":\"WARN\",\"SystemLogLevel\":\"INFO\"}}]."
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "not_applicable": [
+          "API_GWV2_ACCESS_LOGS_ENABLED",
+          "CFN_AUTHENTICATION_RULE",
+          "CLOUDWATCH_ALARM_ACTION_CHECK",
+          "IAM_POLICY_NO_STATEMENTS_WITH_ADMIN_ACCESS",
+          "IAM_POLICY_NO_STATEMENTS_WITH_FULL_ACCESS",
+          "IAM_ROLE_NO_WILDCARD_RESOURCE_ON_PASSROLE",
+          "IAM_USER_LOGIN_PROFILE_NO_PLAINTEXT_PASSWORD",
+          "IAM_USER_LOGIN_PROFILE_PASSWORD_RESET_RULE",
+          "IAM_USER_LOGIN_PROFILE_USES_SECURE_PARAMETER",
+          "IAM_USER_LOGIN_PROFILE_USES_SECURE_SERVICE",
+          "IAM_USER_MISSING_GROUP_RULE",
+          "IAM_USER_NO_POLICIES_CHECK"
+        ],
+        "compliant": [
+          "CFN_NO_EXPLICIT_RESOURCE_NAMES",
+          "CW_LOGGROUP_RETENTION_PERIOD_CHECK",
+          "IAM_MANAGEDPOLICY_NO_STATEMENTS_WITH_FULL_ACCESS",
+          "IAM_NO_INLINE_POLICY_CHECK",
+          "IAM_NO_POLICY_ON_USER",
+          "IAM_POLICYDOCUMENT_NO_WILDCARD_RESOURCE",
+          "IAM_POLICY_NO_WILDCARD_RESOURCE_ON_PASSROLE",
+          "IAM_ROLE_ADMINISTRATOR_ACCESS_POLICY_RULE",
+          "IAM_ROLE_ELEVATED_MANAGED_POLICY_RULE",
+          "IAM_ROLE_NO_ALLOW_PLUS_NOT_ACTION_ON_TRUST_POLICY",
+          "IAM_ROLE_NO_ALLOW_PLUS_NOT_PRINCIPAL",
+          "IAM_ROLE_NO_FULL_ACCESS_ON_TRUST_POLICY",
+          "IAM_ROLE_NO_WILDCARD_ACTIONS_ON_PERMISSIONS",
+          "IAM_ROLE_OR_POLICY_NO_ALLOW_PLUS_NOT_ACTION",
+          "IAM_ROLE_OR_POLICY_NO_ALLOW_PLUS_NOT_RESOURCE",
+          "LAMBDA_CONCURRENCY_CHECK",
+          "LAMBDA_FUNCTION_PUBLIC_ACCESS_PROHIBITED",
+          "LAMBDA_NO_WILDCARD_PRINCIPALS",
+          "LAMBDA_PERMISSION_INVOKE_FUNCTION_ACTION"
+        ]
+      }
+    ],
+    "guardHostResult": {
+      "chunk_id": "f54ebd",
+      "wall_time_seconds": 1.0147631,
+      "exit_code": 1,
+      "original_token_count": 15244,
+      "output": "[\n  {\n    \"name\": \"/input/runtime.template.json\",\n    \"metadata\": {},\n    \"status\": \"FAIL\",\n    \"not_compliant\": [\n      {\n        \"Rule\": {\n          \"name\": \"CLOUDWATCH_LOG_GROUP_ENCRYPTED\",\n          \"metadata\": {},\n          \"messages\": {\n            \"custom_message\": null,\n            \"error_message\": null\n          },\n          \"checks\": [\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/RequestLogs/Properties\",\n                          \"value\": {\n                            \"LogGroupName\": {\n                              \"Fn::Sub\": \"/aws/lambda/${AWS::StackName}-request\"\n                            },\n                            \"RetentionInDays\": 7\n                          }\n                        },\n                        \"remaining_query\": \"KmsKeyId\",\n                        \"reason\": \"Could not find key KmsKeyId inside struct at path /Resources/RequestLogs/Properties[L:521,C:20]\"\n                      },\n                      \"comparison\": [\n                        \"Exists\",\n                        false\n                      ]\n                    }\n                  },\n                  \"context\": \" %cloudwatch_logs[*].Properties.KmsKeyId EXISTS  \",\n                  \"messages\": {\n                    \"custom_message\": \"\\n    Violation: CloudWatch Log LogsGroup does not have KmsKeyId set.\\n    Fix: Set the KmsKeyId parameter to a ARN.\\n  \",\n                    \"error_message\": \"Check was not compliant as property [KmsKeyId] is missing. Value traversed to [Path=/Resources/RequestLogs/Properties[L:521,C:20] Value={\\\"LogGroupName\\\":{\\\"Fn::Sub\\\":\\\"/aws/lambda/${AWS::StackName}-request\\\"},\\\"RetentionInDays\\\":7}].\"\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/RedemptionLogs/Properties\",\n                          \"value\": {\n                            \"LogGroupName\": {\n                              \"Fn::Sub\": \"/aws/lambda/${AWS::StackName}-redemption\"\n                            },\n                            \"RetentionInDays\": 7\n                          }\n                        },\n                        \"remaining_query\": \"KmsKeyId\",\n                        \"reason\": \"Could not find key KmsKeyId inside struct at path /Resources/RedemptionLogs/Properties[L:934,C:20]\"\n                      },\n                      \"comparison\": [\n                        \"Exists\",\n                        false\n                      ]\n                    }\n                  },\n                  \"context\": \" %cloudwatch_logs[*].Properties.KmsKeyId EXISTS  \",\n                  \"messages\": {\n                    \"custom_message\": \"\\n    Violation: CloudWatch Log LogsGroup does not have KmsKeyId set.\\n    Fix: Set the KmsKeyId parameter to a ARN.\\n  \",\n                    \"error_message\": \"Check was not compliant as property [KmsKeyId] is missing. Value traversed to [Path=/Resources/RedemptionLogs/Properties[L:934,C:20] Value={\\\"LogGroupName\\\":{\\\"Fn::Sub\\\":\\\"/aws/lambda/${AWS::StackName}-redemption\\\"},\\\"RetentionInDays\\\":7}].\"\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/ApprovalLogs/Properties\",\n                          \"value\": {\n                            \"LogGroupName\": {\n                              \"Fn::Sub\": \"/aws/lambda/${AWS::StackName}-approval\"\n                            },\n                            \"RetentionInDays\": 7\n                          }\n                        },\n                        \"remaining_query\": \"KmsKeyId\",\n                        \"reason\": \"Could not find key KmsKeyId inside struct at path /Resources/ApprovalLogs/Properties[L:1318,C:20]\"\n                      },\n                      \"comparison\": [\n                        \"Exists\",\n                        false\n                      ]\n                    }\n                  },\n                  \"context\": \" %cloudwatch_logs[*].Properties.KmsKeyId EXISTS  \",\n                  \"messages\": {\n                    \"custom_message\": \"\\n    Violation: CloudWatch Log LogsGroup does not have KmsKeyId set.\\n    Fix: Set the KmsKeyId parameter to a ARN.\\n  \",\n                    \"error_message\": \"Check was not compliant as property [KmsKeyId] is missing. Value traversed to [Path=/Resources/ApprovalLogs/Properties[L:1318,C:20] Value={\\\"LogGroupName\\\":{\\\"Fn::Sub\\\":\\\"/aws/lambda/${AWS::StackName}-approval\\\"},\\\"RetentionInDays\\\":7}].\"\n                  }\n                }\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"Rule\": {\n          \"name\": \"LAMBDA_DLQ_CHECK\",\n          \"metadata\": {},\n          \"messages\": {\n            \"custom_message\": null,\n            \"error_message\": null\n          },\n          \"checks\": [\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/RequestFunction/Properties\",\n                          \"value\": {\n                            \"FunctionName\": {\n                              \"Fn::Sub\": \"${AWS::StackName}-request\"\n                            },\n                            \"Description\": {\n                              \"Fn::Sub\": \"Reviewed request release ${ReleaseId}\"\n                            },\n                            \"Runtime\": \"nodejs22.x\",\n                            \"Handler\": \"index.handler\",\n                            \"Architectures\": [\n                              \"x86_64\"\n                            ],\n                            \"Role\": {\n                              \"Fn::GetAtt\": [\n                                \"RequestRole\",\n                                \"Arn\"\n                              ]\n                            },\n                            \"MemorySize\": 256,\n                            \"Timeout\": 20,\n                            \"ReservedConcurrentExecutions\": 1,\n                            \"Code\": {\n                              \"S3Bucket\": {\n                                \"Ref\": \"ArtifactBucket\"\n                              },\n                              \"S3Key\": {\n                                \"Ref\": \"RequestArtifactKey\"\n                              },\n                              \"S3ObjectVersion\": {\n                                \"Ref\": \"RequestArtifactVersion\"\n                              }\n                            },\n                            \"Environment\": {\n                              \"Variables\": {\n                                \"FLO_CUSTOMER_AUTH_TABLE\": {\n                                  \"Ref\": \"AuthTable\"\n                                },\n                                \"FLO_CUSTOMER_LINKS_TABLE\": {\n                                  \"Ref\": \"LinksTable\"\n                                },\n                                \"FLO_ENROLLMENT_REQUESTS_TABLE\": {\n                                  \"Ref\": \"RequestsTable\"\n                                },\n                                \"FLO_ENROLLMENT_APPROVALS_TABLE\": {\n                                  \"Ref\": \"ApprovalsTable\"\n                                },\n                                \"FLO_ENROLLMENT_AUDIT_TABLE\": {\n                                  \"Ref\": \"AuditTable\"\n                                },\n                                \"FLO_ENROLLMENT_ENABLED\": {\n                                  \"Ref\": \"EnableEnrollment\"\n                                },\n                                \"FLO_AWS_ACCOUNT_ID\": {\n                                  \"Ref\": \"AWS::AccountId\"\n                                },\n                                \"LWA_CLIENT_ID\": {\n                                  \"Ref\": \"LwaClientId\"\n                                },\n                                \"FLO_CUSTOMER_PUBLIC_ORIGIN\": {\n                                  \"Ref\": \"PublicOrigin\"\n                                },\n                                \"FLO_CUSTOMER_STATE_KEY\": {\n                                  \"Fn::Sub\": \"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\"\n                                },\n                                \"FLO_CUSTOMER_API_ID\": {\n                                  \"Ref\": \"ExistingApiId\"\n                                },\n                                \"FLO_REDEMPTION_FUNCTION_ARN\": {\n                                  \"Ref\": \"RedemptionVersion\"\n                                }\n                              }\n                            },\n                            \"LoggingConfig\": {\n                              \"LogFormat\": \"JSON\",\n                              \"ApplicationLogLevel\": \"WARN\",\n                              \"SystemLogLevel\": \"INFO\"\n                            }\n                          }\n                        },\n                        \"remaining_query\": \"DeadLetterConfig.TargetArn\",\n                        \"reason\": \"Could not find key DeadLetterConfig inside struct at path /Resources/RequestFunction/Properties[L:534,C:20]\"\n                      },\n                      \"comparison\": [\n                        \"Empty\",\n                        true\n                      ]\n                    }\n                  },\n                  \"context\": \" %aws_lambda_functions_dlq[*].Properties.DeadLetterConfig.TargetArn not EMPTY  \",\n                  \"messages\": {\n                    \"custom_message\": \"\\n    Violation: All AWS Lambda Functions must have a dead-letter queue configured\\n    Fix: Set the DeadLetterConfig.TargetAr Property to the Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic\\n  \",\n                    \"error_message\": \"Check was not compliant as property [DeadLetterConfig.TargetArn] is missing. Value traversed to [Path=/Resources/RequestFunction/Properties[L:534,C:20] Value={\\\"FunctionName\\\":{\\\"Fn::Sub\\\":\\\"${AWS::StackName}-request\\\"},\\\"Description\\\":{\\\"Fn::Sub\\\":\\\"Reviewed request release ${ReleaseId}\\\"},\\\"Runtime\\\":\\\"nodejs22.x\\\",\\\"Handler\\\":\\\"index.handler\\\",\\\"Architectures\\\":[\\\"x86_64\\\"],\\\"Role\\\":{\\\"Fn::GetAtt\\\":[\\\"RequestRole\\\",\\\"Arn\\\"]},\\\"MemorySize\\\":256,\\\"Timeout\\\":20,\\\"ReservedConcurrentExecutions\\\":1,\\\"Code\\\":{\\\"S3Bucket\\\":{\\\"Ref\\\":\\\"ArtifactBucket\\\"},\\\"S3Key\\\":{\\\"Ref\\\":\\\"RequestArtifactKey\\\"},\\\"S3ObjectVersion\\\":{\\\"Ref\\\":\\\"RequestArtifactVersion\\\"}},\\\"Environment\\\":{\\\"Variables\\\":{\\\"FLO_CUSTOMER_AUTH_TABLE\\\":{\\\"Ref\\\":\\\"AuthTable\\\"},\\\"FLO_CUSTOMER_LINKS_TABLE\\\":{\\\"Ref\\\":\\\"LinksTable\\\"},\\\"FLO_ENROLLMENT_REQUESTS_TABLE\\\":{\\\"Ref\\\":\\\"RequestsTable\\\"},\\\"FLO_ENROLLMENT_APPROVALS_TABLE\\\":{\\\"Ref\\\":\\\"ApprovalsTable\\\"},\\\"FLO_ENROLLMENT_AUDIT_TABLE\\\":{\\\"Ref\\\":\\\"AuditTable\\\"},\\\"FLO_ENROLLMENT_ENABLED\\\":{\\\"Ref\\\":\\\"EnableEnrollment\\\"},\\\"FLO_AWS_ACCOUNT_ID\\\":{\\\"Ref\\\":\\\"AWS::AccountId\\\"},\\\"LWA_CLIENT_ID\\\":{\\\"Ref\\\":\\\"LwaClientId\\\"},\\\"FLO_CUSTOMER_PUBLIC_ORIGIN\\\":{\\\"Ref\\\":\\\"PublicOrigin\\\"},\\\"FLO_CUSTOMER_STATE_KEY\\\":{\\\"Fn::Sub\\\":\\\"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\\\"},\\\"FLO_CUSTOMER_API_ID\\\":{\\\"Ref\\\":\\\"ExistingApiId\\\"},\\\"FLO_REDEMPTION_FUNCTION_ARN\\\":{\\\"Ref\\\":\\\"RedemptionVersion\\\"}}},\\\"LoggingConfig\\\":{\\\"LogFormat\\\":\\\"JSON\\\",\\\"ApplicationLogLevel\\\":\\\"WARN\\\",\\\"SystemLogLevel\\\":\\\"INFO\\\"}}].\"\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/RedemptionFunction/Properties\",\n                          \"value\": {\n                            \"FunctionName\": {\n                              \"Fn::Sub\": \"${AWS::StackName}-redemption\"\n                            },\n                            \"Description\": {\n                              \"Fn::Sub\": \"Reviewed redemption release ${ReleaseId}\"\n                            },\n                            \"Runtime\": \"nodejs22.x\",\n                            \"Handler\": \"index.handler\",\n                            \"Architectures\": [\n                              \"x86_64\"\n                            ],\n                            \"Role\": {\n                              \"Fn::GetAtt\": [\n                                \"RedemptionRole\",\n                                \"Arn\"\n                              ]\n                            },\n                            \"MemorySize\": 256,\n                            \"Timeout\": 10,\n                            \"ReservedConcurrentExecutions\": 1,\n                            \"Code\": {\n                              \"S3Bucket\": {\n                                \"Ref\": \"ArtifactBucket\"\n                              },\n                              \"S3Key\": {\n                                \"Ref\": \"RedemptionArtifactKey\"\n                              },\n                              \"S3ObjectVersion\": {\n                                \"Ref\": \"RedemptionArtifactVersion\"\n                              }\n                            },\n                            \"Environment\": {\n                              \"Variables\": {\n                                \"FLO_CUSTOMER_AUTH_TABLE\": {\n                                  \"Ref\": \"AuthTable\"\n                                },\n                                \"FLO_CUSTOMER_LINKS_TABLE\": {\n                                  \"Ref\": \"LinksTable\"\n                                },\n                                \"FLO_ENROLLMENT_REQUESTS_TABLE\": {\n                                  \"Ref\": \"RequestsTable\"\n                                },\n                                \"FLO_ENROLLMENT_APPROVALS_TABLE\": {\n                                  \"Ref\": \"ApprovalsTable\"\n                                },\n                                \"FLO_ENROLLMENT_AUDIT_TABLE\": {\n                                  \"Ref\": \"AuditTable\"\n                                },\n                                \"FLO_ENROLLMENT_ENABLED\": {\n                                  \"Ref\": \"EnableRedemption\"\n                                },\n                                \"FLO_AWS_ACCOUNT_ID\": {\n                                  \"Ref\": \"AWS::AccountId\"\n                                },\n                                \"LWA_CLIENT_ID\": {\n                                  \"Ref\": \"LwaClientId\"\n                                },\n                                \"FLO_CUSTOMER_PUBLIC_ORIGIN\": {\n                                  \"Ref\": \"PublicOrigin\"\n                                },\n                                \"FLO_CUSTOMER_STATE_KEY\": {\n                                  \"Fn::Sub\": \"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\"\n                                }\n                              }\n                            },\n                            \"LoggingConfig\": {\n                              \"LogFormat\": \"JSON\",\n                              \"ApplicationLogLevel\": \"WARN\",\n                              \"SystemLogLevel\": \"INFO\"\n                            }\n                          }\n                        },\n                        \"remaining_query\": \"DeadLetterConfig.TargetArn\",\n                        \"reason\": \"Could not find key DeadLetterConfig inside struct at path /Resources/RedemptionFunction/Properties[L:947,C:20]\"\n                      },\n                      \"comparison\": [\n                        \"Empty\",\n                        true\n                      ]\n                    }\n                  },\n                  \"context\": \" %aws_lambda_functions_dlq[*].Properties.DeadLetterConfig.TargetArn not EMPTY  \",\n                  \"messages\": {\n                    \"custom_message\": \"\\n    Violation: All AWS Lambda Functions must have a dead-letter queue configured\\n    Fix: Set the DeadLetterConfig.TargetAr Property to the Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic\\n  \",\n                    \"error_message\": \"Check was not compliant as property [DeadLetterConfig.TargetArn] is missing. Value traversed to [Path=/Resources/RedemptionFunction/Properties[L:947,C:20] Value={\\\"FunctionName\\\":{\\\"Fn::Sub\\\":\\\"${AWS::StackName}-redemption\\\"},\\\"Description\\\":{\\\"Fn::Sub\\\":\\\"Reviewed redemption release ${ReleaseId}\\\"},\\\"Runtime\\\":\\\"nodejs22.x\\\",\\\"Handler\\\":\\\"index.handler\\\",\\\"Architectures\\\":[\\\"x86_64\\\"],\\\"Role\\\":{\\\"Fn::GetAtt\\\":[\\\"RedemptionRole\\\",\\\"Arn\\\"]},\\\"MemorySize\\\":256,\\\"Timeout\\\":10,\\\"ReservedConcurrentExecutions\\\":1,\\\"Code\\\":{\\\"S3Bucket\\\":{\\\"Ref\\\":\\\"ArtifactBucket\\\"},\\\"S3Key\\\":{\\\"Ref\\\":\\\"RedemptionArtifactKey\\\"},\\\"S3ObjectVersion\\\":{\\\"Ref\\\":\\\"RedemptionArtifactVersion\\\"}},\\\"Environment\\\":{\\\"Variables\\\":{\\\"FLO_CUSTOMER_AUTH_TABLE\\\":{\\\"Ref\\\":\\\"AuthTable\\\"},\\\"FLO_CUSTOMER_LINKS_TABLE\\\":{\\\"Ref\\\":\\\"LinksTable\\\"},\\\"FLO_ENROLLMENT_REQUESTS_TABLE\\\":{\\\"Ref\\\":\\\"RequestsTable\\\"},\\\"FLO_ENROLLMENT_APPROVALS_TABLE\\\":{\\\"Ref\\\":\\\"ApprovalsTable\\\"},\\\"FLO_ENROLLMENT_AUDIT_TABLE\\\":{\\\"Ref\\\":\\\"AuditTable\\\"},\\\"FLO_ENROLLMENT_ENABLED\\\":{\\\"Ref\\\":\\\"EnableRedemption\\\"},\\\"FLO_AWS_ACCOUNT_ID\\\":{\\\"Ref\\\":\\\"AWS::AccountId\\\"},\\\"LWA_CLIENT_ID\\\":{\\\"Ref\\\":\\\"LwaClientId\\\"},\\\"FLO_CUSTOMER_PUBLIC_ORIGIN\\\":{\\\"Ref\\\":\\\"PublicOrigin\\\"},\\\"FLO_CUSTOMER_STATE_KEY\\\":{\\\"Fn::Sub\\\":\\\"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\\\"}}},\\\"LoggingConfig\\\":{\\\"LogFormat\\\":\\\"JSON\\\",\\\"ApplicationLogLevel\\\":\\\"WARN\\\",\\\"SystemLogLevel\\\":\\\"INFO\\\"}}].\"\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/ApprovalFunction/Properties\",\n                          \"value\": {\n                            \"FunctionName\": {\n                              \"Fn::Sub\": \"${AWS::StackName}-approval\"\n                            },\n                            \"Description\": {\n                              \"Fn::Sub\": \"Reviewed approval release ${ReleaseId}\"\n                            },\n                            \"Runtime\": \"nodejs22.x\",\n                            \"Handler\": \"index.handler\",\n                            \"Architectures\": [\n                              \"x86_64\"\n                            ],\n                            \"Role\": {\n                              \"Fn::GetAtt\": [\n                                \"ApprovalRole\",\n                                \"Arn\"\n                              ]\n                            },\n                            \"MemorySize\": 256,\n                            \"Timeout\": 10,\n                            \"ReservedConcurrentExecutions\": 1,\n                            \"Code\": {\n                              \"S3Bucket\": {\n                                \"Ref\": \"ArtifactBucket\"\n                              },\n                              \"S3Key\": {\n                                \"Ref\": \"ApprovalArtifactKey\"\n                              },\n                              \"S3ObjectVersion\": {\n                                \"Ref\": \"ApprovalArtifactVersion\"\n                              }\n                            },\n                            \"Environment\": {\n                              \"Variables\": {\n                                \"FLO_CUSTOMER_AUTH_TABLE\": {\n                                  \"Ref\": \"AuthTable\"\n                                },\n                                \"FLO_CUSTOMER_LINKS_TABLE\": {\n                                  \"Ref\": \"LinksTable\"\n                                },\n                                \"FLO_ENROLLMENT_REQUESTS_TABLE\": {\n                                  \"Ref\": \"RequestsTable\"\n                                },\n                                \"FLO_ENROLLMENT_APPROVALS_TABLE\": {\n                                  \"Ref\": \"ApprovalsTable\"\n                                },\n                                \"FLO_ENROLLMENT_AUDIT_TABLE\": {\n                                  \"Ref\": \"AuditTable\"\n                                },\n                                \"FLO_PRIVATE_APPROVAL_ENABLED\": {\n                                  \"Ref\": \"EnableApproval\"\n                                },\n                                \"FLO_PRIVATE_APPROVAL_DESIGNATION\": {\n                                  \"Ref\": \"ApprovalDesignation\"\n                                }\n                              }\n                            },\n                            \"LoggingConfig\": {\n                              \"LogFormat\": \"JSON\",\n                              \"ApplicationLogLevel\": \"WARN\",\n                              \"SystemLogLevel\": \"INFO\"\n                            }\n                          }\n                        },\n                        \"remaining_query\": \"DeadLetterConfig.TargetArn\",\n                        \"reason\": \"Could not find key DeadLetterConfig inside struct at path /Resources/ApprovalFunction/Properties[L:1331,C:20]\"\n                      },\n                      \"comparison\": [\n                        \"Empty\",\n                        true\n                      ]\n                    }\n                  },\n                  \"context\": \" %aws_lambda_functions_dlq[*].Properties.DeadLetterConfig.TargetArn not EMPTY  \",\n                  \"messages\": {\n                    \"custom_message\": \"\\n    Violation: All AWS Lambda Functions must have a dead-letter queue configured\\n    Fix: Set the DeadLetterConfig.TargetAr Property to the Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic\\n  \",\n                    \"error_message\": \"Check was not compliant as property [DeadLetterConfig.TargetArn] is missing. Value traversed to [Path=/Resources/ApprovalFunction/Properties[L:1331,C:20] Value={\\\"FunctionName\\\":{\\\"Fn::Sub\\\":\\\"${AWS::StackName}-approval\\\"},\\\"Description\\\":{\\\"Fn::Sub\\\":\\\"Reviewed approval release ${ReleaseId}\\\"},\\\"Runtime\\\":\\\"nodejs22.x\\\",\\\"Handler\\\":\\\"index.handler\\\",\\\"Architectures\\\":[\\\"x86_64\\\"],\\\"Role\\\":{\\\"Fn::GetAtt\\\":[\\\"ApprovalRole\\\",\\\"Arn\\\"]},\\\"MemorySize\\\":256,\\\"Timeout\\\":10,\\\"ReservedConcurrentExecutions\\\":1,\\\"Code\\\":{\\\"S3Bucket\\\":{\\\"Ref\\\":\\\"ArtifactBucket\\\"},\\\"S3Key\\\":{\\\"Ref\\\":\\\"ApprovalArtifactKey\\\"},\\\"S3ObjectVersion\\\":{\\\"Ref\\\":\\\"ApprovalArtifactVersion\\\"}},\\\"Environment\\\":{\\\"Variables\\\":{\\\"FLO_CUSTOMER_AUTH_TABLE\\\":{\\\"Ref\\\":\\\"AuthTable\\\"},\\\"FLO_CUSTOMER_LINKS_TABLE\\\":{\\\"Ref\\\":\\\"LinksTable\\\"},\\\"FLO_ENROLLMENT_REQUESTS_TABLE\\\":{\\\"Ref\\\":\\\"RequestsTable\\\"},\\\"FLO_ENROLLMENT_APPROVALS_TABLE\\\":{\\\"Ref\\\":\\\"ApprovalsTable\\\"},\\\"FLO_ENROLLMENT_AUDIT_TABLE\\\":{\\\"Ref\\\":\\\"AuditTable\\\"},\\\"FLO_PRIVATE_APPROVAL_ENABLED\\\":{\\\"Ref\\\":\\\"EnableApproval\\\"},\\\"FLO_PRIVATE_APPROVAL_DESIGNATION\\\":{\\\"Ref\\\":\\\"ApprovalDesignation\\\"}}},\\\"LoggingConfig\\\":{\\\"LogFormat\\\":\\\"JSON\\\",\\\"ApplicationLogLevel\\\":\\\"WARN\\\",\\\"SystemLogLevel\\\":\\\"INFO\\\"}}].\"\n                  }\n                }\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"Rule\": {\n          \"name\": \"LAMBDA_INSIDE_VPC\",\n          \"metadata\": {},\n          \"messages\": {\n            \"custom_message\": null,\n            \"error_message\": null\n          },\n          \"checks\": [\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/RequestFunction/Properties\",\n                          \"value\": {\n                            \"FunctionName\": {\n                              \"Fn::Sub\": \"${AWS::StackName}-request\"\n                            },\n                            \"Description\": {\n                              \"Fn::Sub\": \"Reviewed request release ${ReleaseId}\"\n                            },\n                            \"Runtime\": \"nodejs22.x\",\n                            \"Handler\": \"index.handler\",\n                            \"Architectures\": [\n                              \"x86_64\"\n                            ],\n                            \"Role\": {\n                              \"Fn::GetAtt\": [\n                                \"RequestRole\",\n                                \"Arn\"\n                              ]\n                            },\n                            \"MemorySize\": 256,\n                            \"Timeout\": 20,\n                            \"ReservedConcurrentExecutions\": 1,\n                            \"Code\": {\n                              \"S3Bucket\": {\n                                \"Ref\": \"ArtifactBucket\"\n                              },\n                              \"S3Key\": {\n                                \"Ref\": \"RequestArtifactKey\"\n                              },\n                              \"S3ObjectVersion\": {\n                                \"Ref\": \"RequestArtifactVersion\"\n                              }\n                            },\n                            \"Environment\": {\n                              \"Variables\": {\n                                \"FLO_CUSTOMER_AUTH_TABLE\": {\n                                  \"Ref\": \"AuthTable\"\n                                },\n                                \"FLO_CUSTOMER_LINKS_TABLE\": {\n                                  \"Ref\": \"LinksTable\"\n                                },\n                                \"FLO_ENROLLMENT_REQUESTS_TABLE\": {\n                                  \"Ref\": \"RequestsTable\"\n                                },\n                                \"FLO_ENROLLMENT_APPROVALS_TABLE\": {\n                                  \"Ref\": \"ApprovalsTable\"\n                                },\n                                \"FLO_ENROLLMENT_AUDIT_TABLE\": {\n                                  \"Ref\": \"AuditTable\"\n                                },\n                                \"FLO_ENROLLMENT_ENABLED\": {\n                                  \"Ref\": \"EnableEnrollment\"\n                                },\n                                \"FLO_AWS_ACCOUNT_ID\": {\n                                  \"Ref\": \"AWS::AccountId\"\n                                },\n                                \"LWA_CLIENT_ID\": {\n                                  \"Ref\": \"LwaClientId\"\n                                },\n                                \"FLO_CUSTOMER_PUBLIC_ORIGIN\": {\n                                  \"Ref\": \"PublicOrigin\"\n                                },\n                                \"FLO_CUSTOMER_STATE_KEY\": {\n                                  \"Fn::Sub\": \"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\"\n                                },\n                                \"FLO_CUSTOMER_API_ID\": {\n                                  \"Ref\": \"ExistingApiId\"\n                                },\n                                \"FLO_REDEMPTION_FUNCTION_ARN\": {\n                                  \"Ref\": \"RedemptionVersion\"\n                                }\n                              }\n                            },\n                            \"LoggingConfig\": {\n                              \"LogFormat\": \"JSON\",\n                              \"ApplicationLogLevel\": \"WARN\",\n                              \"SystemLogLevel\": \"INFO\"\n                            }\n                          }\n                        },\n                        \"remaining_query\": \"VpcConfig.SecurityGroupIds\",\n                        \"reason\": \"Could not find key VpcConfig inside struct at path /Resources/RequestFunction/Properties[L:534,C:20]\"\n                      },\n                      \"comparison\": [\n                        \"Empty\",\n                        true\n                      ]\n                    }\n                  },\n                  \"context\": \" %aws_lambda_functions_inside_vpc[*].Properties.VpcConfig.SecurityGroupIds not EMPTY  \",\n                  \"messages\": {\n                    \"custom_message\": \"\",\n                    \"error_message\": \"Check was not compliant as property [VpcConfig.SecurityGroupIds] is missing. Value traversed to [Path=/Resources/RequestFunction/Properties[L:534,C:20] Value={\\\"FunctionName\\\":{\\\"Fn::Sub\\\":\\\"${AWS::StackName}-request\\\"},\\\"Description\\\":{\\\"Fn::Sub\\\":\\\"Reviewed request release ${ReleaseId}\\\"},\\\"Runtime\\\":\\\"nodejs22.x\\\",\\\"Handler\\\":\\\"index.handler\\\",\\\"Architectures\\\":[\\\"x86_64\\\"],\\\"Role\\\":{\\\"Fn::GetAtt\\\":[\\\"RequestRole\\\",\\\"Arn\\\"]},\\\"MemorySize\\\":256,\\\"Timeout\\\":20,\\\"ReservedConcurrentExecutions\\\":1,\\\"Code\\\":{\\\"S3Bucket\\\":{\\\"Ref\\\":\\\"ArtifactBucket\\\"},\\\"S3Key\\\":{\\\"Ref\\\":\\\"RequestArtifactKey\\\"},\\\"S3ObjectVersion\\\":{\\\"Ref\\\":\\\"RequestArtifactVersion\\\"}},\\\"Environment\\\":{\\\"Variables\\\":{\\\"FLO_CUSTOMER_AUTH_TABLE\\\":{\\\"Ref\\\":\\\"AuthTable\\\"},\\\"FLO_CUSTOMER_LINKS_TABLE\\\":{\\\"Ref\\\":\\\"LinksTable\\\"},\\\"FLO_ENROLLMENT_REQUESTS_TABLE\\\":{\\\"Ref\\\":\\\"RequestsTable\\\"},\\\"FLO_ENROLLMENT_APPROVALS_TABLE\\\":{\\\"Ref\\\":\\\"ApprovalsTable\\\"},\\\"FLO_ENROLLMENT_AUDIT_TABLE\\\":{\\\"Ref\\\":\\\"AuditTable\\\"},\\\"FLO_ENROLLMENT_ENABLED\\\":{\\\"Ref\\\":\\\"EnableEnrollment\\\"},\\\"FLO_AWS_ACCOUNT_ID\\\":{\\\"Ref\\\":\\\"AWS::AccountId\\\"},\\\"LWA_CLIENT_ID\\\":{\\\"Ref\\\":\\\"LwaClientId\\\"},\\\"FLO_CUSTOMER_PUBLIC_ORIGIN\\\":{\\\"Ref\\\":\\\"PublicOrigin\\\"},\\\"FLO_CUSTOMER_STATE_KEY\\\":{\\\"Fn::Sub\\\":\\\"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\\\"},\\\"FLO_CUSTOMER_API_ID\\\":{\\\"Ref\\\":\\\"ExistingApiId\\\"},\\\"FLO_REDEMPTION_FUNCTION_ARN\\\":{\\\"Ref\\\":\\\"RedemptionVersion\\\"}}},\\\"LoggingConfig\\\":{\\\"LogFormat\\\":\\\"JSON\\\",\\\"ApplicationLogLevel\\\":\\\"WARN\\\",\\\"SystemLogLevel\\\":\\\"INFO\\\"}}].\"\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/RedemptionFunction/Properties\",\n                          \"value\": {\n                            \"FunctionName\": {\n                              \"Fn::Sub\": \"${AWS::StackName}-redemption\"\n                            },\n                            \"Description\": {\n                              \"Fn::Sub\": \"Reviewed redemption release ${ReleaseId}\"\n                            },\n                            \"Runtime\": \"nodejs22.x\",\n                            \"Handler\": \"index.handler\",\n                            \"Architectures\": [\n                              \"x86_64\"\n                            ],\n                            \"Role\": {\n                              \"Fn::GetAtt\": [\n                                \"RedemptionRole\",\n                                \"Arn\"\n                              ]\n                            },\n                            \"MemorySize\": 256,\n                            \"Timeout\": 10,\n                            \"ReservedConcurrentExecutions\": 1,\n                            \"Code\": {\n                              \"S3Bucket\": {\n                                \"Ref\": \"ArtifactBucket\"\n                              },\n                              \"S3Key\": {\n                                \"Ref\": \"RedemptionArtifactKey\"\n                              },\n                              \"S3ObjectVersion\": {\n                                \"Ref\": \"RedemptionArtifactVersion\"\n                              }\n                            },\n                            \"Environment\": {\n                              \"Variables\": {\n                                \"FLO_CUSTOMER_AUTH_TABLE\": {\n                                  \"Ref\": \"AuthTable\"\n                                },\n                                \"FLO_CUSTOMER_LINKS_TABLE\": {\n                                  \"Ref\": \"LinksTable\"\n                                },\n                                \"FLO_ENROLLMENT_REQUESTS_TABLE\": {\n                                  \"Ref\": \"RequestsTable\"\n                                },\n                                \"FLO_ENROLLMENT_APPROVALS_TABLE\": {\n                                  \"Ref\": \"ApprovalsTable\"\n                                },\n                                \"FLO_ENROLLMENT_AUDIT_TABLE\": {\n                                  \"Ref\": \"AuditTable\"\n                                },\n                                \"FLO_ENROLLMENT_ENABLED\": {\n                                  \"Ref\": \"EnableRedemption\"\n                                },\n                                \"FLO_AWS_ACCOUNT_ID\": {\n                                  \"Ref\": \"AWS::AccountId\"\n                                },\n                                \"LWA_CLIENT_ID\": {\n                                  \"Ref\": \"LwaClientId\"\n                                },\n                                \"FLO_CUSTOMER_PUBLIC_ORIGIN\": {\n                                  \"Ref\": \"PublicOrigin\"\n                                },\n                                \"FLO_CUSTOMER_STATE_KEY\": {\n                                  \"Fn::Sub\": \"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\"\n                                }\n                              }\n                            },\n                            \"LoggingConfig\": {\n                              \"LogFormat\": \"JSON\",\n                              \"ApplicationLogLevel\": \"WARN\",\n                              \"SystemLogLevel\": \"INFO\"\n                            }\n                          }\n                        },\n                        \"remaining_query\": \"VpcConfig.SecurityGroupIds\",\n                        \"reason\": \"Could not find key VpcConfig inside struct at path /Resources/RedemptionFunction/Properties[L:947,C:20]\"\n                      },\n                      \"comparison\": [\n                        \"Empty\",\n                        true\n                      ]\n                    }\n                  },\n                  \"context\": \" %aws_lambda_functions_inside_vpc[*].Properties.VpcConfig.SecurityGroupIds not EMPTY  \",\n                  \"messages\": {\n                    \"custom_message\": \"\",\n                    \"error_message\": \"Check was not compliant as property [VpcConfig.SecurityGroupIds] is missing. Value traversed to [Path=/Resources/RedemptionFunction/Properties[L:947,C:20] Value={\\\"FunctionName\\\":{\\\"Fn::Sub\\\":\\\"${AWS::StackName}-redemption\\\"},\\\"Description\\\":{\\\"Fn::Sub\\\":\\\"Reviewed redemption release ${ReleaseId}\\\"},\\\"Runtime\\\":\\\"nodejs22.x\\\",\\\"Handler\\\":\\\"index.handler\\\",\\\"Architectures\\\":[\\\"x86_64\\\"],\\\"Role\\\":{\\\"Fn::GetAtt\\\":[\\\"RedemptionRole\\\",\\\"Arn\\\"]},\\\"MemorySize\\\":256,\\\"Timeout\\\":10,\\\"ReservedConcurrentExecutions\\\":1,\\\"Code\\\":{\\\"S3Bucket\\\":{\\\"Ref\\\":\\\"ArtifactBucket\\\"},\\\"S3Key\\\":{\\\"Ref\\\":\\\"RedemptionArtifactKey\\\"},\\\"S3ObjectVersion\\\":{\\\"Ref\\\":\\\"RedemptionArtifactVersion\\\"}},\\\"Environment\\\":{\\\"Variables\\\":{\\\"FLO_CUSTOMER_AUTH_TABLE\\\":{\\\"Ref\\\":\\\"AuthTable\\\"},\\\"FLO_CUSTOMER_LINKS_TABLE\\\":{\\\"Ref\\\":\\\"LinksTable\\\"},\\\"FLO_ENROLLMENT_REQUESTS_TABLE\\\":{\\\"Ref\\\":\\\"RequestsTable\\\"},\\\"FLO_ENROLLMENT_APPROVALS_TABLE\\\":{\\\"Ref\\\":\\\"ApprovalsTable\\\"},\\\"FLO_ENROLLMENT_AUDIT_TABLE\\\":{\\\"Ref\\\":\\\"AuditTable\\\"},\\\"FLO_ENROLLMENT_ENABLED\\\":{\\\"Ref\\\":\\\"EnableRedemption\\\"},\\\"FLO_AWS_ACCOUNT_ID\\\":{\\\"Ref\\\":\\\"AWS::AccountId\\\"},\\\"LWA_CLIENT_ID\\\":{\\\"Ref\\\":\\\"LwaClientId\\\"},\\\"FLO_CUSTOMER_PUBLIC_ORIGIN\\\":{\\\"Ref\\\":\\\"PublicOrigin\\\"},\\\"FLO_CUSTOMER_STATE_KEY\\\":{\\\"Fn::Sub\\\":\\\"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\\\"}}},\\\"LoggingConfig\\\":{\\\"LogFormat\\\":\\\"JSON\\\",\\\"ApplicationLogLevel\\\":\\\"WARN\\\",\\\"SystemLogLevel\\\":\\\"INFO\\\"}}].\"\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/ApprovalFunction/Properties\",\n                          \"value\": {\n                            \"FunctionName\": {\n                              \"Fn::Sub\": \"${AWS::StackName}-approval\"\n                            },\n                            \"Description\": {\n                              \"Fn::Sub\": \"Reviewed approval release ${ReleaseId}\"\n                            },\n                            \"Runtime\": \"nodejs22.x\",\n                            \"Handler\": \"index.handler\",\n                            \"Architectures\": [\n                              \"x86_64\"\n                            ],\n                            \"Role\": {\n                              \"Fn::GetAtt\": [\n                                \"ApprovalRole\",\n                                \"Arn\"\n                              ]\n                            },\n                            \"MemorySize\": 256,\n                            \"Timeout\": 10,\n                            \"ReservedConcurrentExecutions\": 1,\n                            \"Code\": {\n                              \"S3Bucket\": {\n                                \"Ref\": \"ArtifactBucket\"\n                              },\n                              \"S3Key\": {\n                                \"Ref\": \"ApprovalArtifactKey\"\n                              },\n                              \"S3ObjectVersion\": {\n                                \"Ref\": \"ApprovalArtifactVersion\"\n                              }\n                            },\n                            \"Environment\": {\n                              \"Variables\": {\n                                \"FLO_CUSTOMER_AUTH_TABLE\": {\n                                  \"Ref\": \"AuthTable\"\n                                },\n                                \"FLO_CUSTOMER_LINKS_TABLE\": {\n                                  \"Ref\": \"LinksTable\"\n                                },\n                                \"FLO_ENROLLMENT_REQUESTS_TABLE\": {\n                                  \"Ref\": \"RequestsTable\"\n                                },\n                                \"FLO_ENROLLMENT_APPROVALS_TABLE\": {\n                                  \"Ref\": \"ApprovalsTable\"\n                                },\n                                \"FLO_ENROLLMENT_AUDIT_TABLE\": {\n                                  \"Ref\": \"AuditTable\"\n                                },\n                                \"FLO_PRIVATE_APPROVAL_ENABLED\": {\n                                  \"Ref\": \"EnableApproval\"\n                                },\n                                \"FLO_PRIVATE_APPROVAL_DESIGNATION\": {\n                                  \"Ref\": \"ApprovalDesignation\"\n                                }\n                              }\n                            },\n                            \"LoggingConfig\": {\n                              \"LogFormat\": \"JSON\",\n                              \"ApplicationLogLevel\": \"WARN\",\n                              \"SystemLogLevel\": \"INFO\"\n                            }\n                          }\n                        },\n                        \"remaining_query\": \"VpcConfig.SecurityGroupIds\",\n                        \"reason\": \"Could not find key VpcConfig inside struct at path /Resources/ApprovalFunction/Properties[L:1331,C:20]\"\n                      },\n                      \"comparison\": [\n                        \"Empty\",\n                        true\n                      ]\n                    }\n                  },\n                  \"context\": \" %aws_lambda_functions_inside_vpc[*].Properties.VpcConfig.SecurityGroupIds not EMPTY  \",\n                  \"messages\": {\n                    \"custom_message\": \"\",\n                    \"error_message\": \"Check was not compliant as property [VpcConfig.SecurityGroupIds] is missing. Value traversed to [Path=/Resources/ApprovalFunction/Properties[L:1331,C:20] Value={\\\"FunctionName\\\":{\\\"Fn::Sub\\\":\\\"${AWS::StackName}-approval\\\"},\\\"Description\\\":{\\\"Fn::Sub\\\":\\\"Reviewed approval release ${ReleaseId}\\\"},\\\"Runtime\\\":\\\"nodejs22.x\\\",\\\"Handler\\\":\\\"index.handler\\\",\\\"Architectures\\\":[\\\"x86_64\\\"],\\\"Role\\\":{\\\"Fn::GetAtt\\\":[\\\"ApprovalRole\\\",\\\"Arn\\\"]},\\\"MemorySize\\\":256,\\\"Timeout\\\":10,\\\"ReservedConcurrentExecutions\\\":1,\\\"Code\\\":{\\\"S3Bucket\\\":{\\\"Ref\\\":\\\"ArtifactBucket\\\"},\\\"S3Key\\\":{\\\"Ref\\\":\\\"ApprovalArtifactKey\\\"},\\\"S3ObjectVersion\\\":{\\\"Ref\\\":\\\"ApprovalArtifactVersion\\\"}},\\\"Environment\\\":{\\\"Variables\\\":{\\\"FLO_CUSTOMER_AUTH_TABLE\\\":{\\\"Ref\\\":\\\"AuthTable\\\"},\\\"FLO_CUSTOMER_LINKS_TABLE\\\":{\\\"Ref\\\":\\\"LinksTable\\\"},\\\"FLO_ENROLLMENT_REQUESTS_TABLE\\\":{\\\"Ref\\\":\\\"RequestsTable\\\"},\\\"FLO_ENROLLMENT_APPROVALS_TABLE\\\":{\\\"Ref\\\":\\\"ApprovalsTable\\\"},\\\"FLO_ENROLLMENT_AUDIT_TABLE\\\":{\\\"Ref\\\":\\\"AuditTable\\\"},\\\"FLO_PRIVATE_APPROVAL_ENABLED\\\":{\\\"Ref\\\":\\\"EnableApproval\\\"},\\\"FLO_PRIVATE_APPROVAL_DESIGNATION\\\":{\\\"Ref\\\":\\\"ApprovalDesignation\\\"}}},\\\"LoggingConfig\\\":{\\\"LogFormat\\\":\\\"JSON\\\",\\\"ApplicationLogLevel\\\":\\\"WARN\\\",\\\"SystemLogLevel\\\":\\\"INFO\\\"}}].\"\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/RequestFunction/Properties\",\n                          \"value\": {\n                            \"FunctionName\": {\n                              \"Fn::Sub\": \"${AWS::StackName}-request\"\n                            },\n                            \"Description\": {\n                              \"Fn::Sub\": \"Reviewed request release ${ReleaseId}\"\n                            },\n                            \"Runtime\": \"nodejs22.x\",\n                            \"Handler\": \"index.handler\",\n                            \"Architectures\": [\n                              \"x86_64\"\n                            ],\n                            \"Role\": {\n                              \"Fn::GetAtt\": [\n                                \"RequestRole\",\n                                \"Arn\"\n                              ]\n                            },\n                            \"MemorySize\": 256,\n                            \"Timeout\": 20,\n                            \"ReservedConcurrentExecutions\": 1,\n                            \"Code\": {\n                              \"S3Bucket\": {\n                                \"Ref\": \"ArtifactBucket\"\n                              },\n                              \"S3Key\": {\n                                \"Ref\": \"RequestArtifactKey\"\n                              },\n                              \"S3ObjectVersion\": {\n                                \"Ref\": \"RequestArtifactVersion\"\n                              }\n                            },\n                            \"Environment\": {\n                              \"Variables\": {\n                                \"FLO_CUSTOMER_AUTH_TABLE\": {\n                                  \"Ref\": \"AuthTable\"\n                                },\n                                \"FLO_CUSTOMER_LINKS_TABLE\": {\n                                  \"Ref\": \"LinksTable\"\n                                },\n                                \"FLO_ENROLLMENT_REQUESTS_TABLE\": {\n                                  \"Ref\": \"RequestsTable\"\n                                },\n                                \"FLO_ENROLLMENT_APPROVALS_TABLE\": {\n                                  \"Ref\": \"ApprovalsTable\"\n                                },\n                                \"FLO_ENROLLMENT_AUDIT_TABLE\": {\n                                  \"Ref\": \"AuditTable\"\n                                },\n                                \"FLO_ENROLLMENT_ENABLED\": {\n                                  \"Ref\": \"EnableEnrollment\"\n                                },\n                                \"FLO_AWS_ACCOUNT_ID\": {\n                                  \"Ref\": \"AWS::AccountId\"\n                                },\n                                \"LWA_CLIENT_ID\": {\n                                  \"Ref\": \"LwaClientId\"\n                                },\n                                \"FLO_CUSTOMER_PUBLIC_ORIGIN\": {\n                                  \"Ref\": \"PublicOrigin\"\n                                },\n                                \"FLO_CUSTOMER_STATE_KEY\": {\n                                  \"Fn::Sub\": \"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\"\n                                },\n                                \"FLO_CUSTOMER_API_ID\": {\n                                  \"Ref\": \"ExistingApiId\"\n                                },\n                                \"FLO_REDEMPTION_FUNCTION_ARN\": {\n                                  \"Ref\": \"RedemptionVersion\"\n                                }\n                              }\n                            },\n                            \"LoggingConfig\": {\n                              \"LogFormat\": \"JSON\",\n                              \"ApplicationLogLevel\": \"WARN\",\n                              \"SystemLogLevel\": \"INFO\"\n                            }\n                          }\n                        },\n                        \"remaining_query\": \"VpcConfig.SubnetIds\",\n                        \"reason\": \"Could not find key VpcConfig inside struct at path /Resources/RequestFunction/Properties[L:534,C:20]\"\n                      },\n                      \"comparison\": [\n                        \"Empty\",\n                        true\n                      ]\n                    }\n                  },\n                  \"context\": \" %aws_lambda_functions_inside_vpc[*].Properties.VpcConfig.SubnetIds not EMPTY  \",\n                  \"messages\": {\n                    \"custom_message\": \"\\n    Violation:  All AWS Lambda Functions must be configured with access to a VPC\\n    Fix: set the VpcConfig.SecurityGroupIds and VpcConfig.SubnetIds parameters with a list of security groups and subnets.\\n    Lambda creates an elastic network interface for each combination of security group and subnet in the function's VPC configuration.\\n  \",\n                    \"error_message\": \"Check was not compliant as property [VpcConfig.SubnetIds] is missing. Value traversed to [Path=/Resources/RequestFunction/Properties[L:534,C:20] Value={\\\"FunctionName\\\":{\\\"Fn::Sub\\\":\\\"${AWS::StackName}-request\\\"},\\\"Description\\\":{\\\"Fn::Sub\\\":\\\"Reviewed request release ${ReleaseId}\\\"},\\\"Runtime\\\":\\\"nodejs22.x\\\",\\\"Handler\\\":\\\"index.handler\\\",\\\"Architectures\\\":[\\\"x86_64\\\"],\\\"Role\\\":{\\\"Fn::GetAtt\\\":[\\\"RequestRole\\\",\\\"Arn\\\"]},\\\"MemorySize\\\":256,\\\"Timeout\\\":20,\\\"ReservedConcurrentExecutions\\\":1,\\\"Code\\\":{\\\"S3Bucket\\\":{\\\"Ref\\\":\\\"ArtifactBucket\\\"},\\\"S3Key\\\":{\\\"Ref\\\":\\\"RequestArtifactKey\\\"},\\\"S3ObjectVersion\\\":{\\\"Ref\\\":\\\"RequestArtifactVersion\\\"}},\\\"Environment\\\":{\\\"Variables\\\":{\\\"FLO_CUSTOMER_AUTH_TABLE\\\":{\\\"Ref\\\":\\\"AuthTable\\\"},\\\"FLO_CUSTOMER_LINKS_TABLE\\\":{\\\"Ref\\\":\\\"LinksTable\\\"},\\\"FLO_ENROLLMENT_REQUESTS_TABLE\\\":{\\\"Ref\\\":\\\"RequestsTable\\\"},\\\"FLO_ENROLLMENT_APPROVALS_TABLE\\\":{\\\"Ref\\\":\\\"ApprovalsTable\\\"},\\\"FLO_ENROLLMENT_AUDIT_TABLE\\\":{\\\"Ref\\\":\\\"AuditTable\\\"},\\\"FLO_ENROLLMENT_ENABLED\\\":{\\\"Ref\\\":\\\"EnableEnrollment\\\"},\\\"FLO_AWS_ACCOUNT_ID\\\":{\\\"Ref\\\":\\\"AWS::AccountId\\\"},\\\"LWA_CLIENT_ID\\\":{\\\"Ref\\\":\\\"LwaClientId\\\"},\\\"FLO_CUSTOMER_PUBLIC_ORIGIN\\\":{\\\"Ref\\\":\\\"PublicOrigin\\\"},\\\"FLO_CUSTOMER_STATE_KEY\\\":{\\\"Fn::Sub\\\":\\\"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\\\"},\\\"FLO_CUSTOMER_API_ID\\\":{\\\"Ref\\\":\\\"ExistingApiId\\\"},\\\"FLO_REDEMPTION_FUNCTION_ARN\\\":{\\\"Ref\\\":\\\"RedemptionVersion\\\"}}},\\\"LoggingConfig\\\":{\\\"LogFormat\\\":\\\"JSON\\\",\\\"ApplicationLogLevel\\\":\\\"WARN\\\",\\\"SystemLogLevel\\\":\\\"INFO\\\"}}].\"\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/RedemptionFunction/Properties\",\n                          \"value\": {\n                            \"FunctionName\": {\n                              \"Fn::Sub\": \"${AWS::StackName}-redemption\"\n                            },\n                            \"Description\": {\n                              \"Fn::Sub\": \"Reviewed redemption release ${ReleaseId}\"\n                            },\n                            \"Runtime\": \"nodejs22.x\",\n                            \"Handler\": \"index.handler\",\n                            \"Architectures\": [\n                              \"x86_64\"\n                            ],\n                            \"Role\": {\n                              \"Fn::GetAtt\": [\n                                \"RedemptionRole\",\n                                \"Arn\"\n                              ]\n                            },\n                            \"MemorySize\": 256,\n                            \"Timeout\": 10,\n                            \"ReservedConcurrentExecutions\": 1,\n                            \"Code\": {\n                              \"S3Bucket\": {\n                                \"Ref\": \"ArtifactBucket\"\n                              },\n                              \"S3Key\": {\n                                \"Ref\": \"RedemptionArtifactKey\"\n                              },\n                              \"S3ObjectVersion\": {\n                                \"Ref\": \"RedemptionArtifactVersion\"\n                              }\n                            },\n                            \"Environment\": {\n                              \"Variables\": {\n                                \"FLO_CUSTOMER_AUTH_TABLE\": {\n                                  \"Ref\": \"AuthTable\"\n                                },\n                                \"FLO_CUSTOMER_LINKS_TABLE\": {\n                                  \"Ref\": \"LinksTable\"\n                                },\n                                \"FLO_ENROLLMENT_REQUESTS_TABLE\": {\n                                  \"Ref\": \"RequestsTable\"\n                                },\n                                \"FLO_ENROLLMENT_APPROVALS_TABLE\": {\n                                  \"Ref\": \"ApprovalsTable\"\n                                },\n                                \"FLO_ENROLLMENT_AUDIT_TABLE\": {\n                                  \"Ref\": \"AuditTable\"\n                                },\n                                \"FLO_ENROLLMENT_ENABLED\": {\n                                  \"Ref\": \"EnableRedemption\"\n                                },\n                                \"FLO_AWS_ACCOUNT_ID\": {\n                                  \"Ref\": \"AWS::AccountId\"\n                                },\n                                \"LWA_CLIENT_ID\": {\n                                  \"Ref\": \"LwaClientId\"\n                                },\n                                \"FLO_CUSTOMER_PUBLIC_ORIGIN\": {\n                                  \"Ref\": \"PublicOrigin\"\n                                },\n                                \"FLO_CUSTOMER_STATE_KEY\": {\n                                  \"Fn::Sub\": \"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\"\n                                }\n                              }\n                            },\n                            \"LoggingConfig\": {\n                              \"LogFormat\": \"JSON\",\n                              \"ApplicationLogLevel\": \"WARN\",\n                              \"SystemLogLevel\": \"INFO\"\n                            }\n                          }\n                        },\n                        \"remaining_query\": \"VpcConfig.SubnetIds\",\n                        \"reason\": \"Could not find key VpcConfig inside struct at path /Resources/RedemptionFunction/Properties[L:947,C:20]\"\n                      },\n                      \"comparison\": [\n                        \"Empty\",\n                        true\n                      ]\n                    }\n                  },\n                  \"context\": \" %aws_lambda_functions_inside_vpc[*].Properties.VpcConfig.SubnetIds not EMPTY  \",\n                  \"messages\": {\n                    \"custom_message\": \"\\n    Violation:  All AWS Lambda Functions must be configured with access to a VPC\\n    Fix: set the VpcConfig.SecurityGroupIds and VpcConfig.SubnetIds parameters with a list of security groups and subnets.\\n    Lambda creates an elastic network interface for each combination of security group and subnet in the function's VPC configuration.\\n  \",\n                    \"error_message\": \"Check was not compliant as property [VpcConfig.SubnetIds] is missing. Value traversed to [Path=/Resources/RedemptionFunction/Properties[L:947,C:20] Value={\\\"FunctionName\\\":{\\\"Fn::Sub\\\":\\\"${AWS::StackName}-redemption\\\"},\\\"Description\\\":{\\\"Fn::Sub\\\":\\\"Reviewed redemption release ${ReleaseId}\\\"},\\\"Runtime\\\":\\\"nodejs22.x\\\",\\\"Handler\\\":\\\"index.handler\\\",\\\"Architectures\\\":[\\\"x86_64\\\"],\\\"Role\\\":{\\\"Fn::GetAtt\\\":[\\\"RedemptionRole\\\",\\\"Arn\\\"]},\\\"MemorySize\\\":256,\\\"Timeout\\\":10,\\\"ReservedConcurrentExecutions\\\":1,\\\"Code\\\":{\\\"S3Bucket\\\":{\\\"Ref\\\":\\\"ArtifactBucket\\\"},\\\"S3Key\\\":{\\\"Ref\\\":\\\"RedemptionArtifactKey\\\"},\\\"S3ObjectVersion\\\":{\\\"Ref\\\":\\\"RedemptionArtifactVersion\\\"}},\\\"Environment\\\":{\\\"Variables\\\":{\\\"FLO_CUSTOMER_AUTH_TABLE\\\":{\\\"Ref\\\":\\\"AuthTable\\\"},\\\"FLO_CUSTOMER_LINKS_TABLE\\\":{\\\"Ref\\\":\\\"LinksTable\\\"},\\\"FLO_ENROLLMENT_REQUESTS_TABLE\\\":{\\\"Ref\\\":\\\"RequestsTable\\\"},\\\"FLO_ENROLLMENT_APPROVALS_TABLE\\\":{\\\"Ref\\\":\\\"ApprovalsTable\\\"},\\\"FLO_ENROLLMENT_AUDIT_TABLE\\\":{\\\"Ref\\\":\\\"AuditTable\\\"},\\\"FLO_ENROLLMENT_ENABLED\\\":{\\\"Ref\\\":\\\"EnableRedemption\\\"},\\\"FLO_AWS_ACCOUNT_ID\\\":{\\\"Ref\\\":\\\"AWS::AccountId\\\"},\\\"LWA_CLIENT_ID\\\":{\\\"Ref\\\":\\\"LwaClientId\\\"},\\\"FLO_CUSTOMER_PUBLIC_ORIGIN\\\":{\\\"Ref\\\":\\\"PublicOrigin\\\"},\\\"FLO_CUSTOMER_STATE_KEY\\\":{\\\"Fn::Sub\\\":\\\"{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}\\\"}}},\\\"LoggingConfig\\\":{\\\"LogFormat\\\":\\\"JSON\\\",\\\"ApplicationLogLevel\\\":\\\"WARN\\\",\\\"SystemLogLevel\\\":\\\"INFO\\\"}}].\"\n                  }\n                }\n              }\n            },\n            {\n              \"Clause\": {\n                \"Unary\": {\n                  \"check\": {\n                    \"UnResolved\": {\n                      \"value\": {\n                        \"traversed_to\": {\n                          \"path\": \"/Resources/ApprovalFunction/Properties\",\n                          \"value\": {\n                            \"FunctionName\": {\n                              \"Fn::Sub\": \"${AWS::StackName}-approval\"\n                            },\n                            \"Description\": {\n                              \"Fn::Sub\": \"Reviewed approval release ${ReleaseId}\"\n                            },\n                            \"Runtime\": \"nodejs22.x\",\n                            \"Handler\": \"index.handler\",\n                            \"Architectures\": [\n                              \"x86_64\"\n                            ],\n                            \"Role\": {\n                              \"Fn::GetAtt\": [\n                                \"ApprovalRole\",\n                                \"Arn\"\n                              ]\n                            },\n                            \"MemorySize\": 256,\n                            \"Timeout\": 10,\n                            \"ReservedConcurrentExecutions\": 1,\n                            \"Code\": {\n                              \"S3Bucket\": {\n                                \"Ref\": \"ArtifactBucket\"\n                              },\n                              \"S3Key\": {\n                                \"Ref\": \"ApprovalArtifactKey\"\n                              },\n                              \"S3ObjectVersion\": {\n                                \"Ref\": \"ApprovalArtifactVersion\"\n                              }\n                            },\n                            \"Environment\": {\n                              \"Variables\": {\n                                \"FLO_CUSTOMER_AUTH_TABLE\": {\n                                  \"Ref\": \"AuthTable\"\n                                },\n                                \"FLO_CUSTOMER_LINKS_TABLE\": {\n                                  \"Ref\": \"LinksTable\"\n                                },\n                                \"FLO_ENROLLMENT_REQUESTS_TABLE\": {\n                                  \"Ref\": \"RequestsTable\"\n                                },\n                                \"FLO_ENROLLMENT_APPROVALS_TABLE\": {\n                                  \"Ref\": \"ApprovalsTable\"\n                                },\n                                \"FLO_ENROLLMENT_AUDIT_TABLE\": {\n                                  \"Ref\": \"AuditTable\"\n                                },\n                                \"FLO_PRIVATE_APPROVAL_ENABLED\": {\n                                  \"Ref\": \"EnableApproval\"\n                                },\n                                \"FLO_PRIVATE_APPROVAL_DESIGNATION\": {\n                                  \"Ref\": \"ApprovalDesignation\"\n                                }\n                              }\n                            },\n                            \"LoggingConfig\": {\n                              \"LogFormat\": \"JSON\",\n                              \"ApplicationLogLevel\": \"WARN\",\n                              \"SystemLogLevel\": \"INFO\"\n                            }\n                          }\n                        },\n                        \"remaining_query\": \"VpcConfig.SubnetIds\",\n                        \"reason\": \"Could not find key VpcConfig inside struct at path /Resources/ApprovalFunction/Properties[L:1331,C:20]\"\n                      },\n                      \"comparison\": [\n                        \"Empty\",\n                        true\n                      ]\n                    }\n                  },\n                  \"context\": \" %aws_lambda_functions_inside_vpc[*].Properties.VpcConfig.SubnetIds not EMPTY  \",\n                  \"messages\": {\n                    \"custom_message\": \"\\n    Violation:  All AWS Lambda Functions must be configured with access to a VPC\\n    Fix: set the VpcConfig.SecurityGroupIds and VpcConfig.SubnetIds parameters with a list of security groups and subnets.\\n    Lambda creates an elastic network interface for each combination of security group and subnet in the function's VPC configuration.\\n  \",\n                    \"error_message\": \"Check was not compliant as property [VpcConfig.SubnetIds] is missing. Value traversed to [Path=/Resources/ApprovalFunction/Properties[L:1331,C:20] Value={\\\"FunctionName\\\":{\\\"Fn::Sub\\\":\\\"${AWS::StackName}-approval\\\"},\\\"Description\\\":{\\\"Fn::Sub\\\":\\\"Reviewed approval release ${ReleaseId}\\\"},\\\"Runtime\\\":\\\"nodejs22.x\\\",\\\"Handler\\\":\\\"index.handler\\\",\\\"Architectures\\\":[\\\"x86_64\\\"],\\\"Role\\\":{\\\"Fn::GetAtt\\\":[\\\"ApprovalRole\\\",\\\"Arn\\\"]},\\\"MemorySize\\\":256,\\\"Timeout\\\":10,\\\"ReservedConcurrentExecutions\\\":1,\\\"Code\\\":{\\\"S3Bucket\\\":{\\\"Ref\\\":\\\"ArtifactBucket\\\"},\\\"S3Key\\\":{\\\"Ref\\\":\\\"ApprovalArtifactKey\\\"},\\\"S3ObjectVersion\\\":{\\\"Ref\\\":\\\"ApprovalArtifactVersion\\\"}},\\\"Environment\\\":{\\\"Variables\\\":{\\\"FLO_CUSTOMER_AUTH_TABLE\\\":{\\\"Ref\\\":\\\"AuthTable\\\"},\\\"FLO_CUSTOMER_LINKS_TABLE\\\":{\\\"Ref\\\":\\\"LinksTable\\\"},\\\"FLO_ENROLLMENT_REQUESTS_TABLE\\\":{\\\"Ref\\\":\\\"RequestsTable\\\"},\\\"FLO_ENROLLMENT_APPROVALS_TABLE\\\":{\\\"Ref\\\":\\\"ApprovalsTable\\\"},\\\"FLO_ENROLLMENT_AUDIT_TABLE\\\":{\\\"Ref\\\":\\\"AuditTable\\\"},\\\"FLO_PRIVATE_APPROVAL_ENABLED\\\":{\\\"Ref\\\":\\\"EnableApproval\\\"},\\\"FLO_PRIVATE_APPROVAL_DESIGNATION\\\":{\\\"Ref\\\":\\\"ApprovalDesignation\\\"}}},\\\"LoggingConfig\\\":{\\\"LogFormat\\\":\\\"JSON\\\",\\\"ApplicationLogLevel\\\":\\\"WARN\\\",\\\"SystemLogLevel\\\":\\\"INFO\\\"}}].\"\n                  }\n                }\n              }\n            }\n          ]\n        }\n      }\n    ],\n    \"not_applicable\": [\n      \"API_GWV2_ACCESS_LOGS_ENABLED\",\n      \"CFN_AUTHENTICATION_RULE\",\n      \"CLOUDWATCH_ALARM_ACTION_CHECK\",\n      \"IAM_POLICY_NO_STATEMENTS_WITH_ADMIN_ACCESS\",\n      \"IAM_POLICY_NO_STATEMENTS_WITH_FULL_ACCESS\",\n      \"IAM_ROLE_NO_WILDCARD_RESOURCE_ON_PASSROLE\",\n      \"IAM_USER_LOGIN_PROFILE_NO_PLAINTEXT_PASSWORD\",\n      \"IAM_USER_LOGIN_PROFILE_PASSWORD_RESET_RULE\",\n      \"IAM_USER_LOGIN_PROFILE_USES_SECURE_PARAMETER\",\n      \"IAM_USER_LOGIN_PROFILE_USES_SECURE_SERVICE\",\n      \"IAM_USER_MISSING_GROUP_RULE\",\n      \"IAM_USER_NO_POLICIES_CHECK\"\n    ],\n    \"compliant\": [\n      \"CFN_NO_EXPLICIT_RESOURCE_NAMES\",\n      \"CW_LOGGROUP_RETENTION_PERIOD_CHECK\",\n      \"IAM_MANAGEDPOLICY_NO_STATEMENTS_WITH_FULL_ACCESS\",\n      \"IAM_NO_INLINE_POLICY_CHECK\",\n      \"IAM_NO_POLICY_ON_USER\",\n      \"IAM_POLICYDOCUMENT_NO_WILDCARD_RESOURCE\",\n      \"IAM_POLICY_NO_WILDCARD_RESOURCE_ON_PASSROLE\",\n      \"IAM_ROLE_ADMINISTRATOR_ACCESS_POLICY_RULE\",\n      \"IAM_ROLE_ELEVATED_MANAGED_POLICY_RULE\",\n      \"IAM_ROLE_NO_ALLOW_PLUS_NOT_ACTION_ON_TRUST_POLICY\",\n      \"IAM_ROLE_NO_ALLOW_PLUS_NOT_PRINCIPAL\",\n      \"IAM_ROLE_NO_FULL_ACCESS_ON_TRUST_POLICY\",\n      \"IAM_ROLE_NO_WILDCARD_ACTIONS_ON_PERMISSIONS\",\n      \"IAM_ROLE_OR_POLICY_NO_ALLOW_PLUS_NOT_ACTION\",\n      \"IAM_ROLE_OR_POLICY_NO_ALLOW_PLUS_NOT_RESOURCE\",\n      \"LAMBDA_CONCURRENCY_CHECK\",\n      \"LAMBDA_FUNCTION_PUBLIC_ACCESS_PROHIBITED\",\n      \"LAMBDA_NO_WILDCARD_PRINCIPALS\",\n      \"LAMBDA_PERMISSION_INVOKE_FUNCTION_ACTION\"\n    ]\n  }\n]"
+    },
+    "unchangedFailedRuleResourcePropertySignatures": true,
+    "ruleCommit": "7f7340c26ae5d5e8874651dbffeb12e0e9f505b6",
+    "imageId": "sha256:96708ef9c58f9210b7aaa9e0fddccd8371cbdcdfbd5cea202bfdc58d49fd6d90",
+    "network": "none",
+    "readOnly": true,
+    "awsCredentials": false,
+    "boundaryTemplateTests": {
+      "passed": 27,
+      "failed": 0
+    },
+    "modifiedScriptsLint": "passed"
+  },
+  "create": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "changeSet": {
+        "Id": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-request-only-fixed-review-20260906T1727Z/c9483626-383b-4170-909c-1bf8785d0749",
+        "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment/ac1ab770-aa00-11f1-9ac0-02cd968e7605"
+      },
+      "changedParameters": {
+        "EnableEnrollment": "true",
+        "PublishRoutes": "true",
+        "EnableRedemption": "false",
+        "ReleaseId": "request-only-fixed-review-20260906-1727"
+      },
+      "executed": false
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "CreateChangeSet",
+        "status": "success"
+      }
+    ]
+  },
+  "plan": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "ChangeSetId": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-request-only-fixed-review-20260906T1727Z/c9483626-383b-4170-909c-1bf8785d0749",
+      "Status": "CREATE_COMPLETE",
+      "ExecutionStatus": "AVAILABLE",
+      "Changes": [
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Modify",
+            "LogicalResourceId": "ApprovalFunction",
+            "PhysicalResourceId": "flo-customer-enrollment-approval",
+            "ResourceType": "AWS::Lambda::Function",
+            "Replacement": "False",
+            "Scope": [
+              "Properties"
+            ],
+            "Details": [
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Description",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Dynamic",
+                "ChangeSource": "DirectModification"
+              },
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Description",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Static",
+                "ChangeSource": "ParameterReference",
+                "CausingEntity": "ReleaseId"
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "PolicyAction": "ReplaceAndRetain",
+            "Action": "Modify",
+            "LogicalResourceId": "ApprovalVersion",
+            "PhysicalResourceId": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:2",
+            "ResourceType": "AWS::Lambda::Version",
+            "Replacement": "True",
+            "Scope": [
+              "Properties"
+            ],
+            "Details": [
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Description",
+                  "RequiresRecreation": "Always"
+                },
+                "Evaluation": "Static",
+                "ChangeSource": "ParameterReference",
+                "CausingEntity": "ReleaseId"
+              },
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Description",
+                  "RequiresRecreation": "Always"
+                },
+                "Evaluation": "Dynamic",
+                "ChangeSource": "DirectModification"
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Add",
+            "LogicalResourceId": "PairingAssetPermission",
+            "ResourceType": "AWS::Lambda::Permission",
+            "Scope": [],
+            "Details": []
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Add",
+            "LogicalResourceId": "PairingAssetRoute",
+            "ResourceType": "AWS::ApiGatewayV2::Route",
+            "Scope": [],
+            "Details": []
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Add",
+            "LogicalResourceId": "PairingIntegration",
+            "ResourceType": "AWS::ApiGatewayV2::Integration",
+            "Scope": [],
+            "Details": []
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Add",
+            "LogicalResourceId": "PairingPagePermission",
+            "ResourceType": "AWS::Lambda::Permission",
+            "Scope": [],
+            "Details": []
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Add",
+            "LogicalResourceId": "PairingPageRoute",
+            "ResourceType": "AWS::ApiGatewayV2::Route",
+            "Scope": [],
+            "Details": []
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Modify",
+            "LogicalResourceId": "RedemptionFunction",
+            "PhysicalResourceId": "flo-customer-enrollment-redemption",
+            "ResourceType": "AWS::Lambda::Function",
+            "Replacement": "False",
+            "Scope": [
+              "Properties"
+            ],
+            "Details": [
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Description",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Dynamic",
+                "ChangeSource": "DirectModification"
+              },
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Description",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Static",
+                "ChangeSource": "ParameterReference",
+                "CausingEntity": "ReleaseId"
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "PolicyAction": "ReplaceAndRetain",
+            "Action": "Modify",
+            "LogicalResourceId": "RedemptionVersion",
+            "PhysicalResourceId": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:2",
+            "ResourceType": "AWS::Lambda::Version",
+            "Replacement": "True",
+            "Scope": [
+              "Properties"
+            ],
+            "Details": [
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Description",
+                  "RequiresRecreation": "Always"
+                },
+                "Evaluation": "Static",
+                "ChangeSource": "ParameterReference",
+                "CausingEntity": "ReleaseId"
+              },
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Description",
+                  "RequiresRecreation": "Always"
+                },
+                "Evaluation": "Dynamic",
+                "ChangeSource": "DirectModification"
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Modify",
+            "LogicalResourceId": "RequestBoundary",
+            "PhysicalResourceId": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RequestBoundary-ZRxKvHtuLqmA",
+            "ResourceType": "AWS::IAM::ManagedPolicy",
+            "Replacement": "False",
+            "Scope": [
+              "Properties"
+            ],
+            "Details": [
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "PolicyDocument",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Static",
+                "ChangeSource": "ResourceReference",
+                "CausingEntity": "RedemptionVersion"
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Modify",
+            "LogicalResourceId": "RequestFunction",
+            "PhysicalResourceId": "flo-customer-enrollment-request",
+            "ResourceType": "AWS::Lambda::Function",
+            "Replacement": "False",
+            "Scope": [
+              "Properties"
+            ],
+            "Details": [
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Description",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Dynamic",
+                "ChangeSource": "DirectModification"
+              },
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Environment",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Static",
+                "ChangeSource": "ParameterReference",
+                "CausingEntity": "EnableEnrollment"
+              },
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Environment",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Static",
+                "ChangeSource": "ResourceReference",
+                "CausingEntity": "RedemptionVersion"
+              },
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Environment",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Dynamic",
+                "ChangeSource": "DirectModification"
+              },
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Description",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Static",
+                "ChangeSource": "ParameterReference",
+                "CausingEntity": "ReleaseId"
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "PolicyAction": "ReplaceAndRetain",
+            "Action": "Modify",
+            "LogicalResourceId": "RequestVersion",
+            "PhysicalResourceId": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request:2",
+            "ResourceType": "AWS::Lambda::Version",
+            "Replacement": "True",
+            "Scope": [
+              "Properties"
+            ],
+            "Details": [
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Description",
+                  "RequiresRecreation": "Always"
+                },
+                "Evaluation": "Static",
+                "ChangeSource": "ParameterReference",
+                "CausingEntity": "ReleaseId"
+              },
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "Description",
+                  "RequiresRecreation": "Always"
+                },
+                "Evaluation": "Dynamic",
+                "ChangeSource": "DirectModification"
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Add",
+            "LogicalResourceId": "StartPairingPermission",
+            "ResourceType": "AWS::Lambda::Permission",
+            "Scope": [],
+            "Details": []
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Add",
+            "LogicalResourceId": "StartPairingRoute",
+            "ResourceType": "AWS::ApiGatewayV2::Route",
+            "Scope": [],
+            "Details": []
+          }
+        }
+      ],
+      "CreationTime": "2026-09-06T17:26:06.709000+00:00"
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "DescribeChangeSet",
+        "status": "success",
+        "n_items": {
+          "Parameters": 26,
+          "NotificationARNs": 0,
+          "Capabilities": 1,
+          "Changes": 14
+        }
+      }
+    ]
+  },
+  "predeployment": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "changeSetId": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-request-only-fixed-review-20260906T1727Z/c9483626-383b-4170-909c-1bf8785d0749",
+      "status": "CREATE_COMPLETE",
+      "executionStatus": "AVAILABLE",
+      "templateMatchesTestedSource": true,
+      "parameters": {
+        "EnableRedemption": "false",
+        "ReleaseId": "request-only-fixed-review-20260906-1727",
+        "EnableApproval": "false",
+        "EnableEnrollment": "true",
+        "PublishRoutes": "true"
+      },
+      "validationErrors": [],
+      "operationEvents": [
+        {
+          "EventId": "640e6079-e329-4960-97ae-da3a9b3416dc",
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment/ac1ab770-aa00-11f1-9ac0-02cd968e7605",
+          "OperationId": "c9483626-383b-4170-909c-1bf8785d0749",
+          "OperationType": "CREATE_CHANGESET",
+          "OperationStatus": "SUCCEEDED",
+          "EventType": "STACK_EVENT",
+          "Timestamp": "2026-09-06T17:26:16.533000+00:00",
+          "StartTime": "2026-09-06T17:26:06.726000+00:00",
+          "EndTime": "2026-09-06T17:26:16.533000+00:00"
+        },
+        {
+          "EventId": "2fc403e3-77d6-4deb-b659-3e9072377678",
+          "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment/ac1ab770-aa00-11f1-9ac0-02cd968e7605",
+          "OperationId": "c9483626-383b-4170-909c-1bf8785d0749",
+          "OperationType": "CREATE_CHANGESET",
+          "OperationStatus": "IN_PROGRESS",
+          "EventType": "STACK_EVENT",
+          "Timestamp": "2026-09-06T17:26:06.726000+00:00",
+          "StartTime": "2026-09-06T17:26:06.726000+00:00"
+        }
+      ],
+      "checkedAt": "2026-09-06T17:27:17.747207+00:00",
+      "executed": false
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "DescribeEvents",
+        "status": "success",
+        "n_items": {
+          "OperationEvents": 2
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "GetTemplate",
+        "status": "success",
+        "n_items": {
+          "StagesAvailable": 2
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeChangeSet",
+        "status": "success",
+        "n_items": {
+          "Parameters": 26,
+          "NotificationARNs": 0,
+          "Capabilities": 1,
+          "Changes": 14
+        }
+      }
+    ]
+  },
+  "verificationProposal": {
+    "maximumCredentialFreeHttpCalls": 12,
+    "customerStateWrites": false,
+    "operatorInvocationGrant": false,
+    "applicationApproval": false,
+    "applicationRedemption": false,
+    "publication": false
+  },
+  "executionApproved": false
+}

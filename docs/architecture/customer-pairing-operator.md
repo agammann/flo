@@ -2,14 +2,35 @@
 
 ## Status and authority boundary
 
-Local implementation only. The existing customer Lambda does **not** mount `/pairing`, `/pairing.js`, `/enrollment/request`, or `/enrollment/redeem`. It has no operator-approval route. Three separate opt-in enrollment artifacts now build: request, redemption and fixed-designation approval. Only request contains pairing assets; only approval contains the approval adapter. None is deployed or attached to the live API. Do not enable them or broaden the current customer-read role as an incidental deployment step. See [current approval preparation](../verification/enrollment-private-authority-2026-09-05.md) and [earlier handler verification](../verification/enrollment-lambda-handlers-2026-09-05.md).
+Latest live checkpoint: the [request-only deployment](../verification/enrollment-request-only-deployment-2026-09-06.md)
+is complete. Request version 3 is enabled and the three request-stage routes
+are attached. Redemption version 3 and private approval version 3 remain disabled.
+All 12 credential-free hosted checks passed; this did not link a customer.
+
+Latest authentication checkpoint: [fresh-MFA live operator testing](../verification/operator-fresh-mfa-test-2026-09-06.md)
+verified exact-version authorization and one disabled version-2 invocation,
+returning `ok=false`, `status=503`. Two out-of-scope DryRuns were rejected.
+The temporary invocation grant and boundary were removed after testing; only the
+sign-in managed policy remains attached. This establishes the actual credential
+path, not an enabled customer designation, approval transaction, or ownership link.
+
+As of the September 6 request-only deployment, `/pairing`, `/pairing.js` and
+`/enrollment/request` route to the separate request function, not the existing
+customer Lambda. No `/enrollment/redeem` or public operator-approval route is
+attached. Only request contains pairing assets; only approval contains the
+approval adapter. No enabled operator grant or live test designation has been
+established. Do not enable approval/redemption or broaden the customer-read role
+as an incidental step. Earlier version-2 startup and CloudWatch system-log
+evidence remains in [logging verification](../verification/enrollment-system-logs-deployment-2026-09-06.md).
+The deployment-design and storage-preparation sections below describe earlier
+checkpoints, not current live deployment status.
 
 The approved scope is an independently designated **fictional staging customer A** for the owner's real Amazon test account. Customer B remains inaccessible. This workflow does not verify ownership of real repairs and must not be described as production customer enrollment or Alexa+ account linking.
 
 ```mermaid
 sequenceDiagram
   participant C as Signed-in customer
-  participant E as Enrollment service (not yet deployed)
+  participant E as Enrollment service (request enabled; redemption gated)
   participant O as Private verified test operator
   participant A as Private fixed-designation approval function
   participant D as Transactional state
@@ -67,7 +88,7 @@ The config must be a strict JSON object with:
 
 The private request contains only `requestCode` and `confirmation: "approve_designated_pairing"`. Old configs with tables/grants and requests with customer/verification fields now fail strict validation; there is no legacy migration fallback. The invitation output still contains only request code, invitation and operator-approved status.
 
-The command uses its SDK credential chain for synchronous `RequestResponse` invocation, with logs disabled, bounded responses and no automatic retry. IAM must independently limit the operator to the exact approved function version, with MFA, and no direct database writes, role assumption into the writer role, configuration changes or invocation-policy changes. Editing a local ARN must not grant access to another function. No deployed IAM/MFA test is yet claimed.
+The command uses its SDK credential chain for synchronous `RequestResponse` invocation, with logs disabled, bounded responses and no automatic retry. IAM must independently limit the operator to the exact approved function version, with MFA, and no direct database writes, role assumption into the writer role, configuration changes or invocation-policy changes. Editing a local ARN must not grant access to another function. The disabled version-2 IAM/MFA test is verified above; enabled approval permissions and transactions still require separate verification.
 
 The approval function requires a separately reviewed `FLO_PRIVATE_APPROVAL_DESIGNATION`: purpose, customerId, identityKey, authorityId, evidenceRef and expiresAt. The identityKey is the existing SHA-256 representation of the LWA client ID and Amazon subject, not email matching. The operator must not control this configuration or its published version. Expiry is an admission deadline for new approvals, not revocation of an already committed approval; existing invitations remain bound to their original short-lived request/session. The designation must come from actual independent fictional-customer verification; do not fabricate it or derive ownership from login alone. No live designation has been provisioned.
 
