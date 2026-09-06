@@ -1,6 +1,19 @@
 # Replacement-video reconciliation
 
-Status: edit plan, not a completed replacement video. September 5, 2026.
+Status: edit plan, not a completed replacement video. Updated September 6, 2026.
+
+The current hosted site now has real Login with Amazon sign-in/sign-out and a
+verified signed-in/unlinked request flow. Private customer approval/redemption
+remain disabled. Do not film or claim owned hosted repairs until the independently
+designated test-customer flow passes. The original video is still unsuitable for
+the corrected release. The dated September 5 implementation-only statements below
+are historical; they do not override the latest deployment evidence.
+
+The source checkpoint `aabafec16037032ddfbd19ccf43df780514b60c4` has a fresh
+[successful CI run](https://github.com/agammann/flo/actions/runs/34056513856),
+including a real Docker Compose launch, MCP demo and isolated DynamoDB contracts.
+The final recording must identify its own final tested source, not reuse this
+checkpoint as evidence for later changes.
 
 The local source is `outputs/Flo-demo.mp4` in the parent workspace. Its segment narration is in `work/flo-video/segments.json`; source frames and audio are alongside it. The repository's `flo-demo.en.vtt` belongs to that existing 2:41 cut. Preserve that caption file and original MP4 until the replacement is rendered, reviewed and explicitly approved. Do not change captions to say something different from the old spoken audio or screen.
 

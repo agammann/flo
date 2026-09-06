@@ -1,0 +1,1856 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Flo us-west-2 enrollment runtime REVIEW ONLY. No repair data, operator grants, customer links or replacement website. Explicit approval required.",
+  "Metadata": {
+    "IntendedAccount": "114599789754",
+    "IntendedRegion": "us-west-2",
+    "BaselineGenerator": "iam-policy-autopilot 0.3.0",
+    "ApprovalState": "NOT_APPROVED_FOR_DEPLOYMENT"
+  },
+  "Parameters": {
+    "ExistingApiId": {
+      "Type": "String",
+      "AllowedPattern": "[a-z0-9]{10}",
+      "Description": "Existing customer HTTP API. Its stage, login and read-only role remain unchanged."
+    },
+    "PublicOrigin": {
+      "Type": "String",
+      "AllowedPattern": "https://[a-z0-9]{10}\\.execute-api\\.us-west-2\\.amazonaws\\.com",
+      "Description": "Exact existing HTTPS origin, without trailing slash."
+    },
+    "LwaClientId": {
+      "Type": "String",
+      "MinLength": 1,
+      "MaxLength": 100,
+      "Description": "Existing public Login with Amazon client ID; not its client secret."
+    },
+    "StateSecretArn": {
+      "Type": "String",
+      "AllowedPattern": "arn:aws:secretsmanager:us-west-2:[0-9]{12}:secret:[A-Za-z0-9/_+=.@-]+",
+      "Description": "Existing auth-state encryption secret ARN. CloudFormation resolves encryptionKey privately."
+    },
+    "LambdaEnvironmentKeyArn": {
+      "Type": "String",
+      "AllowedPattern": "arn:aws:kms:us-west-2:[0-9]{12}:key/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}",
+      "Description": "Verified existing alias/aws/lambda key ARN in this account/region. Boundary scope only; does not change function encryption or create a key."
+    },
+    "ArtifactBucket": {
+      "Type": "String",
+      "AllowedPattern": "[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]",
+      "Description": "Reviewed private versioned us-west-2 artifact bucket."
+    },
+    "ReleaseId": {
+      "Type": "String",
+      "AllowedPattern": "[a-z0-9-]{1,64}",
+      "Description": "New reviewed ID on EVERY code/configuration update to publish new immutable versions."
+    },
+    "EnableEnrollment": {
+      "Type": "String",
+      "Default": "false",
+      "AllowedValues": [
+        "false",
+        "true"
+      ],
+      "Description": "Keep false until deployment and tests are approved."
+    },
+    "EnableRedemption": {
+      "Type": "String",
+      "Default": "false",
+      "AllowedValues": [
+        "false",
+        "true"
+      ],
+      "Description": "Separate link-creation gate. Keep false during request-only identity verification; requires its own approved stateful test plan."
+    },
+    "PublishRoutes": {
+      "Type": "String",
+      "Default": "false",
+      "AllowedValues": [
+        "false",
+        "true"
+      ],
+      "Description": "Explicit review gate for four same-origin pairing routes, not repair or approval routes."
+    },
+    "EnableApproval": {
+      "Type": "String",
+      "Default": "false",
+      "AllowedValues": [
+        "false",
+        "true"
+      ],
+      "Description": "Keep false until independent fictional customer designation and operator access are reviewed."
+    },
+    "ApprovalDesignation": {
+      "Type": "String",
+      "Default": "null",
+      "MaxLength": 2048,
+      "NoEcho": true,
+      "Description": "Privately supplied independently verified designation JSON; never event-controlled or fabricated."
+    },
+    "AuthTable": {
+      "Type": "String",
+      "AllowedPattern": "[A-Za-z0-9_.-]{3,255}",
+      "Description": "Existing reviewed table; no creation, restoration or replacement in this template."
+    },
+    "LinksTable": {
+      "Type": "String",
+      "AllowedPattern": "[A-Za-z0-9_.-]{3,255}",
+      "Description": "Existing reviewed table; no creation, restoration or replacement in this template."
+    },
+    "RequestsTable": {
+      "Type": "String",
+      "AllowedPattern": "[A-Za-z0-9_.-]{3,255}",
+      "Description": "Existing reviewed table; no creation, restoration or replacement in this template."
+    },
+    "ApprovalsTable": {
+      "Type": "String",
+      "AllowedPattern": "[A-Za-z0-9_.-]{3,255}",
+      "Description": "Existing reviewed table; no creation, restoration or replacement in this template."
+    },
+    "AuditTable": {
+      "Type": "String",
+      "AllowedPattern": "[A-Za-z0-9_.-]{3,255}",
+      "Description": "Existing reviewed table; no creation, restoration or replacement in this template."
+    },
+    "RequestArtifactKey": {
+      "Type": "String",
+      "AllowedPattern": "flo-enrollment/request/[a-f0-9]{64}\\.zip",
+      "Description": "Content-addressed artifact, separately packaged from tested source."
+    },
+    "RequestArtifactVersion": {
+      "Type": "String",
+      "MinLength": 1,
+      "Description": "Immutable S3 object version."
+    },
+    "RequestCodeSha256": {
+      "Type": "String",
+      "AllowedPattern": "[A-Za-z0-9+/]{43}=",
+      "Description": "Base64 SHA-256 of exact uploaded ZIP; Lambda version publication checks it."
+    },
+    "RedemptionArtifactKey": {
+      "Type": "String",
+      "AllowedPattern": "flo-enrollment/redemption/[a-f0-9]{64}\\.zip",
+      "Description": "Content-addressed artifact, separately packaged from tested source."
+    },
+    "RedemptionArtifactVersion": {
+      "Type": "String",
+      "MinLength": 1,
+      "Description": "Immutable S3 object version."
+    },
+    "RedemptionCodeSha256": {
+      "Type": "String",
+      "AllowedPattern": "[A-Za-z0-9+/]{43}=",
+      "Description": "Base64 SHA-256 of exact uploaded ZIP; Lambda version publication checks it."
+    },
+    "ApprovalArtifactKey": {
+      "Type": "String",
+      "AllowedPattern": "flo-enrollment/approval/[a-f0-9]{64}\\.zip",
+      "Description": "Content-addressed artifact, separately packaged from tested source."
+    },
+    "ApprovalArtifactVersion": {
+      "Type": "String",
+      "MinLength": 1,
+      "Description": "Immutable S3 object version."
+    },
+    "ApprovalCodeSha256": {
+      "Type": "String",
+      "AllowedPattern": "[A-Za-z0-9+/]{43}=",
+      "Description": "Base64 SHA-256 of exact uploaded ZIP; Lambda version publication checks it."
+    },
+    "RequestDynamoKeyArn": {
+      "Type": "String",
+      "AllowedPattern": "arn:aws:kms:us-west-2:[0-9]{12}:key/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}",
+      "Description": "Verified existing shared KMS key of AuthTable, LinksTable and RequestsTable; distinct from LambdaEnvironmentKeyArn. Request boundary only; no key or table changes."
+    },
+    "PrivateDynamoKeyArn": {
+      "Type": "String",
+      "AllowedPattern": "arn:aws:kms:us-west-2:[0-9]{12}:key/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}",
+      "Description": "Separately verified existing shared KMS key for all five enrollment tables. Private boundaries only; no key/table changes or gate enablement."
+    }
+  },
+  "Conditions": {
+    "ExposeRoutes": {
+      "Fn::And": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "PublishRoutes"
+            },
+            "true"
+          ]
+        },
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "EnableEnrollment"
+            },
+            "true"
+          ]
+        }
+      ]
+    },
+    "ExposeRedemptionRoute": {
+      "Fn::And": [
+        {
+          "Condition": "ExposeRoutes"
+        },
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "EnableRedemption"
+            },
+            "true"
+          ]
+        }
+      ]
+    }
+  },
+  "Resources": {
+    "RequestBoundary": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Description": "request maximum authority, grants nothing alone",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "DenyEveryOtherCapability",
+              "Effect": "Deny",
+              "NotAction": [
+                "dynamodb:GetItem",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "lambda:InvokeFunction",
+                "kms:Decrypt"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Sid": "AllowdynamodbGetItem",
+              "Effect": "Allow",
+              "Action": "dynamodb:GetItem",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuthTable}"
+                }
+              ]
+            },
+            {
+              "Sid": "DenyOtherdynamodbGetItemResources",
+              "Effect": "Deny",
+              "Action": "dynamodb:GetItem",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuthTable}"
+                }
+              ]
+            },
+            {
+              "Sid": "AllowdynamodbConditionCheckItem",
+              "Effect": "Allow",
+              "Action": "dynamodb:ConditionCheckItem",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuthTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${LinksTable}"
+                }
+              ]
+            },
+            {
+              "Sid": "DenyOtherdynamodbConditionCheckItemResources",
+              "Effect": "Deny",
+              "Action": "dynamodb:ConditionCheckItem",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuthTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${LinksTable}"
+                }
+              ]
+            },
+            {
+              "Sid": "AllowdynamodbPutItem",
+              "Effect": "Allow",
+              "Action": "dynamodb:PutItem",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RequestsTable}"
+                }
+              ]
+            },
+            {
+              "Sid": "DenyOtherdynamodbPutItemResources",
+              "Effect": "Deny",
+              "Action": "dynamodb:PutItem",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RequestsTable}"
+                }
+              ]
+            },
+            {
+              "Sid": "AllowdynamodbUpdateItem",
+              "Effect": "Allow",
+              "Action": "dynamodb:UpdateItem",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RequestsTable}"
+                }
+              ]
+            },
+            {
+              "Sid": "DenyOtherdynamodbUpdateItemResources",
+              "Effect": "Deny",
+              "Action": "dynamodb:UpdateItem",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RequestsTable}"
+                }
+              ]
+            },
+            {
+              "Sid": "AllowlogsCreateLogStream",
+              "Effect": "Allow",
+              "Action": "logs:CreateLogStream",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-request:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Sid": "DenyOtherlogsCreateLogStreamResources",
+              "Effect": "Deny",
+              "Action": "logs:CreateLogStream",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-request:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Sid": "AllowlogsPutLogEvents",
+              "Effect": "Allow",
+              "Action": "logs:PutLogEvents",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-request:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Sid": "DenyOtherlogsPutLogEventsResources",
+              "Effect": "Deny",
+              "Action": "logs:PutLogEvents",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-request:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Sid": "AllowlambdaInvokeFunction",
+              "Effect": "Allow",
+              "Action": "lambda:InvokeFunction",
+              "Resource": [
+                {
+                  "Ref": "RedemptionVersion"
+                }
+              ]
+            },
+            {
+              "Sid": "DenyOtherlambdaInvokeFunctionResources",
+              "Effect": "Deny",
+              "Action": "lambda:InvokeFunction",
+              "NotResource": [
+                {
+                  "Ref": "RedemptionVersion"
+                }
+              ]
+            },
+            {
+              "Sid": "AllowOwnEnvironmentDecrypt",
+              "Effect": "Allow",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "LambdaEnvironmentKeyArn"
+              },
+              "Condition": {
+                "StringEquals": {
+                  "kms:CallerAccount": {
+                    "Ref": "AWS::AccountId"
+                  },
+                  "kms:EncryptionContext:aws:lambda:FunctionArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-request"
+                  }
+                }
+              }
+            },
+            {
+              "Sid": "DenyOtherEnvironmentKeys",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "NotResource": [
+                {
+                  "Ref": "LambdaEnvironmentKeyArn"
+                },
+                {
+                  "Ref": "RequestDynamoKeyArn"
+                }
+              ]
+            },
+            {
+              "Sid": "DenyWrongDecryptAccount",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": "*",
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:CallerAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              }
+            },
+            {
+              "Sid": "DenyWrongDecryptFunction",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "LambdaEnvironmentKeyArn"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:EncryptionContext:aws:lambda:FunctionArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-request"
+                  }
+                }
+              }
+            },
+            {
+              "Sid": "DenyNonTransactionalWrites",
+              "Effect": "Deny",
+              "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem"
+              ],
+              "Resource": "*",
+              "Condition": {
+                "StringNotEquals": {
+                  "dynamodb:EnclosingOperation": "TransactWriteItems"
+                }
+              }
+            },
+            {
+              "Sid": "AllowRequestDynamoDecrypt",
+              "Effect": "Allow",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "RequestDynamoKeyArn"
+              },
+              "Condition": {
+                "StringEquals": {
+                  "kms:CallerAccount": {
+                    "Ref": "AWS::AccountId"
+                  },
+                  "kms:ViaService": "dynamodb.us-west-2.amazonaws.com",
+                  "kms:EncryptionContext:aws:dynamodb:tableName": [
+                    {
+                      "Ref": "AuthTable"
+                    },
+                    {
+                      "Ref": "LinksTable"
+                    },
+                    {
+                      "Ref": "RequestsTable"
+                    }
+                  ],
+                  "kms:EncryptionContext:aws:dynamodb:subscriberId": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              }
+            },
+            {
+              "Sid": "DenyRequestDynamoContext0",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "RequestDynamoKeyArn"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:ViaService": "dynamodb.us-west-2.amazonaws.com"
+                }
+              }
+            },
+            {
+              "Sid": "DenyRequestDynamoContext1",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "RequestDynamoKeyArn"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:EncryptionContext:aws:dynamodb:tableName": [
+                    {
+                      "Ref": "AuthTable"
+                    },
+                    {
+                      "Ref": "LinksTable"
+                    },
+                    {
+                      "Ref": "RequestsTable"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Sid": "DenyRequestDynamoContext2",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "RequestDynamoKeyArn"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:EncryptionContext:aws:dynamodb:subscriberId": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "RequestRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "PermissionsBoundary": {
+          "Ref": "RequestBoundary"
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+        ]
+      }
+    },
+    "RequestBaseline": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Roles": [
+          {
+            "Ref": "RequestRole"
+          }
+        ],
+        "Description": "Unmodified generated baseline, usable only with the mandatory exact-resource boundary",
+        "PolicyDocument": {
+          "Id": "IamPolicyAutopilot",
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:Query",
+                "dynamodb:ReadDataForReplication",
+                "dynamodb:UpdateItem",
+                "dynamodb:WriteDataForReplication"
+              ],
+              "Resource": [
+                "arn:aws:dynamodb:us-west-2:114599789754:table/*"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "kms:Decrypt"
+              ],
+              "Resource": [
+                "arn:aws:kms:us-west-2:114599789754:key/*"
+              ],
+              "Condition": {
+                "StringEquals": {
+                  "kms:ViaService": [
+                    "dynamodb.us-west-2.amazonaws.com"
+                  ]
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:InvokeFunction"
+              ],
+              "Resource": [
+                "arn:aws:lambda:us-west-2:114599789754:function:*"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "RequestLogs": {
+      "Type": "AWS::Logs::LogGroup",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Sub": "/aws/lambda/${AWS::StackName}-request"
+        },
+        "RetentionInDays": 7
+      }
+    },
+    "RequestFunction": {
+      "Type": "AWS::Lambda::Function",
+      "DependsOn": [
+        "RequestLogs",
+        "RequestBaseline"
+      ],
+      "Properties": {
+        "FunctionName": {
+          "Fn::Sub": "${AWS::StackName}-request"
+        },
+        "Description": {
+          "Fn::Sub": "Reviewed request release ${ReleaseId}"
+        },
+        "Runtime": "nodejs22.x",
+        "Handler": "index.handler",
+        "Architectures": [
+          "x86_64"
+        ],
+        "Role": {
+          "Fn::GetAtt": [
+            "RequestRole",
+            "Arn"
+          ]
+        },
+        "MemorySize": 256,
+        "Timeout": 20,
+        "ReservedConcurrentExecutions": 1,
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ArtifactBucket"
+          },
+          "S3Key": {
+            "Ref": "RequestArtifactKey"
+          },
+          "S3ObjectVersion": {
+            "Ref": "RequestArtifactVersion"
+          }
+        },
+        "Environment": {
+          "Variables": {
+            "FLO_CUSTOMER_AUTH_TABLE": {
+              "Ref": "AuthTable"
+            },
+            "FLO_CUSTOMER_LINKS_TABLE": {
+              "Ref": "LinksTable"
+            },
+            "FLO_ENROLLMENT_REQUESTS_TABLE": {
+              "Ref": "RequestsTable"
+            },
+            "FLO_ENROLLMENT_APPROVALS_TABLE": {
+              "Ref": "ApprovalsTable"
+            },
+            "FLO_ENROLLMENT_AUDIT_TABLE": {
+              "Ref": "AuditTable"
+            },
+            "FLO_ENROLLMENT_ENABLED": {
+              "Ref": "EnableEnrollment"
+            },
+            "FLO_AWS_ACCOUNT_ID": {
+              "Ref": "AWS::AccountId"
+            },
+            "LWA_CLIENT_ID": {
+              "Ref": "LwaClientId"
+            },
+            "FLO_CUSTOMER_PUBLIC_ORIGIN": {
+              "Ref": "PublicOrigin"
+            },
+            "FLO_CUSTOMER_STATE_KEY": {
+              "Fn::Sub": "{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}"
+            },
+            "FLO_CUSTOMER_API_ID": {
+              "Ref": "ExistingApiId"
+            },
+            "FLO_REDEMPTION_FUNCTION_ARN": {
+              "Ref": "RedemptionVersion"
+            }
+          }
+        },
+        "LoggingConfig": {
+          "LogFormat": "JSON",
+          "ApplicationLogLevel": "WARN",
+          "SystemLogLevel": "INFO"
+        }
+      }
+    },
+    "RequestVersion": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "RequestFunction"
+        },
+        "CodeSha256": {
+          "Ref": "RequestCodeSha256"
+        },
+        "Description": {
+          "Fn::Sub": "Reviewed request release ${ReleaseId}"
+        }
+      }
+    },
+    "RedemptionBoundary": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Description": "redemption maximum authority, grants nothing alone",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Deny",
+              "NotAction": [
+                "dynamodb:GetItem",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "kms:Decrypt"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": "dynamodb:GetItem",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuthTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ApprovalsTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "dynamodb:GetItem",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuthTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ApprovalsTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "dynamodb:ConditionCheckItem",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuthTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ApprovalsTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "dynamodb:ConditionCheckItem",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuthTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ApprovalsTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "dynamodb:PutItem",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${LinksTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuditTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "dynamodb:PutItem",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${LinksTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuditTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "dynamodb:UpdateItem",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RequestsTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "dynamodb:UpdateItem",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RequestsTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "logs:CreateLogStream",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-redemption:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "logs:CreateLogStream",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-redemption:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "logs:PutLogEvents",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-redemption:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "logs:PutLogEvents",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-redemption:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Sid": "AllowOwnEnvironmentDecrypt",
+              "Effect": "Allow",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "LambdaEnvironmentKeyArn"
+              },
+              "Condition": {
+                "StringEquals": {
+                  "kms:CallerAccount": {
+                    "Ref": "AWS::AccountId"
+                  },
+                  "kms:EncryptionContext:aws:lambda:FunctionArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-redemption"
+                  }
+                }
+              }
+            },
+            {
+              "Sid": "DenyOtherEnvironmentKeys",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "NotResource": [
+                {
+                  "Ref": "LambdaEnvironmentKeyArn"
+                },
+                {
+                  "Ref": "PrivateDynamoKeyArn"
+                }
+              ]
+            },
+            {
+              "Sid": "DenyWrongDecryptAccount",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": "*",
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:CallerAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              }
+            },
+            {
+              "Sid": "DenyWrongDecryptFunction",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "LambdaEnvironmentKeyArn"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:EncryptionContext:aws:lambda:FunctionArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-redemption"
+                  }
+                }
+              }
+            },
+            {
+              "Effect": "Deny",
+              "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem"
+              ],
+              "Resource": "*",
+              "Condition": {
+                "StringNotEquals": {
+                  "dynamodb:EnclosingOperation": "TransactWriteItems"
+                }
+              }
+            },
+            {
+              "Sid": "AllowPrivateDynamoDecrypt",
+              "Effect": "Allow",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "PrivateDynamoKeyArn"
+              },
+              "Condition": {
+                "StringEquals": {
+                  "kms:CallerAccount": {
+                    "Ref": "AWS::AccountId"
+                  },
+                  "kms:ViaService": "dynamodb.us-west-2.amazonaws.com",
+                  "kms:EncryptionContext:aws:dynamodb:tableName": [
+                    {
+                      "Ref": "AuthTable"
+                    },
+                    {
+                      "Ref": "LinksTable"
+                    },
+                    {
+                      "Ref": "RequestsTable"
+                    },
+                    {
+                      "Ref": "ApprovalsTable"
+                    },
+                    {
+                      "Ref": "AuditTable"
+                    }
+                  ],
+                  "kms:EncryptionContext:aws:dynamodb:subscriberId": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              }
+            },
+            {
+              "Sid": "DenyPrivateDynamoContext0",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "PrivateDynamoKeyArn"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:ViaService": "dynamodb.us-west-2.amazonaws.com"
+                }
+              }
+            },
+            {
+              "Sid": "DenyPrivateDynamoContext1",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "PrivateDynamoKeyArn"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:EncryptionContext:aws:dynamodb:tableName": [
+                    {
+                      "Ref": "AuthTable"
+                    },
+                    {
+                      "Ref": "LinksTable"
+                    },
+                    {
+                      "Ref": "RequestsTable"
+                    },
+                    {
+                      "Ref": "ApprovalsTable"
+                    },
+                    {
+                      "Ref": "AuditTable"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Sid": "DenyPrivateDynamoContext2",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "PrivateDynamoKeyArn"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:EncryptionContext:aws:dynamodb:subscriberId": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "RedemptionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "PermissionsBoundary": {
+          "Ref": "RedemptionBoundary"
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+        ]
+      }
+    },
+    "RedemptionBaseline": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Roles": [
+          {
+            "Ref": "RedemptionRole"
+          }
+        ],
+        "Description": "Unmodified generated baseline, usable only with the mandatory exact-resource boundary",
+        "PolicyDocument": {
+          "Id": "IamPolicyAutopilot",
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:Query",
+                "dynamodb:ReadDataForReplication",
+                "dynamodb:UpdateItem",
+                "dynamodb:WriteDataForReplication"
+              ],
+              "Resource": [
+                "arn:aws:dynamodb:us-west-2:114599789754:table/*"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "kms:Decrypt"
+              ],
+              "Resource": [
+                "arn:aws:kms:us-west-2:114599789754:key/*"
+              ],
+              "Condition": {
+                "StringEquals": {
+                  "kms:ViaService": [
+                    "dynamodb.us-west-2.amazonaws.com"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "RedemptionLogs": {
+      "Type": "AWS::Logs::LogGroup",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Sub": "/aws/lambda/${AWS::StackName}-redemption"
+        },
+        "RetentionInDays": 7
+      }
+    },
+    "RedemptionFunction": {
+      "Type": "AWS::Lambda::Function",
+      "DependsOn": [
+        "RedemptionLogs",
+        "RedemptionBaseline"
+      ],
+      "Properties": {
+        "FunctionName": {
+          "Fn::Sub": "${AWS::StackName}-redemption"
+        },
+        "Description": {
+          "Fn::Sub": "Reviewed redemption release ${ReleaseId}"
+        },
+        "Runtime": "nodejs22.x",
+        "Handler": "index.handler",
+        "Architectures": [
+          "x86_64"
+        ],
+        "Role": {
+          "Fn::GetAtt": [
+            "RedemptionRole",
+            "Arn"
+          ]
+        },
+        "MemorySize": 256,
+        "Timeout": 10,
+        "ReservedConcurrentExecutions": 1,
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ArtifactBucket"
+          },
+          "S3Key": {
+            "Ref": "RedemptionArtifactKey"
+          },
+          "S3ObjectVersion": {
+            "Ref": "RedemptionArtifactVersion"
+          }
+        },
+        "Environment": {
+          "Variables": {
+            "FLO_CUSTOMER_AUTH_TABLE": {
+              "Ref": "AuthTable"
+            },
+            "FLO_CUSTOMER_LINKS_TABLE": {
+              "Ref": "LinksTable"
+            },
+            "FLO_ENROLLMENT_REQUESTS_TABLE": {
+              "Ref": "RequestsTable"
+            },
+            "FLO_ENROLLMENT_APPROVALS_TABLE": {
+              "Ref": "ApprovalsTable"
+            },
+            "FLO_ENROLLMENT_AUDIT_TABLE": {
+              "Ref": "AuditTable"
+            },
+            "FLO_ENROLLMENT_ENABLED": {
+              "Ref": "EnableRedemption"
+            },
+            "FLO_AWS_ACCOUNT_ID": {
+              "Ref": "AWS::AccountId"
+            },
+            "LWA_CLIENT_ID": {
+              "Ref": "LwaClientId"
+            },
+            "FLO_CUSTOMER_PUBLIC_ORIGIN": {
+              "Ref": "PublicOrigin"
+            },
+            "FLO_CUSTOMER_STATE_KEY": {
+              "Fn::Sub": "{{resolve:secretsmanager:${StateSecretArn}:SecretString:encryptionKey}}"
+            }
+          }
+        },
+        "LoggingConfig": {
+          "LogFormat": "JSON",
+          "ApplicationLogLevel": "WARN",
+          "SystemLogLevel": "INFO"
+        }
+      }
+    },
+    "RedemptionVersion": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "RedemptionFunction"
+        },
+        "CodeSha256": {
+          "Ref": "RedemptionCodeSha256"
+        },
+        "Description": {
+          "Fn::Sub": "Reviewed redemption release ${ReleaseId}"
+        }
+      }
+    },
+    "ApprovalBoundary": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Description": "approval maximum authority, grants nothing alone",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Deny",
+              "NotAction": [
+                "dynamodb:GetItem",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:PutItem",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "kms:Decrypt"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": "dynamodb:GetItem",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RequestsTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "dynamodb:GetItem",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RequestsTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "dynamodb:ConditionCheckItem",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuthTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${LinksTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RequestsTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "dynamodb:ConditionCheckItem",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuthTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${LinksTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RequestsTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "dynamodb:PutItem",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ApprovalsTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuditTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "dynamodb:PutItem",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ApprovalsTable}"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AuditTable}"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "logs:CreateLogStream",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-approval:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "logs:CreateLogStream",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-approval:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "logs:PutLogEvents",
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-approval:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "logs:PutLogEvents",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-approval:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Sid": "AllowOwnEnvironmentDecrypt",
+              "Effect": "Allow",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "LambdaEnvironmentKeyArn"
+              },
+              "Condition": {
+                "StringEquals": {
+                  "kms:CallerAccount": {
+                    "Ref": "AWS::AccountId"
+                  },
+                  "kms:EncryptionContext:aws:lambda:FunctionArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-approval"
+                  }
+                }
+              }
+            },
+            {
+              "Sid": "DenyOtherEnvironmentKeys",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "NotResource": [
+                {
+                  "Ref": "LambdaEnvironmentKeyArn"
+                },
+                {
+                  "Ref": "PrivateDynamoKeyArn"
+                }
+              ]
+            },
+            {
+              "Sid": "DenyWrongDecryptAccount",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": "*",
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:CallerAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              }
+            },
+            {
+              "Sid": "DenyWrongDecryptFunction",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "LambdaEnvironmentKeyArn"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:EncryptionContext:aws:lambda:FunctionArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-approval"
+                  }
+                }
+              }
+            },
+            {
+              "Effect": "Deny",
+              "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem"
+              ],
+              "Resource": "*",
+              "Condition": {
+                "StringNotEquals": {
+                  "dynamodb:EnclosingOperation": "TransactWriteItems"
+                }
+              }
+            },
+            {
+              "Sid": "AllowPrivateDynamoDecrypt",
+              "Effect": "Allow",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "PrivateDynamoKeyArn"
+              },
+              "Condition": {
+                "StringEquals": {
+                  "kms:CallerAccount": {
+                    "Ref": "AWS::AccountId"
+                  },
+                  "kms:ViaService": "dynamodb.us-west-2.amazonaws.com",
+                  "kms:EncryptionContext:aws:dynamodb:tableName": [
+                    {
+                      "Ref": "AuthTable"
+                    },
+                    {
+                      "Ref": "LinksTable"
+                    },
+                    {
+                      "Ref": "RequestsTable"
+                    },
+                    {
+                      "Ref": "ApprovalsTable"
+                    },
+                    {
+                      "Ref": "AuditTable"
+                    }
+                  ],
+                  "kms:EncryptionContext:aws:dynamodb:subscriberId": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              }
+            },
+            {
+              "Sid": "DenyPrivateDynamoContext0",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "PrivateDynamoKeyArn"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:ViaService": "dynamodb.us-west-2.amazonaws.com"
+                }
+              }
+            },
+            {
+              "Sid": "DenyPrivateDynamoContext1",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "PrivateDynamoKeyArn"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:EncryptionContext:aws:dynamodb:tableName": [
+                    {
+                      "Ref": "AuthTable"
+                    },
+                    {
+                      "Ref": "LinksTable"
+                    },
+                    {
+                      "Ref": "RequestsTable"
+                    },
+                    {
+                      "Ref": "ApprovalsTable"
+                    },
+                    {
+                      "Ref": "AuditTable"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Sid": "DenyPrivateDynamoContext2",
+              "Effect": "Deny",
+              "Action": "kms:Decrypt",
+              "Resource": {
+                "Ref": "PrivateDynamoKeyArn"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "kms:EncryptionContext:aws:dynamodb:subscriberId": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "ApprovalRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "PermissionsBoundary": {
+          "Ref": "ApprovalBoundary"
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+        ]
+      }
+    },
+    "ApprovalBaseline": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Roles": [
+          {
+            "Ref": "ApprovalRole"
+          }
+        ],
+        "Description": "Unmodified generated baseline, usable only with the mandatory exact-resource boundary",
+        "PolicyDocument": {
+          "Id": "IamPolicyAutopilot",
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:ReadDataForReplication",
+                "dynamodb:UpdateItem"
+              ],
+              "Resource": [
+                "arn:aws:dynamodb:us-west-2:114599789754:table/*"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "kms:Decrypt"
+              ],
+              "Resource": [
+                "arn:aws:kms:us-west-2:114599789754:key/*"
+              ],
+              "Condition": {
+                "StringEquals": {
+                  "kms:ViaService": [
+                    "dynamodb.us-west-2.amazonaws.com"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "ApprovalLogs": {
+      "Type": "AWS::Logs::LogGroup",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Sub": "/aws/lambda/${AWS::StackName}-approval"
+        },
+        "RetentionInDays": 7
+      }
+    },
+    "ApprovalFunction": {
+      "Type": "AWS::Lambda::Function",
+      "DependsOn": [
+        "ApprovalLogs",
+        "ApprovalBaseline"
+      ],
+      "Properties": {
+        "FunctionName": {
+          "Fn::Sub": "${AWS::StackName}-approval"
+        },
+        "Description": {
+          "Fn::Sub": "Reviewed approval release ${ReleaseId}"
+        },
+        "Runtime": "nodejs22.x",
+        "Handler": "index.handler",
+        "Architectures": [
+          "x86_64"
+        ],
+        "Role": {
+          "Fn::GetAtt": [
+            "ApprovalRole",
+            "Arn"
+          ]
+        },
+        "MemorySize": 256,
+        "Timeout": 10,
+        "ReservedConcurrentExecutions": 1,
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ArtifactBucket"
+          },
+          "S3Key": {
+            "Ref": "ApprovalArtifactKey"
+          },
+          "S3ObjectVersion": {
+            "Ref": "ApprovalArtifactVersion"
+          }
+        },
+        "Environment": {
+          "Variables": {
+            "FLO_CUSTOMER_AUTH_TABLE": {
+              "Ref": "AuthTable"
+            },
+            "FLO_CUSTOMER_LINKS_TABLE": {
+              "Ref": "LinksTable"
+            },
+            "FLO_ENROLLMENT_REQUESTS_TABLE": {
+              "Ref": "RequestsTable"
+            },
+            "FLO_ENROLLMENT_APPROVALS_TABLE": {
+              "Ref": "ApprovalsTable"
+            },
+            "FLO_ENROLLMENT_AUDIT_TABLE": {
+              "Ref": "AuditTable"
+            },
+            "FLO_PRIVATE_APPROVAL_ENABLED": {
+              "Ref": "EnableApproval"
+            },
+            "FLO_PRIVATE_APPROVAL_DESIGNATION": {
+              "Ref": "ApprovalDesignation"
+            }
+          }
+        },
+        "LoggingConfig": {
+          "LogFormat": "JSON",
+          "ApplicationLogLevel": "WARN",
+          "SystemLogLevel": "INFO"
+        }
+      }
+    },
+    "ApprovalVersion": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "ApprovalFunction"
+        },
+        "CodeSha256": {
+          "Ref": "ApprovalCodeSha256"
+        },
+        "Description": {
+          "Fn::Sub": "Reviewed approval release ${ReleaseId}"
+        }
+      }
+    },
+    "PairingIntegration": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Condition": "ExposeRoutes",
+      "Properties": {
+        "ApiId": {
+          "Ref": "ExistingApiId"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Ref": "RequestVersion"
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 25000
+      }
+    },
+    "PairingPagePermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Condition": "ExposeRoutes",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "RequestVersion"
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceAccount": {
+          "Ref": "AWS::AccountId"
+        },
+        "SourceArn": {
+          "Fn::Sub": "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ExistingApiId}/$default/GET/pairing"
+        }
+      }
+    },
+    "PairingPageRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Condition": "ExposeRoutes",
+      "DependsOn": [
+        "PairingPagePermission"
+      ],
+      "Properties": {
+        "ApiId": {
+          "Ref": "ExistingApiId"
+        },
+        "RouteKey": "GET /pairing",
+        "AuthorizationType": "NONE",
+        "Target": {
+          "Fn::Sub": "integrations/${PairingIntegration}"
+        }
+      }
+    },
+    "PairingAssetPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Condition": "ExposeRoutes",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "RequestVersion"
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceAccount": {
+          "Ref": "AWS::AccountId"
+        },
+        "SourceArn": {
+          "Fn::Sub": "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ExistingApiId}/$default/GET/pairing.js"
+        }
+      }
+    },
+    "PairingAssetRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Condition": "ExposeRoutes",
+      "DependsOn": [
+        "PairingAssetPermission"
+      ],
+      "Properties": {
+        "ApiId": {
+          "Ref": "ExistingApiId"
+        },
+        "RouteKey": "GET /pairing.js",
+        "AuthorizationType": "NONE",
+        "Target": {
+          "Fn::Sub": "integrations/${PairingIntegration}"
+        }
+      }
+    },
+    "StartPairingPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Condition": "ExposeRoutes",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "RequestVersion"
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceAccount": {
+          "Ref": "AWS::AccountId"
+        },
+        "SourceArn": {
+          "Fn::Sub": "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ExistingApiId}/$default/POST/enrollment/request"
+        }
+      }
+    },
+    "StartPairingRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Condition": "ExposeRoutes",
+      "DependsOn": [
+        "StartPairingPermission"
+      ],
+      "Properties": {
+        "ApiId": {
+          "Ref": "ExistingApiId"
+        },
+        "RouteKey": "POST /enrollment/request",
+        "AuthorizationType": "NONE",
+        "Target": {
+          "Fn::Sub": "integrations/${PairingIntegration}"
+        }
+      }
+    },
+    "RedeemPairingPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Condition": "ExposeRedemptionRoute",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "RequestVersion"
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceAccount": {
+          "Ref": "AWS::AccountId"
+        },
+        "SourceArn": {
+          "Fn::Sub": "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ExistingApiId}/$default/POST/enrollment/redeem"
+        }
+      }
+    },
+    "RedeemPairingRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Condition": "ExposeRedemptionRoute",
+      "DependsOn": [
+        "RedeemPairingPermission"
+      ],
+      "Properties": {
+        "ApiId": {
+          "Ref": "ExistingApiId"
+        },
+        "RouteKey": "POST /enrollment/redeem",
+        "AuthorizationType": "NONE",
+        "Target": {
+          "Fn::Sub": "integrations/${PairingIntegration}"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "RequestVersionArn": {
+      "Description": "Exact numeric published version; not a grant to invoke it",
+      "Value": {
+        "Ref": "RequestVersion"
+      }
+    },
+    "RedemptionVersionArn": {
+      "Description": "Exact numeric published version; not a grant to invoke it",
+      "Value": {
+        "Ref": "RedemptionVersion"
+      }
+    },
+    "ApprovalVersionArn": {
+      "Description": "Exact numeric published version; not a grant to invoke it",
+      "Value": {
+        "Ref": "ApprovalVersion"
+      }
+    }
+  }
+}

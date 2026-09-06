@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { enrollmentRuntimeBoundary } from "./enrollment-runtime-boundary.mjs";
 import { requestDynamoKmsCases } from "./request-dynamodb-kms-cases.mjs";
+import { privateDynamoKmsCases } from "./private-dynamodb-kms-cases.mjs";
 
 const config = { account: "123456789012", region: "us-west-2", logGroup: "/aws/lambda/synthetic-request",
   lambdaEnvironmentKeyArn: "arn:aws:kms:us-west-2:123456789012:key/00000000-0000-0000-0000-000000000001",
@@ -121,4 +122,62 @@ test("rejects ambiguous or wildcard resource configuration", () => {
   assert.throws(() => enrollmentRuntimeBoundary("unknown", config));
   for (const key of [undefined, "*", "alias/aws/lambda", config.lambdaEnvironmentKeyArn.replace("123456789012", "999999999999"),
     config.lambdaEnvironmentKeyArn.replace("us-west-2", "us-east-1")]) assert.throws(() => enrollmentRuntimeBoundary("approval", { ...config, lambdaEnvironmentKeyArn: key }));
+});
+
+for (const kind of ["approval", "redemption"]) {
+  test(`${kind}: every AWS simulation fixture matches the local policy grammar`, () => {
+    const input = { ...config, privateDynamoKeyArn: dynamoKey };
+    const p = enrollmentRuntimeBoundary(kind, input);
+    const cases = privateDynamoKmsCases(kind, input);
+    assert.equal(cases.length, 67);
+    for (const row of cases) assert.equal(evaluate(p, row.action, row.resource, undefined,
+      Object.fromEntries(row.context.map(c => [c.ContextKeyName, c.ContextKeyValues[0]]))), row.expected, row.name);
+  });
+  test(`${kind}: opt-in private database key preserves every data capability`, () => {
+    const original = enrollmentRuntimeBoundary(kind, config);
+    const policy = enrollmentRuntimeBoundary(kind, { ...config, privateDynamoKeyArn: dynamoKey });
+    const dataStatements = p => p.Statement.filter(s => !JSON.stringify(s).includes("kms:")).map(s => { const copy = { ...s }; delete copy.Sid; return copy; });
+    assert.deepEqual(dataStatements(policy), dataStatements(original));
+    for (const row of casesForBoundary(kind)) assert.equal(evaluate(policy, row.action, row.resource, "TransactWriteItems"), row.expected);
+    for (const row of casesForBoundary(kind).filter(c => /PutItem|UpdateItem/.test(c.action))) {
+      assert.equal(evaluate(policy, row.action, row.resource), "explicitDeny");
+    }
+    for (const action of ["iam:PutRolePolicy", "secretsmanager:GetSecretValue", "lambda:InvokeFunction"]) {
+      assert.equal(evaluate(policy, action, "*"), "explicitDeny");
+    }
+  });
+  test(`${kind}: database and environment key contexts cannot substitute for one another`, () => {
+    const policy = enrollmentRuntimeBoundary(kind, { ...config, privateDynamoKeyArn: dynamoKey });
+    const context = { "kms:CallerAccount": config.account, "kms:ViaService": `dynamodb.${config.region}.amazonaws.com`,
+      "kms:EncryptionContext:aws:dynamodb:subscriberId": config.account,
+      "kms:EncryptionContext:aws:dynamodb:tableName": config.tables.requests };
+    const check = (keys, key = dynamoKey, action = "kms:Decrypt") => evaluate(policy, action, key, undefined, keys);
+    for (const name of Object.values(config.tables)) assert.equal(check({ ...context, "kms:EncryptionContext:aws:dynamodb:tableName": name }), "allowed");
+    for (const key of Object.keys(context)) for (const value of [undefined, "", "wrong", "*"]) {
+      assert.equal(check({ ...context, [key]: value }), "explicitDeny", key);
+    }
+    assert.equal(check({ ...context, "kms:EncryptionContext:aws:dynamodb:tableName": "customer-repairs" }), "explicitDeny");
+    assert.equal(check(context, config.lambdaEnvironmentKeyArn), "explicitDeny");
+    const env = { "kms:CallerAccount": config.account,
+      "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:us-west-2:123456789012:function:synthetic-request" };
+    assert.equal(check(env, config.lambdaEnvironmentKeyArn), "allowed");
+    assert.equal(check(env), "explicitDeny");
+    for (const field of Object.keys(env)) assert.equal(check({ ...env, [field]: undefined }, config.lambdaEnvironmentKeyArn), "explicitDeny");
+    for (const key of ["*", dynamoKey.replace(/3$/, "4"), dynamoKey.replace("us-west-2", "us-east-1"), dynamoKey.replace(config.account, "999999999999")]) {
+      assert.equal(check(context, key), "explicitDeny");
+    }
+    for (const action of ["kms:Encrypt", "kms:GenerateDataKey", "kms:CreateGrant", "kms:DescribeKey", "kms:ReEncryptFrom"]) {
+      assert.equal(check(context, dynamoKey, action), "explicitDeny");
+    }
+  });
+  test(`${kind}: private key input rejects aliases, wrong account/region and shared environment keys`, () => {
+    for (const key of [null, "*", "alias/aws/dynamodb", config.lambdaEnvironmentKeyArn,
+      dynamoKey.replace(config.account, "999999999999"), dynamoKey.replace("us-west-2", "us-east-1")]) {
+      assert.throws(() => enrollmentRuntimeBoundary(kind, { ...config, privateDynamoKeyArn: key }));
+    }
+  });
+}
+test("request cannot adopt the private handler key branch", () => {
+  assert.throws(() => enrollmentRuntimeBoundary("request", { ...config, redemptionVersionArn: version,
+    requestDynamoKeyArn: dynamoKey, privateDynamoKeyArn: dynamoKey }));
 });

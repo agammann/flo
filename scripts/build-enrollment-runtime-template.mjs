@@ -11,7 +11,7 @@ const tableParameters = { auth: "AuthTable", links: "LinksTable", requests: "Req
 // Generates a reviewable template only. No AWS calls, secret reads or deployment.
 // Baseline identity policies are unchanged Autopilot output; explicit maximum
 // permission boundaries are built separately via the IAM reference workflow.
-export function buildEnrollmentRuntimeTemplate(baselines) {
+export function buildEnrollmentRuntimeTemplate(baselines, { includePrivateDynamo = false } = {}) {
   const Parameters = {
     ExistingApiId: { Type: "String", AllowedPattern: "[a-z0-9]{10}", Description: "Existing customer HTTP API. Its stage, login and read-only role remain unchanged." },
     PublicOrigin: { Type: "String", AllowedPattern: "https://[a-z0-9]{10}\\.execute-api\\.us-west-2\\.amazonaws\\.com", Description: "Exact existing HTTPS origin, without trailing slash." },
@@ -27,6 +27,8 @@ export function buildEnrollmentRuntimeTemplate(baselines) {
     EnableApproval: { Type: "String", Default: "false", AllowedValues: ["false", "true"], Description: "Keep false until independent fictional customer designation and operator access are reviewed." },
     ApprovalDesignation: { Type: "String", Default: "null", MaxLength: 2048, NoEcho: true, Description: "Privately supplied independently verified designation JSON; never event-controlled or fabricated." }
   };
+  if (includePrivateDynamo) Parameters.PrivateDynamoKeyArn = { ...Parameters.RequestDynamoKeyArn,
+    Description: "Separately verified existing shared KMS key for all five enrollment tables. Private boundaries only; no key/table changes or gate enablement." };
   for (const name of Object.values(tableParameters)) Parameters[name] = { Type: "String", AllowedPattern: "[A-Za-z0-9_.-]{3,255}", Description: "Existing reviewed table; no creation, restoration or replacement in this template." };
   for (const kind of ["Request", "Redemption", "Approval"]) {
     Parameters[`${kind}ArtifactKey`] = { Type: "String", AllowedPattern: `flo-enrollment/${kind.toLowerCase()}/[a-f0-9]{64}\\.zip`, Description: "Content-addressed artifact, separately packaged from tested source." };
@@ -39,7 +41,8 @@ export function buildEnrollmentRuntimeTemplate(baselines) {
     const tokenConfig = { account: "114599789754", region: "us-west-2", tables: Object.fromEntries(Object.keys(tableParameters).map(k => [k, `TOKEN_${k}`])),
       logGroup: `/aws/lambda/TOKEN_${kind}`, lambdaEnvironmentKeyArn: "arn:aws:kms:us-west-2:114599789754:key/00000000-0000-0000-0000-000000000000",
       ...(kind === "request" ? { redemptionVersionArn: "arn:aws:lambda:us-west-2:114599789754:function:TOKEN_redemption:1",
-        requestDynamoKeyArn: "arn:aws:kms:us-west-2:114599789754:key/00000000-0000-0000-0000-000000000001" } : {}) };
+        requestDynamoKeyArn: "arn:aws:kms:us-west-2:114599789754:key/00000000-0000-0000-0000-000000000001" } : includePrivateDynamo ? {
+          privateDynamoKeyArn: "arn:aws:kms:us-west-2:114599789754:key/00000000-0000-0000-0000-000000000001" } : {}) };
     const substitutions = new Map(Object.entries(tableParameters).map(([key, parameter]) => [
       `arn:aws:dynamodb:us-west-2:114599789754:table/TOKEN_${key}`,
       sub(`arn:\${AWS::Partition}:dynamodb:\${AWS::Region}:\${AWS::AccountId}:table/\${${parameter}}`)
@@ -50,6 +53,10 @@ export function buildEnrollmentRuntimeTemplate(baselines) {
     if (kind === "request") {
       substitutions.set(tokenConfig.requestDynamoKeyArn, ref("RequestDynamoKeyArn"));
       for (const key of ["auth", "links", "requests"]) substitutions.set(`TOKEN_${key}`, ref(tableParameters[key]));
+    }
+    if (kind !== "request" && includePrivateDynamo) {
+      substitutions.set(tokenConfig.privateDynamoKeyArn, ref("PrivateDynamoKeyArn"));
+      for (const key of Object.keys(tableParameters)) substitutions.set(`TOKEN_${key}`, ref(tableParameters[key]));
     }
     substitutions.set("114599789754", ref("AWS::AccountId"));
     substitutions.set(`arn:aws:lambda:us-west-2:114599789754:function:TOKEN_${kind}`, sub(`arn:\${AWS::Partition}:lambda:\${AWS::Region}:\${AWS::AccountId}:function:${name}`));

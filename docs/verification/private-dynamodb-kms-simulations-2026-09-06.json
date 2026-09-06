@@ -1,0 +1,4819 @@
+{
+  "checks": [
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "allow-database-auth",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "allow-database-links",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "allow-database-requests",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "missing-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "wrong-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "missing-kms:ViaService",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "wrong-kms:ViaService",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "missing-kms:EncryptionContext:aws:dynamodb:subscriberId",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "wrong-kms:EncryptionContext:aws:dynamodb:subscriberId",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "missing-kms:EncryptionContext:aws:dynamodb:tableName",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "wrong-kms:EncryptionContext:aws:dynamodb:tableName",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "allow-database-approvals",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "allow-database-audit",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "deny-other-key",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "deny-other-region",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "deny-other-account",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "deny-database-context-on-environment-key",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "deny-environment-context-on-database-key",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "missing-environment-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "wrong-environment-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "missing-environment-kms:EncryptionContext:aws:lambda:FunctionArn",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "wrong-environment-kms:EncryptionContext:aws:lambda:FunctionArn",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "deny-kms:Encrypt",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "deny-kms:GenerateDataKey",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "deny-kms:CreateGrant",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "deny-kms:ReEncryptFrom",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "deny-kms:DescribeKey",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "GetItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "GetItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "GetItem-requests",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "GetItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "GetItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "ConditionCheckItem-auth",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "ConditionCheckItem-links",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "ConditionCheckItem-requests",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "ConditionCheckItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "ConditionCheckItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "PutItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "PutItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "PutItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "PutItem-approvals",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "PutItem-audit",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "UpdateItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "UpdateItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "UpdateItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "UpdateItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "UpdateItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "DeleteItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "DeleteItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "DeleteItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "DeleteItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "DeleteItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "Query-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "Query-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "Query-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "Query-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "Query-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "Scan-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "Scan-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "Scan-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "Scan-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "Scan-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "nontransactional-PutItem",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "nontransactional-UpdateItem",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "deny-repair-table-key-context",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "baseline",
+      "name": "deny-repair-data",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "allow-database-auth",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "allow-database-links",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "allow-database-requests",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "allow-environment",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "missing-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "wrong-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "missing-kms:ViaService",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "wrong-kms:ViaService",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "missing-kms:EncryptionContext:aws:dynamodb:subscriberId",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "wrong-kms:EncryptionContext:aws:dynamodb:subscriberId",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "missing-kms:EncryptionContext:aws:dynamodb:tableName",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "wrong-kms:EncryptionContext:aws:dynamodb:tableName",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "allow-database-approvals",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "allow-database-audit",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "deny-other-key",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "deny-other-region",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "deny-other-account",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "deny-database-context-on-environment-key",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "deny-environment-context-on-database-key",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "missing-environment-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "wrong-environment-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "missing-environment-kms:EncryptionContext:aws:lambda:FunctionArn",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "wrong-environment-kms:EncryptionContext:aws:lambda:FunctionArn",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "deny-kms:Encrypt",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "deny-kms:GenerateDataKey",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "deny-kms:CreateGrant",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "deny-kms:ReEncryptFrom",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "deny-kms:DescribeKey",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "GetItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "GetItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "GetItem-requests",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "GetItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "GetItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "ConditionCheckItem-auth",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "ConditionCheckItem-links",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "ConditionCheckItem-requests",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "ConditionCheckItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "ConditionCheckItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "PutItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "PutItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "PutItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "PutItem-approvals",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "PutItem-audit",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "UpdateItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "UpdateItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "UpdateItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "UpdateItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "UpdateItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "DeleteItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "DeleteItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "DeleteItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "DeleteItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "DeleteItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "Query-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "Query-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "Query-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "Query-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "Query-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "Scan-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "Scan-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "Scan-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "Scan-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "Scan-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "nontransactional-PutItem",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "nontransactional-UpdateItem",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "deny-repair-table-key-context",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "approval",
+      "mode": "broad-fixture",
+      "name": "deny-repair-data",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "allow-database-auth",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "allow-database-links",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "allow-database-requests",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "missing-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "wrong-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "missing-kms:ViaService",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "wrong-kms:ViaService",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "missing-kms:EncryptionContext:aws:dynamodb:subscriberId",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "wrong-kms:EncryptionContext:aws:dynamodb:subscriberId",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "missing-kms:EncryptionContext:aws:dynamodb:tableName",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "wrong-kms:EncryptionContext:aws:dynamodb:tableName",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "allow-database-approvals",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "allow-database-audit",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "deny-other-key",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "deny-other-region",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "deny-other-account",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "deny-database-context-on-environment-key",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "deny-environment-context-on-database-key",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "missing-environment-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "wrong-environment-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "missing-environment-kms:EncryptionContext:aws:lambda:FunctionArn",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "wrong-environment-kms:EncryptionContext:aws:lambda:FunctionArn",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "deny-kms:Encrypt",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "deny-kms:GenerateDataKey",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "deny-kms:CreateGrant",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "deny-kms:ReEncryptFrom",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "deny-kms:DescribeKey",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "GetItem-auth",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "GetItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "GetItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "GetItem-approvals",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "GetItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "ConditionCheckItem-auth",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "ConditionCheckItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "ConditionCheckItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "ConditionCheckItem-approvals",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "ConditionCheckItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "PutItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "PutItem-links",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "PutItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "PutItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "PutItem-audit",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "UpdateItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "UpdateItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "UpdateItem-requests",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "UpdateItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "UpdateItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "DeleteItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "DeleteItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "DeleteItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "DeleteItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "DeleteItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "Query-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "Query-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "Query-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "Query-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "Query-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "Scan-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "Scan-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "Scan-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "Scan-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "Scan-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "nontransactional-PutItem",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "nontransactional-UpdateItem",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "deny-repair-table-key-context",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "baseline",
+      "name": "deny-repair-data",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "allow-database-auth",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "allow-database-links",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "allow-database-requests",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "allow-environment",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "missing-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "wrong-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "missing-kms:ViaService",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "wrong-kms:ViaService",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "missing-kms:EncryptionContext:aws:dynamodb:subscriberId",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "wrong-kms:EncryptionContext:aws:dynamodb:subscriberId",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "missing-kms:EncryptionContext:aws:dynamodb:tableName",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "wrong-kms:EncryptionContext:aws:dynamodb:tableName",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "allow-database-approvals",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "allow-database-audit",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "deny-other-key",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "deny-other-region",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "deny-other-account",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "deny-database-context-on-environment-key",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "deny-environment-context-on-database-key",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "missing-environment-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "wrong-environment-kms:CallerAccount",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "missing-environment-kms:EncryptionContext:aws:lambda:FunctionArn",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "wrong-environment-kms:EncryptionContext:aws:lambda:FunctionArn",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "deny-kms:Encrypt",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "deny-kms:GenerateDataKey",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "deny-kms:CreateGrant",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "deny-kms:ReEncryptFrom",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "deny-kms:DescribeKey",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "GetItem-auth",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "GetItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "GetItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "GetItem-approvals",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "GetItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "ConditionCheckItem-auth",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "ConditionCheckItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "ConditionCheckItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "ConditionCheckItem-approvals",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "ConditionCheckItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "PutItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "PutItem-links",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "PutItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "PutItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "PutItem-audit",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "UpdateItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "UpdateItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "UpdateItem-requests",
+      "expected": "allowed",
+      "decisions": [
+        "allowed"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "UpdateItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "UpdateItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "DeleteItem-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "DeleteItem-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "DeleteItem-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "DeleteItem-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "DeleteItem-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "Query-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "Query-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "Query-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "Query-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "Query-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "Scan-auth",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "Scan-links",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "Scan-requests",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "Scan-approvals",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "Scan-audit",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "nontransactional-PutItem",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "nontransactional-UpdateItem",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "deny-repair-table-key-context",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "redemption",
+      "mode": "broad-fixture",
+      "name": "deny-repair-data",
+      "expected": "explicitDeny",
+      "decisions": [
+        "explicitDeny"
+      ],
+      "pass": true
+    }
+  ],
+  "validation": [
+    {
+      "findings": []
+    },
+    {
+      "findings": []
+    }
+  ],
+  "api_calls": [
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "accessanalyzer",
+      "operation": "ValidatePolicy",
+      "status": "success",
+      "n_items": {
+        "findings": 0
+      }
+    },
+    {
+      "service": "accessanalyzer",
+      "operation": "ValidatePolicy",
+      "status": "success",
+      "n_items": {
+        "findings": 0
+      }
+    }
+  ],
+  "initialBatchLimit": "Initial script reached 100-call connector limit; remaining 166 scenarios and two validations were rerun in bounded batches. No scenario omitted."
+}

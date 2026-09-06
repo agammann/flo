@@ -6,7 +6,7 @@ import { pathToFileURL } from "node:url";
 // IAM Policy Autopilot. Exact resource names must come from reviewed deployment.
 export function enrollmentRuntimeBoundary(kind, config) {
   assert.ok(["request", "redemption", "approval"].includes(kind), "Unknown enrollment role");
-  const { account, region, tables, logGroup, redemptionVersionArn, lambdaEnvironmentKeyArn, requestDynamoKeyArn } = config;
+  const { account, region, tables, logGroup, redemptionVersionArn, lambdaEnvironmentKeyArn, requestDynamoKeyArn, privateDynamoKeyArn } = config;
   assert.match(account, /^\d{12}$/);
   assert.match(region, /^us-(east|west)-[12]$/);
   assert.deepEqual(Object.keys(tables).sort(), ["approvals", "audit", "auth", "links", "requests"]);
@@ -25,6 +25,15 @@ export function enrollmentRuntimeBoundary(kind, config) {
       "Verified shared key for the request handler's three DynamoDB tables required");
     assert.notEqual(requestDynamoKeyArn, lambdaEnvironmentKeyArn, "Environment and DynamoDB key branches must be distinct");
   } else assert.equal(requestDynamoKeyArn, undefined, "Private handler KMS changes require separate review");
+  if (kind === "request") assert.equal(privateDynamoKeyArn, undefined, "Request handler cannot use private-handler key configuration");
+  if (privateDynamoKeyArn !== undefined) {
+    assert.match(privateDynamoKeyArn, new RegExp(`^arn:aws:kms:${region}:${account}:key/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$`),
+      "Verified shared key for all five private enrollment tables required");
+    assert.notEqual(privateDynamoKeyArn, lambdaEnvironmentKeyArn, "Environment and DynamoDB key branches must be distinct");
+  }
+  // Opt-in review input only. Existing private deployments/templates remain
+  // unchanged unless their separately reviewed update supplies this exact key.
+  const dynamoKeyArn = kind === "request" ? requestDynamoKeyArn : privateDynamoKeyArn;
 
   const tableArn = name => `arn:aws:dynamodb:${region}:${account}:table/${tables[name]}`;
   // Explicit capability matrix from the enrollment architecture. Condition checks
@@ -55,36 +64,45 @@ export function enrollmentRuntimeBoundary(kind, config) {
   statements.push({ Sid: "AllowOwnEnvironmentDecrypt", Effect: "Allow", Action: "kms:Decrypt", Resource: lambdaEnvironmentKeyArn,
     Condition: { StringEquals: context } });
   statements.push({ Sid: "DenyOtherEnvironmentKeys", Effect: "Deny", Action: "kms:Decrypt",
-    NotResource: kind === "request" ? [lambdaEnvironmentKeyArn, requestDynamoKeyArn] : lambdaEnvironmentKeyArn });
+    NotResource: dynamoKeyArn ? [lambdaEnvironmentKeyArn, dynamoKeyArn] : lambdaEnvironmentKeyArn });
   // Separate Deny statements implement OR: a wrong OR absent individual context
   // must fail closed even if a resource policy grants directly to a role session.
   for (const [key, value] of Object.entries(context)) statements.push({
     Sid: key === "kms:CallerAccount" ? "DenyWrongDecryptAccount" : "DenyWrongDecryptFunction",
     Effect: "Deny", Action: "kms:Decrypt",
-    Resource: kind === "request" && key !== "kms:CallerAccount" ? lambdaEnvironmentKeyArn : "*",
+    Resource: dynamoKeyArn && key !== "kms:CallerAccount" ? lambdaEnvironmentKeyArn : "*",
     Condition: { StringNotEquals: { [key]: value } }
   });
-  if (kind === "request") {
+  if (dynamoKeyArn) {
     // Separate key-scoped branches prevent Lambda's function context from
     // accidentally denying DynamoDB's table context (or bypassing either one).
     // Scalar condition key with several allowed table values: ordinary string
     // matching, not ForAnyValue/ForAllValues. Missing values fail each Deny.
     const dynamoContext = {
       "kms:ViaService": `dynamodb.${region}.amazonaws.com`,
-      "kms:EncryptionContext:aws:dynamodb:tableName": [tables.auth, tables.links, tables.requests],
+      "kms:EncryptionContext:aws:dynamodb:tableName": kind === "request" ? [tables.auth, tables.links, tables.requests] : names,
       "kms:EncryptionContext:aws:dynamodb:subscriberId": account
     };
-    statements.push({ Sid: "AllowRequestDynamoDecrypt", Effect: "Allow", Action: "kms:Decrypt", Resource: requestDynamoKeyArn,
+    const label = kind === "request" ? "Request" : "Private";
+    statements.push({ Sid: `Allow${label}DynamoDecrypt`, Effect: "Allow", Action: "kms:Decrypt", Resource: dynamoKeyArn,
       Condition: { StringEquals: { "kms:CallerAccount": account, ...dynamoContext } } });
     for (const [index, [key, value]] of Object.entries(dynamoContext).entries()) statements.push({
-      Sid: `DenyRequestDynamoContext${index}`, Effect: "Deny", Action: "kms:Decrypt", Resource: requestDynamoKeyArn,
+      Sid: `Deny${label}DynamoContext${index}`, Effect: "Deny", Action: "kms:Decrypt", Resource: dynamoKeyArn,
       Condition: { StringNotEquals: { [key]: value } }
     });
   }
   statements.push({ Sid: "DenyNonTransactionalWrites", Effect: "Deny", Action: ["dynamodb:PutItem", "dynamodb:UpdateItem"],
     Resource: "*", Condition: { StringNotEquals: { "dynamodb:EnclosingOperation": "TransactWriteItems" } } });
-  const policy = { Version: "2012-10-17", Statement: statements };
-  assert.ok(JSON.stringify(policy).length <= 6144, "Resolved boundary exceeds IAM managed-policy size limit");
+  // Optional descriptive Sids consume the managed-policy character budget.
+  // For the private opt-in only, omit non-KMS Sids without changing evaluation.
+  const compact = privateDynamoKeyArn ? statements.map(s => {
+    if (s.Action === "kms:Decrypt") return s;
+    const statement = { ...s };
+    delete statement.Sid;
+    return statement;
+  }) : statements;
+  const policy = { Version: "2012-10-17", Statement: compact };
+  assert.ok(JSON.stringify(policy).length <= 6144, `Resolved ${kind} boundary exceeds IAM managed-policy size limit (${JSON.stringify(policy).length} > 6144)`);
   return policy;
 }
 

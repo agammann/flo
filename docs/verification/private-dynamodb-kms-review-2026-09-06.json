@@ -1,0 +1,288 @@
+{
+  "date": "2026-09-06",
+  "status": "REVIEW_ONLY_NOT_EXECUTED",
+  "scope": {
+    "account": "114599789754",
+    "region": "us-west-2",
+    "stack": "flo-customer-enrollment"
+  },
+  "tableMetadata": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "tables": [
+        {
+          "name": "flo-customer-staging-AuthState-17UXOCYCV0R2C",
+          "status": "ACTIVE",
+          "encryption": {
+            "Status": "ENABLED",
+            "SSEType": "KMS",
+            "KMSMasterKeyArn": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+          }
+        },
+        {
+          "name": "flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+          "status": "ACTIVE",
+          "encryption": {
+            "Status": "ENABLED",
+            "SSEType": "KMS",
+            "KMSMasterKeyArn": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+          }
+        },
+        {
+          "name": "flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK",
+          "status": "ACTIVE",
+          "encryption": {
+            "Status": "ENABLED",
+            "SSEType": "KMS",
+            "KMSMasterKeyArn": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+          }
+        },
+        {
+          "name": "flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT",
+          "status": "ACTIVE",
+          "encryption": {
+            "Status": "ENABLED",
+            "SSEType": "KMS",
+            "KMSMasterKeyArn": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+          }
+        },
+        {
+          "name": "flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3",
+          "status": "ACTIVE",
+          "encryption": {
+            "Status": "ENABLED",
+            "SSEType": "KMS",
+            "KMSMasterKeyArn": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+          }
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "dynamodb",
+        "operation": "DescribeTable",
+        "status": "success"
+      },
+      {
+        "service": "dynamodb",
+        "operation": "DescribeTable",
+        "status": "success"
+      },
+      {
+        "service": "dynamodb",
+        "operation": "DescribeTable",
+        "status": "success"
+      },
+      {
+        "service": "dynamodb",
+        "operation": "DescribeTable",
+        "status": "success"
+      },
+      {
+        "service": "dynamodb",
+        "operation": "DescribeTable",
+        "status": "success"
+      }
+    ]
+  },
+  "changeSet": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "changeSet": {
+        "Id": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-private-dynamodb-kms-review-20260906/09ae0d10-a82d-439a-a9ac-1d9106f00a96",
+        "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment/ac1ab770-aa00-11f1-9ac0-02cd968e7605"
+      }
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "GetTemplate",
+        "status": "success",
+        "n_items": {
+          "StagesAvailable": 2
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "CreateChangeSet",
+        "status": "success"
+      }
+    ]
+  },
+  "plan": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "status": "CREATE_COMPLETE",
+      "executionStatus": "AVAILABLE",
+      "changes": [
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Modify",
+            "LogicalResourceId": "ApprovalBoundary",
+            "PhysicalResourceId": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-ApprovalBoundary-plkn3LDorvXU",
+            "ResourceType": "AWS::IAM::ManagedPolicy",
+            "Replacement": "False",
+            "Scope": [
+              "Properties"
+            ],
+            "Details": [
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "PolicyDocument",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Dynamic",
+                "ChangeSource": "DirectModification"
+              },
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "PolicyDocument",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Static",
+                "ChangeSource": "ParameterReference",
+                "CausingEntity": "PrivateDynamoKeyArn"
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Resource",
+          "ResourceChange": {
+            "Action": "Modify",
+            "LogicalResourceId": "RedemptionBoundary",
+            "PhysicalResourceId": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RedemptionBoundary-fbazc5gSTyOD",
+            "ResourceType": "AWS::IAM::ManagedPolicy",
+            "Replacement": "False",
+            "Scope": [
+              "Properties"
+            ],
+            "Details": [
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "PolicyDocument",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Dynamic",
+                "ChangeSource": "DirectModification"
+              },
+              {
+                "Target": {
+                  "Attribute": "Properties",
+                  "Name": "PolicyDocument",
+                  "RequiresRecreation": "Never"
+                },
+                "Evaluation": "Static",
+                "ChangeSource": "ParameterReference",
+                "CausingEntity": "PrivateDynamoKeyArn"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "DescribeChangeSet",
+        "status": "success",
+        "n_items": {
+          "Parameters": 28,
+          "NotificationARNs": 0,
+          "Capabilities": 1,
+          "Changes": 2
+        }
+      }
+    ]
+  },
+  "predeploy": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "templateMatches": true,
+      "tableParametersMatch": true,
+      "privateGatesDisabled": true,
+      "events": {
+        "OperationEvents": [
+          {
+            "EventId": "2b30bace-d706-4086-b5da-8e46ff150c95",
+            "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment/ac1ab770-aa00-11f1-9ac0-02cd968e7605",
+            "OperationId": "09ae0d10-a82d-439a-a9ac-1d9106f00a96",
+            "OperationType": "CREATE_CHANGESET",
+            "OperationStatus": "SUCCEEDED",
+            "EventType": "STACK_EVENT",
+            "Timestamp": "2026-09-06T20:11:31.371000+00:00",
+            "StartTime": "2026-09-06T20:11:21.024000+00:00",
+            "EndTime": "2026-09-06T20:11:31.371000+00:00"
+          },
+          {
+            "EventId": "08e43ace-7990-4491-9089-c64a1a767afd",
+            "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment/ac1ab770-aa00-11f1-9ac0-02cd968e7605",
+            "OperationId": "09ae0d10-a82d-439a-a9ac-1d9106f00a96",
+            "OperationType": "CREATE_CHANGESET",
+            "OperationStatus": "IN_PROGRESS",
+            "EventType": "STACK_EVENT",
+            "Timestamp": "2026-09-06T20:11:21.024000+00:00",
+            "StartTime": "2026-09-06T20:11:21.024000+00:00"
+          }
+        ]
+      }
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "GetTemplate",
+        "status": "success",
+        "n_items": {
+          "StagesAvailable": 2
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeEvents",
+        "status": "success",
+        "n_items": {
+          "OperationEvents": 2
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      }
+    ]
+  },
+  "simulationSummary": {
+    "count": 266,
+    "passed": 266,
+    "failures": 0,
+    "accessAnalyzerFindings": 0
+  },
+  "policySizes": {
+    "approval": 5531,
+    "redemption": 5879
+  },
+  "gates": {
+    "approvalEnabled": false,
+    "redemptionEnabled": false,
+    "customerLinked": false
+  }
+}
