@@ -22,6 +22,7 @@ jobs:
       - run: pnpm build
       - run: pnpm build:customer
       - run: pnpm build:enrollment
+      - run: python3 -m unittest discover -s scripts -p 'test_package_customer_enrollment.py' -v
       - run: node scripts/check-enrollment-state-plan.mjs
       # Historical evidence integrity only. Current retention template requires
       # fresh cfn-lint/Guard review; the default checker deliberately rejects it.
