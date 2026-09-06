@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "account": "114599789754",
+  "region": "us-west-2",
+  "ownerApproved": true,
+  "changeSetName": "flo-enrollment-state-review-20260906T062545Z",
+  "templateSha256": "573fe2694bab405740ab93f71c0b912b3c667229ca7f2bbf6e60e9db9d84f775",
+  "verification": {
+    "stackStatus": "CREATE_COMPLETE",
+    "resources": [
+      {
+        "LogicalResourceId": "EnrollmentApprovals",
+        "PhysicalResourceId": "flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT",
+        "ResourceType": "AWS::DynamoDB::Table",
+        "LastUpdatedTimestamp": "2026-09-06T06:32:02.860000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "EnrollmentAudit",
+        "PhysicalResourceId": "flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3",
+        "ResourceType": "AWS::DynamoDB::Table",
+        "LastUpdatedTimestamp": "2026-09-06T06:32:03.375000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "EnrollmentRequests",
+        "PhysicalResourceId": "flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK",
+        "ResourceType": "AWS::DynamoDB::Table",
+        "LastUpdatedTimestamp": "2026-09-06T06:32:02.736000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      }
+    ],
+    "checks": [
+      {
+        "logicalId": "EnrollmentApprovals",
+        "tableName": "flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT",
+        "table": {
+          "TableStatus": "ACTIVE",
+          "TableArn": "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT",
+          "KeySchema": [
+            {
+              "AttributeName": "id",
+              "KeyType": "HASH"
+            }
+          ],
+          "BillingModeSummary": {
+            "BillingMode": "PAY_PER_REQUEST",
+            "LastUpdateToPayPerRequestDateTime": "2026-09-06T06:31:51.438000+00:00"
+          },
+          "SSEDescription": {
+            "Status": "ENABLED",
+            "SSEType": "KMS",
+            "KMSMasterKeyArn": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+          },
+          "OnDemandThroughput": {
+            "MaxReadRequestUnits": 10,
+            "MaxWriteRequestUnits": 5
+          },
+          "DeletionProtectionEnabled": true,
+          "TableClassSummary": {
+            "TableClass": "STANDARD"
+          }
+        },
+        "ttl": {
+          "TimeToLiveStatus": "ENABLED",
+          "AttributeName": "ttl"
+        },
+        "recovery": {
+          "ContinuousBackupsStatus": "ENABLED",
+          "PointInTimeRecoveryDescription": {
+            "PointInTimeRecoveryStatus": "DISABLED"
+          }
+        }
+      },
+      {
+        "logicalId": "EnrollmentAudit",
+        "tableName": "flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3",
+        "table": {
+          "TableStatus": "ACTIVE",
+          "TableArn": "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3",
+          "KeySchema": [
+            {
+              "AttributeName": "id",
+              "KeyType": "HASH"
+            }
+          ],
+          "BillingModeSummary": {
+            "BillingMode": "PAY_PER_REQUEST",
+            "LastUpdateToPayPerRequestDateTime": "2026-09-06T06:31:51.785000+00:00"
+          },
+          "SSEDescription": {
+            "Status": "ENABLED",
+            "SSEType": "KMS",
+            "KMSMasterKeyArn": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+          },
+          "OnDemandThroughput": {
+            "MaxReadRequestUnits": 10,
+            "MaxWriteRequestUnits": 5
+          },
+          "DeletionProtectionEnabled": true,
+          "TableClassSummary": {
+            "TableClass": "STANDARD"
+          }
+        },
+        "ttl": {
+          "TimeToLiveStatus": "ENABLED",
+          "AttributeName": "ttl"
+        },
+        "recovery": {
+          "ContinuousBackupsStatus": "ENABLED",
+          "PointInTimeRecoveryDescription": {
+            "PointInTimeRecoveryStatus": "ENABLED",
+            "RecoveryPeriodInDays": 7,
+            "EarliestRestorableDateTime": "2026-09-06T06:32:02+00:00",
+            "LatestRestorableDateTime": "2026-09-06T06:32:02+00:00"
+          }
+        }
+      },
+      {
+        "logicalId": "EnrollmentRequests",
+        "tableName": "flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK",
+        "table": {
+          "TableStatus": "ACTIVE",
+          "TableArn": "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK",
+          "KeySchema": [
+            {
+              "AttributeName": "id",
+              "KeyType": "HASH"
+            }
+          ],
+          "BillingModeSummary": {
+            "BillingMode": "PAY_PER_REQUEST",
+            "LastUpdateToPayPerRequestDateTime": "2026-09-06T06:31:51.421000+00:00"
+          },
+          "SSEDescription": {
+            "Status": "ENABLED",
+            "SSEType": "KMS",
+            "KMSMasterKeyArn": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+          },
+          "OnDemandThroughput": {
+            "MaxReadRequestUnits": 10,
+            "MaxWriteRequestUnits": 5
+          },
+          "DeletionProtectionEnabled": true,
+          "TableClassSummary": {
+            "TableClass": "STANDARD"
+          }
+        },
+        "ttl": {
+          "TimeToLiveStatus": "ENABLED",
+          "AttributeName": "ttl"
+        },
+        "recovery": {
+          "ContinuousBackupsStatus": "ENABLED",
+          "PointInTimeRecoveryDescription": {
+            "PointInTimeRecoveryStatus": "DISABLED"
+          }
+        }
+      }
+    ]
+  },
+  "finalChecks": {
+    "key": {
+      "Arn": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4",
+      "KeyManager": "AWS",
+      "KeyState": "Enabled",
+      "Enabled": true,
+      "Description": "Default key that protects my DynamoDB data when no other key is defined"
+    },
+    "template": {
+      "resources": {
+        "EnrollmentRequests": {
+          "DeletionPolicy": "Retain",
+          "UpdateReplacePolicy": "Retain"
+        },
+        "EnrollmentApprovals": {
+          "DeletionPolicy": "Retain",
+          "UpdateReplacePolicy": "Retain"
+        },
+        "EnrollmentAudit": {
+          "DeletionPolicy": "Retain",
+          "UpdateReplacePolicy": "Retain"
+        }
+      }
+    },
+    "events": [
+      {
+        "EventId": "35dba658-3620-46a4-9d8b-30857d4baec4",
+        "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment-state/dce85c30-a9bb-11f1-948e-06eea11efebb",
+        "OperationId": "f30ca6f7-02eb-4367-80ca-f7046468e192",
+        "OperationType": "CREATE_STACK",
+        "OperationStatus": "SUCCEEDED",
+        "EventType": "STACK_EVENT",
+        "Timestamp": "2026-09-06T06:32:05.440000+00:00",
+        "StartTime": "2026-09-06T06:31:47.242000+00:00",
+        "EndTime": "2026-09-06T06:32:05.440000+00:00"
+      },
+      {
+        "EventId": "476f3ef7-d10f-469f-8f4c-4cf3f1747795",
+        "StackId": "arn:aws:cloudformation:us-west-2:114599789754:stack/flo-customer-enrollment-state/dce85c30-a9bb-11f1-948e-06eea11efebb",
+        "OperationId": "f30ca6f7-02eb-4367-80ca-f7046468e192",
+        "OperationType": "CREATE_STACK",
+        "OperationStatus": "IN_PROGRESS",
+        "EventType": "STACK_EVENT",
+        "Timestamp": "2026-09-06T06:31:47.242000+00:00",
+        "StartTime": "2026-09-06T06:31:47.242000+00:00"
+      }
+    ]
+  },
+  "apiCalls": [
+    {
+      "service": "cloudformation",
+      "operation": "DescribeStacks",
+      "status": "success",
+      "n_items": {
+        "Stacks": 1
+      }
+    },
+    {
+      "service": "cloudformation",
+      "operation": "ListStackResources",
+      "status": "success",
+      "n_items": {
+        "StackResourceSummaries": 3
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeTable",
+      "status": "success"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeTimeToLive",
+      "status": "success"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeContinuousBackups",
+      "status": "success"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeTable",
+      "status": "success"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeTimeToLive",
+      "status": "success"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeContinuousBackups",
+      "status": "success"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeTable",
+      "status": "success"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeTimeToLive",
+      "status": "success"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeContinuousBackups",
+      "status": "success"
+    },
+    {
+      "service": "kms",
+      "operation": "DescribeKey",
+      "status": "success"
+    },
+    {
+      "service": "cloudformation",
+      "operation": "DescribeEvents",
+      "status": "success",
+      "n_items": {
+        "OperationEvents": 13
+      }
+    },
+    {
+      "service": "cloudformation",
+      "operation": "GetTemplate",
+      "status": "success",
+      "n_items": {
+        "StagesAvailable": 2
+      }
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 # Flo enrollment deployment preparation
 
+**Storage deployment update:** the owner subsequently approved the exact reviewed three-table plan. `flo-customer-enrollment-state` is now CREATE_COMPLETE and the three tables' settings were verified live. See [deployment evidence](../../../docs/verification/enrollment-state-deployment-2026-09-05.md). The draft/pending statements below describe the earlier preparation checkpoint. Runtime services, routes, IAM attachments and customer mappings remain undeployed; storage completion is not enrollment completion.
+
 **Draft only. No permission policy, change set or deployment is approved by these files.**
 
 **Current retention revision:** the owner approved a 30-day fictional audit retention target. Audit TTL is now configured and new writes carry exact expiry; seven-day PITR stays enabled. Current SHA-256: `573fe2694bab405740ab93f71c0b912b3c667229ca7f2bbf6e60e9db9d84f775`. The previous validation and exceptions cover only the archived pre-retention hash. See [current implementation and verification](../../../docs/verification/enrollment-audit-retention-2026-09-05.md).

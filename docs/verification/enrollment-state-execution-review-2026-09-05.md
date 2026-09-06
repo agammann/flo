@@ -1,5 +1,7 @@
 # Enrollment storage execution review — not execution approval
 
+Subsequent owner approval and execution: [the storage deployment succeeded and was verified](enrollment-state-deployment-2026-09-05.md). The pre-execution review below is preserved as the scope and cost record, not a statement that execution is still pending.
+
 Account 114599789754, region us-west-2. The owner approved carrying forward the same narrow encryption/recovery treatment and creating this review-only change set. The owner has not yet approved executing this specific resource plan.
 
 ## Exact proposed changes
