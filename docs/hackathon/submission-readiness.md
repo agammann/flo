@@ -4,6 +4,14 @@ Audit date: 2026-09-04
 
 ## Latest checkpoint — September 6, 2026
 
+**Private identity handoff completed:** the independently authorized fictional-A
+test identity was correlated to one real pending request by the exact non-root
+operator. Three live permission probes and the single projected read passed;
+the private observation was preserved and temporary IAM access removed.
+See [live handoff evidence](../verification/fictional-a-identity-observed-2026-09-06.md).
+No approval, invitation or customer link exists from this test. The enabled
+private release and hosted ownership/isolation workflow remain open.
+
 **Published source checkpoint:** commit
 [`32b692e`](https://github.com/agammann/flo/commit/32b692e32a3c8f390743884295e477a99f0576e3)
 has a fresh [green CI run](https://github.com/agammann/flo/actions/runs/34057363854),

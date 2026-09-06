@@ -1,0 +1,814 @@
+{
+  "status": "REVIEW_ONLY_NO_GRANTS_ATTACHED",
+  "checkedAt": "2026-09-06T21:01:48.545339+00:00",
+  "scope": {
+    "account": "114599789754",
+    "region": "us-west-2",
+    "principal": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+    "ownerFictionalCustomerAAuthorizationConfirmed": true,
+    "liveIdentityObserved": false,
+    "customerLinked": false
+  },
+  "plan": {
+    "reviewOnly": true,
+    "expiresAt": "2026-09-06T21:30:00.000Z",
+    "cloudShellGrant": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "TemporaryPublicShellBootstrap",
+          "Effect": "Allow",
+          "Action": [
+            "cloudshell:CreateEnvironment",
+            "cloudshell:DescribeEnvironments"
+          ],
+          "Resource": "*",
+          "Condition": {
+            "ArnEquals": {
+              "aws:PrincipalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+            },
+            "StringEquals": {
+              "aws:RequestedRegion": "us-west-2"
+            },
+            "DateLessThan": {
+              "aws:CurrentTime": "2026-09-06T21:30:00.000Z"
+            },
+            "Null": {
+              "aws:CurrentTime": "false",
+              "cloudshell:VpcIds": "true",
+              "cloudshell:SubnetIds": "true",
+              "cloudshell:SecurityGroupIds": "true"
+            }
+          }
+        },
+        {
+          "Sid": "TemporaryRegionalShellUseAndUpload",
+          "Effect": "Allow",
+          "Action": [
+            "cloudshell:CreateSession",
+            "cloudshell:GetEnvironmentStatus",
+            "cloudshell:StartEnvironment",
+            "cloudshell:PutCredentials",
+            "cloudshell:GetFileUploadUrls"
+          ],
+          "Resource": "arn:aws:cloudshell:us-west-2:114599789754:environment/*",
+          "Condition": {
+            "ArnEquals": {
+              "aws:PrincipalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+            },
+            "StringEquals": {
+              "aws:RequestedRegion": "us-west-2"
+            },
+            "DateLessThan": {
+              "aws:CurrentTime": "2026-09-06T21:30:00.000Z"
+            },
+            "Null": {
+              "aws:CurrentTime": "false"
+            }
+          }
+        }
+      ]
+    },
+    "boundaryLabels": [
+      "TemporaryPublicShellBootstrap",
+      "TemporaryRegionalShellUseAndUpload",
+      "MaximumProjectedPendingRequestObservation",
+      "MaximumServiceMediatedDecrypt",
+      "MaximumCallerIdentity",
+      "PreserveExistingCliLogin",
+      "DenyEveryOtherCapability",
+      "DenyOtherPrincipals",
+      "DenyOtherTables",
+      "DenyOtherRegions",
+      "DenyExpiredWindow",
+      "DenyMissingTime",
+      "DenyMissingOrFalseMfa",
+      "DenyMissingMfaAge",
+      "DenyStaleMfa",
+      "DenyNegativeMfaAge",
+      "DenyUnexpectedAttributes",
+      "DenyMissingProjection",
+      "DenyNonSpecificSelection",
+      "DenyOtherKeyShapes",
+      "DenyMissingKey",
+      "DenyOtherKmsKeys",
+      "DenyKmsConstraint:kms:ViaService",
+      "DenyKmsConstraint:kms:CallerAccount",
+      "DenyKmsConstraint:kms:EncryptionContext:aws:dynamodb:tableName",
+      "DenyKmsConstraint:kms:EncryptionContext:aws:dynamodb:subscriberId",
+      "DenyVpcVpcIds",
+      "DenyVpcSubnetIds",
+      "DenyVpcSecurityGroupIds"
+    ],
+    "boundary": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "cloudshell:CreateEnvironment",
+            "cloudshell:DescribeEnvironments"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "cloudshell:CreateSession",
+            "cloudshell:GetEnvironmentStatus",
+            "cloudshell:StartEnvironment",
+            "cloudshell:PutCredentials",
+            "cloudshell:GetFileUploadUrls"
+          ],
+          "Resource": "arn:aws:cloudshell:us-west-2:114599789754:environment/*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": "dynamodb:GetItem",
+          "Resource": "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK",
+          "Condition": {
+            "ForAllValues:StringEquals": {
+              "dynamodb:Attributes": [
+                "id",
+                "identityKey",
+                "purpose",
+                "expiresAt",
+                "status",
+                "ttl"
+              ]
+            },
+            "ForAllValues:StringLike": {
+              "dynamodb:LeadingKeys": "????????????????????????????????????????????????????????????????"
+            },
+            "StringEqualsIfExists": {
+              "dynamodb:Select": "SPECIFIC_ATTRIBUTES"
+            },
+            "Null": {
+              "dynamodb:Attributes": "false",
+              "dynamodb:LeadingKeys": "false"
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Action": "kms:Decrypt",
+          "Resource": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+        },
+        {
+          "Effect": "Allow",
+          "Action": "sts:GetCallerIdentity",
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "signin:AuthorizeOAuth2Access",
+            "signin:CreateOAuth2Token"
+          ],
+          "Resource": "arn:aws:signin:us-west-2:114599789754:oauth2/public-client/localhost"
+        },
+        {
+          "Effect": "Deny",
+          "NotAction": [
+            "dynamodb:GetItem",
+            "kms:Decrypt",
+            "sts:GetCallerIdentity",
+            "cloudshell:CreateSession",
+            "cloudshell:GetEnvironmentStatus",
+            "cloudshell:StartEnvironment",
+            "cloudshell:PutCredentials",
+            "cloudshell:GetFileUploadUrls",
+            "cloudshell:CreateEnvironment",
+            "cloudshell:DescribeEnvironments",
+            "signin:AuthorizeOAuth2Access",
+            "signin:CreateOAuth2Token"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Effect": "Deny",
+          "Action": "*",
+          "Resource": "*",
+          "Condition": {
+            "ArnNotEquals": {
+              "aws:PrincipalArn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "NotResource": "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+        },
+        {
+          "Effect": "Deny",
+          "Action": [
+            "dynamodb:GetItem",
+            "kms:Decrypt",
+            "cloudshell:CreateSession",
+            "cloudshell:GetEnvironmentStatus",
+            "cloudshell:StartEnvironment",
+            "cloudshell:PutCredentials",
+            "cloudshell:GetFileUploadUrls",
+            "cloudshell:CreateEnvironment",
+            "cloudshell:DescribeEnvironments"
+          ],
+          "Resource": "*",
+          "Condition": {
+            "StringNotEquals": {
+              "aws:RequestedRegion": "us-west-2"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": [
+            "dynamodb:GetItem",
+            "kms:Decrypt",
+            "cloudshell:CreateSession",
+            "cloudshell:GetEnvironmentStatus",
+            "cloudshell:StartEnvironment",
+            "cloudshell:PutCredentials",
+            "cloudshell:GetFileUploadUrls",
+            "cloudshell:CreateEnvironment",
+            "cloudshell:DescribeEnvironments"
+          ],
+          "Resource": "*",
+          "Condition": {
+            "DateGreaterThanEquals": {
+              "aws:CurrentTime": "2026-09-06T21:30:00.000Z"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": [
+            "dynamodb:GetItem",
+            "kms:Decrypt",
+            "cloudshell:CreateSession",
+            "cloudshell:GetEnvironmentStatus",
+            "cloudshell:StartEnvironment",
+            "cloudshell:PutCredentials",
+            "cloudshell:GetFileUploadUrls",
+            "cloudshell:CreateEnvironment",
+            "cloudshell:DescribeEnvironments"
+          ],
+          "Resource": "*",
+          "Condition": {
+            "Null": {
+              "aws:CurrentTime": "true"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "Resource": "*",
+          "Condition": {
+            "BoolIfExists": {
+              "aws:MultiFactorAuthPresent": "false"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "Resource": "*",
+          "Condition": {
+            "Null": {
+              "aws:MultiFactorAuthAge": "true"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "Resource": "*",
+          "Condition": {
+            "NumericGreaterThan": {
+              "aws:MultiFactorAuthAge": "900"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "Resource": "*",
+          "Condition": {
+            "NumericLessThan": {
+              "aws:MultiFactorAuthAge": "0"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "Resource": "*",
+          "Condition": {
+            "ForAnyValue:StringNotEquals": {
+              "dynamodb:Attributes": [
+                "id",
+                "identityKey",
+                "purpose",
+                "expiresAt",
+                "status",
+                "ttl"
+              ]
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "Resource": "*",
+          "Condition": {
+            "Null": {
+              "dynamodb:Attributes": "true"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "Resource": "*",
+          "Condition": {
+            "Null": {
+              "dynamodb:Select": "false"
+            },
+            "StringNotEquals": {
+              "dynamodb:Select": "SPECIFIC_ATTRIBUTES"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "Resource": "*",
+          "Condition": {
+            "ForAnyValue:StringNotLike": {
+              "dynamodb:LeadingKeys": "????????????????????????????????????????????????????????????????"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "Resource": "*",
+          "Condition": {
+            "Null": {
+              "dynamodb:LeadingKeys": "true"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "kms:Decrypt",
+          "NotResource": "arn:aws:kms:us-west-2:114599789754:key/dd2b8d6c-5d80-4461-b4fe-a4780bc9b2a4"
+        },
+        {
+          "Effect": "Deny",
+          "Action": "kms:Decrypt",
+          "Resource": "*",
+          "Condition": {
+            "StringNotEquals": {
+              "kms:ViaService": "dynamodb.us-west-2.amazonaws.com"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "kms:Decrypt",
+          "Resource": "*",
+          "Condition": {
+            "StringNotEquals": {
+              "kms:CallerAccount": "114599789754"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "kms:Decrypt",
+          "Resource": "*",
+          "Condition": {
+            "StringNotEquals": {
+              "kms:EncryptionContext:aws:dynamodb:tableName": "flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "kms:Decrypt",
+          "Resource": "*",
+          "Condition": {
+            "StringNotEquals": {
+              "kms:EncryptionContext:aws:dynamodb:subscriberId": "114599789754"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "cloudshell:CreateEnvironment",
+          "Resource": "*",
+          "Condition": {
+            "Null": {
+              "cloudshell:VpcIds": "false"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "cloudshell:CreateEnvironment",
+          "Resource": "*",
+          "Condition": {
+            "Null": {
+              "cloudshell:SubnetIds": "false"
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "cloudshell:CreateEnvironment",
+          "Resource": "*",
+          "Condition": {
+            "Null": {
+              "cloudshell:SecurityGroupIds": "false"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "identityBaselineFile": "pairing-verifier-autopilot-NOT-FOR-ATTACHMENT.json",
+  "simulation": {
+    "verifiedAt": "2026-09-06T21:01:48.545339+00:00",
+    "count": 57,
+    "passed": 57,
+    "cases": [
+      {
+        "name": "data-allow",
+        "expected": "allowed",
+        "actual": "allowed",
+        "passed": true
+      },
+      {
+        "name": "data-allow-specific-select",
+        "expected": "allowed",
+        "actual": "allowed",
+        "passed": true
+      },
+      {
+        "name": "kms-allow-service-mediated",
+        "expected": "allowed",
+        "actual": "allowed",
+        "passed": true
+      },
+      {
+        "name": "data-other-table",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-other-key",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-other-principal",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-missing-principal",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-other-region",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-missing-region",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-expired",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-missing-time",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-other-principal",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-missing-principal",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-other-region",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-missing-region",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-expired",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-missing-time",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-missing-mfa",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-false-mfa",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-missing-mfa-age",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-stale-mfa",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-negative-mfa-age",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-missing-projection",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-proof",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-all-attributes",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-missing-leading-key",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "data-wrong-key-shape",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-missing:kms:ViaService",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-wrong:kms:ViaService",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-missing:kms:CallerAccount",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-wrong:kms:CallerAccount",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-missing:kms:EncryptionContext:aws:dynamodb:tableName",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-wrong:kms:EncryptionContext:aws:dynamodb:tableName",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-missing:kms:EncryptionContext:aws:dynamodb:subscriberId",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "kms-wrong:kms:EncryptionContext:aws:dynamodb:subscriberId",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:dynamodb:Scan",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:dynamodb:Query",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:dynamodb:ReadDataForReplication",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:dynamodb:PutItem",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:dynamodb:UpdateItem",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:dynamodb:TransactWriteItems",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:lambda:InvokeFunction",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:iam:PutUserPolicy",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:secretsmanager:GetSecretValue",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:sts:AssumeRole",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:kms:CreateGrant",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:kms:Encrypt",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "forbidden:kms:GenerateDataKey",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "shell-allow-create",
+        "expected": "allowed",
+        "actual": "allowed",
+        "passed": true
+      },
+      {
+        "name": "shell-allow-session",
+        "expected": "allowed",
+        "actual": "allowed",
+        "passed": true
+      },
+      {
+        "name": "shell-allow-upload",
+        "expected": "allowed",
+        "actual": "allowed",
+        "passed": true
+      },
+      {
+        "name": "shell-deny-download",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "shell-expired",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "shell-other-region",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "shell-vpc:VpcIds",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "shell-vpc:SubnetIds",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      },
+      {
+        "name": "shell-vpc:SecurityGroupIds",
+        "expected": "explicitDeny",
+        "actual": "explicitDeny",
+        "passed": true
+      }
+    ],
+    "identityInputs": [
+      "unchanged Autopilot baseline",
+      "reviewed CloudShell grant"
+    ],
+    "policyAttached": false
+  },
+  "accessAnalyzer": [
+    {
+      "policy": "boundary",
+      "findings": []
+    },
+    {
+      "policy": "cloudShellGrant",
+      "findings": []
+    }
+  ],
+  "verifier": {
+    "sha256": "a48d0d8eed12578cf54b2dd8157e04e04cb294689ed9e32e13a3731930c1f45d",
+    "offlineDockerTestsPassed": 13,
+    "maximumSyntheticReads": 3,
+    "maximumRealProjectedReads": 1
+  },
+  "caveat": "The first simulation batch omitted the separate CloudShell identity grant and returned three expected bootstrap implicit denials. The full unchanged planned grant set was then tested: all 57 cases passed. No policy was broadened or attached.",
+  "deadlineTreatment": "This artifact has a review deadline only. Before attaching, choose an explicit deadline at most 30 minutes after attachment, regenerate with the same generator, compare that only deadline values changed, and validate. Fresh MFA age <=900 seconds remains required for data reads. An expired review is never execution authority."
+}
