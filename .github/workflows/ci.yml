@@ -28,6 +28,8 @@ jobs:
       - run: node scripts/check-enrollment-policy-exceptions.mjs --historical
       - run: node --test scripts/check-enrollment-policy-exceptions.test.mjs
       - run: node --test scripts/enrollment-operator-boundary.test.mjs
+      - run: node --test scripts/enrollment-runtime-boundary.test.mjs
+      - run: node --test scripts/enrollment-runtime-template.test.mjs
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test

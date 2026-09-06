@@ -1,5 +1,16 @@
 # Hackathon friction log
 
+## 2026-09-06 UTC — Scoped log-permission simulation discrepancy
+
+- **Technology:** IAM SimulateCustomPolicy, CloudWatch Logs, IAM Policy Autopilot 0.3.0.
+- **Attempt:** Validate exact-resource enrollment boundaries after generated baselines remained broader than the required role separation.
+- **Expected:** The exact allowed log stream should match; unrelated streams should be denied.
+- **Actual:** Table and Lambda-version cases matched expectations, but log cases returned implicit deny, including a separate minimal exact-resource Allow control. No cause has been established.
+- **Documentation:** [IAM simulator](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html) and [Logs service reference](https://servicereference.us-east-1.amazonaws.com/v1/logs/logs.json).
+- **Workaround:** None applied. Preserve the discrepancy and keep runtime route enablement gated pending official-tooling/live-role log verification. Do not expand log resources merely to obtain a simulator pass.
+- **Suggested improvement:** Surface why an otherwise matching exact-resource control has no matching statements, including unsupported simulation cases if applicable.
+- **Impact:** Runtime deployment readiness remains incomplete; no live policy or customer access was changed. [Evidence](../verification/enrollment-runtime-boundary-2026-09-06.json).
+
 ## 2026-09-05 — Docker engine access and CloudShell build compatibility
 
 - **Technology:** Docker Desktop on Windows, restricted Codex execution, AWS CloudShell Docker and Compose.

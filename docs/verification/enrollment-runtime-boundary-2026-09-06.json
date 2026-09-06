@@ -1,0 +1,1815 @@
+{
+  "status": "TABLE_AND_FUNCTION_SIMULATIONS_PASS_LOG_SIMULATION_UNRESOLVED_NOT_DEPLOYED",
+  "region": "us-west-2",
+  "date": "2026-09-06",
+  "scope": "No functions deployed, policies attached, records read/written or customer links created. Existing table names and PROPOSED function/version names. Matrix excludes nonsensical cross-service action-resource pairs.",
+  "configuration": {
+    "account": "114599789754",
+    "region": "us-west-2",
+    "tables": {
+      "auth": "flo-customer-staging-AuthState-17UXOCYCV0R2C",
+      "links": "flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+      "requests": "flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK",
+      "approvals": "flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT",
+      "audit": "flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3"
+    }
+  },
+  "policies": {
+    "request": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "DenyEveryOtherCapability",
+          "Effect": "Deny",
+          "NotAction": [
+            "dynamodb:GetItem",
+            "dynamodb:ConditionCheckItem",
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "lambda:InvokeFunction"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Sid": "AllowdynamodbGetItem",
+          "Effect": "Allow",
+          "Action": "dynamodb:GetItem",
+          "Resource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C"
+          ]
+        },
+        {
+          "Sid": "DenyOtherdynamodbGetItemResources",
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "NotResource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C"
+          ]
+        },
+        {
+          "Sid": "AllowdynamodbConditionCheckItem",
+          "Effect": "Allow",
+          "Action": "dynamodb:ConditionCheckItem",
+          "Resource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W"
+          ]
+        },
+        {
+          "Sid": "DenyOtherdynamodbConditionCheckItemResources",
+          "Effect": "Deny",
+          "Action": "dynamodb:ConditionCheckItem",
+          "NotResource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W"
+          ]
+        },
+        {
+          "Sid": "AllowdynamodbPutItem",
+          "Effect": "Allow",
+          "Action": "dynamodb:PutItem",
+          "Resource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          ]
+        },
+        {
+          "Sid": "DenyOtherdynamodbPutItemResources",
+          "Effect": "Deny",
+          "Action": "dynamodb:PutItem",
+          "NotResource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          ]
+        },
+        {
+          "Sid": "AllowdynamodbUpdateItem",
+          "Effect": "Allow",
+          "Action": "dynamodb:UpdateItem",
+          "Resource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          ]
+        },
+        {
+          "Sid": "DenyOtherdynamodbUpdateItemResources",
+          "Effect": "Deny",
+          "Action": "dynamodb:UpdateItem",
+          "NotResource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          ]
+        },
+        {
+          "Sid": "AllowlogsCreateLogStream",
+          "Effect": "Allow",
+          "Action": "logs:CreateLogStream",
+          "Resource": [
+            "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:*"
+          ]
+        },
+        {
+          "Sid": "DenyOtherlogsCreateLogStreamResources",
+          "Effect": "Deny",
+          "Action": "logs:CreateLogStream",
+          "NotResource": [
+            "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:*"
+          ]
+        },
+        {
+          "Sid": "AllowlogsPutLogEvents",
+          "Effect": "Allow",
+          "Action": "logs:PutLogEvents",
+          "Resource": [
+            "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:*"
+          ]
+        },
+        {
+          "Sid": "DenyOtherlogsPutLogEventsResources",
+          "Effect": "Deny",
+          "Action": "logs:PutLogEvents",
+          "NotResource": [
+            "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:*"
+          ]
+        },
+        {
+          "Sid": "AllowlambdaInvokeFunction",
+          "Effect": "Allow",
+          "Action": "lambda:InvokeFunction",
+          "Resource": [
+            "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:1"
+          ]
+        },
+        {
+          "Sid": "DenyOtherlambdaInvokeFunctionResources",
+          "Effect": "Deny",
+          "Action": "lambda:InvokeFunction",
+          "NotResource": [
+            "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:1"
+          ]
+        },
+        {
+          "Sid": "DenyNonTransactionalWrites",
+          "Effect": "Deny",
+          "Action": [
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem"
+          ],
+          "Resource": "*",
+          "Condition": {
+            "StringNotEquals": {
+              "dynamodb:EnclosingOperation": "TransactWriteItems"
+            }
+          }
+        }
+      ]
+    },
+    "redemption": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "DenyEveryOtherCapability",
+          "Effect": "Deny",
+          "NotAction": [
+            "dynamodb:GetItem",
+            "dynamodb:ConditionCheckItem",
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Sid": "AllowdynamodbGetItem",
+          "Effect": "Allow",
+          "Action": "dynamodb:GetItem",
+          "Resource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT"
+          ]
+        },
+        {
+          "Sid": "DenyOtherdynamodbGetItemResources",
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "NotResource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT"
+          ]
+        },
+        {
+          "Sid": "AllowdynamodbConditionCheckItem",
+          "Effect": "Allow",
+          "Action": "dynamodb:ConditionCheckItem",
+          "Resource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT"
+          ]
+        },
+        {
+          "Sid": "DenyOtherdynamodbConditionCheckItemResources",
+          "Effect": "Deny",
+          "Action": "dynamodb:ConditionCheckItem",
+          "NotResource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT"
+          ]
+        },
+        {
+          "Sid": "AllowdynamodbPutItem",
+          "Effect": "Allow",
+          "Action": "dynamodb:PutItem",
+          "Resource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3"
+          ]
+        },
+        {
+          "Sid": "DenyOtherdynamodbPutItemResources",
+          "Effect": "Deny",
+          "Action": "dynamodb:PutItem",
+          "NotResource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3"
+          ]
+        },
+        {
+          "Sid": "AllowdynamodbUpdateItem",
+          "Effect": "Allow",
+          "Action": "dynamodb:UpdateItem",
+          "Resource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          ]
+        },
+        {
+          "Sid": "DenyOtherdynamodbUpdateItemResources",
+          "Effect": "Deny",
+          "Action": "dynamodb:UpdateItem",
+          "NotResource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          ]
+        },
+        {
+          "Sid": "AllowlogsCreateLogStream",
+          "Effect": "Allow",
+          "Action": "logs:CreateLogStream",
+          "Resource": [
+            "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-redemption:log-stream:*"
+          ]
+        },
+        {
+          "Sid": "DenyOtherlogsCreateLogStreamResources",
+          "Effect": "Deny",
+          "Action": "logs:CreateLogStream",
+          "NotResource": [
+            "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-redemption:log-stream:*"
+          ]
+        },
+        {
+          "Sid": "AllowlogsPutLogEvents",
+          "Effect": "Allow",
+          "Action": "logs:PutLogEvents",
+          "Resource": [
+            "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-redemption:log-stream:*"
+          ]
+        },
+        {
+          "Sid": "DenyOtherlogsPutLogEventsResources",
+          "Effect": "Deny",
+          "Action": "logs:PutLogEvents",
+          "NotResource": [
+            "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-redemption:log-stream:*"
+          ]
+        },
+        {
+          "Sid": "DenyNonTransactionalWrites",
+          "Effect": "Deny",
+          "Action": [
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem"
+          ],
+          "Resource": "*",
+          "Condition": {
+            "StringNotEquals": {
+              "dynamodb:EnclosingOperation": "TransactWriteItems"
+            }
+          }
+        }
+      ]
+    },
+    "approval": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "DenyEveryOtherCapability",
+          "Effect": "Deny",
+          "NotAction": [
+            "dynamodb:GetItem",
+            "dynamodb:ConditionCheckItem",
+            "dynamodb:PutItem",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Sid": "AllowdynamodbGetItem",
+          "Effect": "Allow",
+          "Action": "dynamodb:GetItem",
+          "Resource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          ]
+        },
+        {
+          "Sid": "DenyOtherdynamodbGetItemResources",
+          "Effect": "Deny",
+          "Action": "dynamodb:GetItem",
+          "NotResource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          ]
+        },
+        {
+          "Sid": "AllowdynamodbConditionCheckItem",
+          "Effect": "Allow",
+          "Action": "dynamodb:ConditionCheckItem",
+          "Resource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          ]
+        },
+        {
+          "Sid": "DenyOtherdynamodbConditionCheckItemResources",
+          "Effect": "Deny",
+          "Action": "dynamodb:ConditionCheckItem",
+          "NotResource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-AuthState-17UXOCYCV0R2C",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK"
+          ]
+        },
+        {
+          "Sid": "AllowdynamodbPutItem",
+          "Effect": "Allow",
+          "Action": "dynamodb:PutItem",
+          "Resource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3"
+          ]
+        },
+        {
+          "Sid": "DenyOtherdynamodbPutItemResources",
+          "Effect": "Deny",
+          "Action": "dynamodb:PutItem",
+          "NotResource": [
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT",
+            "arn:aws:dynamodb:us-west-2:114599789754:table/flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3"
+          ]
+        },
+        {
+          "Sid": "AllowlogsCreateLogStream",
+          "Effect": "Allow",
+          "Action": "logs:CreateLogStream",
+          "Resource": [
+            "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-approval:log-stream:*"
+          ]
+        },
+        {
+          "Sid": "DenyOtherlogsCreateLogStreamResources",
+          "Effect": "Deny",
+          "Action": "logs:CreateLogStream",
+          "NotResource": [
+            "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-approval:log-stream:*"
+          ]
+        },
+        {
+          "Sid": "AllowlogsPutLogEvents",
+          "Effect": "Allow",
+          "Action": "logs:PutLogEvents",
+          "Resource": [
+            "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-approval:log-stream:*"
+          ]
+        },
+        {
+          "Sid": "DenyOtherlogsPutLogEventsResources",
+          "Effect": "Deny",
+          "Action": "logs:PutLogEvents",
+          "NotResource": [
+            "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-approval:log-stream:*"
+          ]
+        },
+        {
+          "Sid": "DenyNonTransactionalWrites",
+          "Effect": "Deny",
+          "Action": [
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem"
+          ],
+          "Resource": "*",
+          "Condition": {
+            "StringNotEquals": {
+              "dynamodb:EnclosingOperation": "TransactWriteItems"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "tableCases": [
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "auth",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "auth",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "links",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "requests",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "requests",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "auth",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "approvals",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "auth",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "approvals",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "links",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "audit",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "requests",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "requests",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:GetItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "auth",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "links",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "requests",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:ConditionCheckItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "approvals",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "table": "audit",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:UpdateItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:DeleteItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Query",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "TransactWriteItems",
+      "action": "dynamodb:Scan",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "absent",
+      "action": "dynamodb:PutItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "auth",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "links",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "requests",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "approvals",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "context": "absent",
+      "action": "dynamodb:UpdateItem",
+      "table": "audit",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    }
+  ],
+  "functionCases": [
+    {
+      "kind": "request",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:1",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "kind": "request",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:2",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:live",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "request",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:1",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:2",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:live",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:1",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:2",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:live",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    },
+    {
+      "kind": "approval",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption",
+      "expected": "explicitDeny",
+      "actual": "explicitDeny"
+    }
+  ],
+  "logCases": [
+    {
+      "kind": "request",
+      "action": "logs:CreateLogStream",
+      "resource": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:test",
+      "actual": "implicitDeny"
+    },
+    {
+      "kind": "request",
+      "action": "logs:CreateLogStream",
+      "resource": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/unrelated-function:log-stream:test",
+      "actual": "implicitDeny"
+    },
+    {
+      "kind": "request",
+      "action": "logs:PutLogEvents",
+      "resource": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:test",
+      "actual": "implicitDeny"
+    },
+    {
+      "kind": "request",
+      "action": "logs:PutLogEvents",
+      "resource": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/unrelated-function:log-stream:test",
+      "actual": "implicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "action": "logs:CreateLogStream",
+      "resource": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-redemption:log-stream:test",
+      "actual": "implicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "action": "logs:CreateLogStream",
+      "resource": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/unrelated-function:log-stream:test",
+      "actual": "implicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "action": "logs:PutLogEvents",
+      "resource": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-redemption:log-stream:test",
+      "actual": "implicitDeny"
+    },
+    {
+      "kind": "redemption",
+      "action": "logs:PutLogEvents",
+      "resource": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/unrelated-function:log-stream:test",
+      "actual": "implicitDeny"
+    },
+    {
+      "kind": "approval",
+      "action": "logs:CreateLogStream",
+      "resource": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-approval:log-stream:test",
+      "actual": "implicitDeny"
+    },
+    {
+      "kind": "approval",
+      "action": "logs:CreateLogStream",
+      "resource": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/unrelated-function:log-stream:test",
+      "actual": "implicitDeny"
+    },
+    {
+      "kind": "approval",
+      "action": "logs:PutLogEvents",
+      "resource": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-approval:log-stream:test",
+      "actual": "implicitDeny"
+    },
+    {
+      "kind": "approval",
+      "action": "logs:PutLogEvents",
+      "resource": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/unrelated-function:log-stream:test",
+      "actual": "implicitDeny"
+    }
+  ],
+  "logIsolation": {
+    "checks": [
+      {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "logs:PutLogEvents",
+            "EvalResourceName": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:test",
+            "EvalDecision": "implicitDeny",
+            "MatchedStatements": [],
+            "MissingContextValues": [],
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:test",
+                "EvalResourceDecision": "implicitDeny"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "logs:PutLogEvents",
+            "EvalResourceName": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:test",
+            "EvalDecision": "implicitDeny",
+            "MatchedStatements": [],
+            "MissingContextValues": [],
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:logs:us-west-2:114599789754:log-group:/aws/lambda/flo-customer-enrollment-request:log-stream:test",
+                "EvalResourceDecision": "implicitDeny"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logFinding": "Both the full boundary and a minimal exact-resource Allow control return implicitDeny for logs:PutLogEvents. Do not infer log delivery works or widen Resource to bypass this; resolve with official tooling/live role verification before enabling routes.",
+  "accessAnalyzerFindings": [],
+  "apiCalls": [
+    {
+      "service": "accessanalyzer",
+      "operation": "ValidatePolicy",
+      "status": "success",
+      "n_items": {
+        "findings": 0
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 7
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 2
+      }
+    },
+    {
+      "service": "accessanalyzer",
+      "operation": "ValidatePolicy",
+      "status": "success",
+      "n_items": {
+        "findings": 0
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 7
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 2
+      }
+    },
+    {
+      "service": "accessanalyzer",
+      "operation": "ValidatePolicy",
+      "status": "success",
+      "n_items": {
+        "findings": 0
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 7
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 2
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 3
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 3
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 3
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulateCustomPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    }
+  ]
+}

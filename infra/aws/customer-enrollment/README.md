@@ -1,5 +1,7 @@
 # Flo enrollment deployment preparation
 
+**New runtime checkpoint:** a reproducible 27-resource runtime template and exact-capability boundaries now exist. Local tests pass; AWS table/function simulations match expectations, but log-permission simulation is unresolved. The new template has no cfn-lint/Guard validation or change set yet. See [current runtime plan](../../../docs/verification/enrollment-runtime-plan-2026-09-06.md). This supersedes earlier statements below that no runtime template exists; it does not authorize deployment, operator access, customer mapping or route enablement.
+
 **Storage deployment update:** the owner subsequently approved the exact reviewed three-table plan. `flo-customer-enrollment-state` is now CREATE_COMPLETE and the three tables' settings were verified live. See [deployment evidence](../../../docs/verification/enrollment-state-deployment-2026-09-05.md). The draft/pending statements below describe the earlier preparation checkpoint. Runtime services, routes, IAM attachments and customer mappings remain undeployed; storage completion is not enrollment completion.
 
 **Draft only. No permission policy, change set or deployment is approved by these files.**
