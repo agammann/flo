@@ -38,11 +38,11 @@ Local build/typecheck passed all 13 workspaces. Full suite: 151 tests, 148 passe
 - Twelve meaningful function/version cases: one allowed, eleven explicit denies. Unqualified names, aliases and another numeric version are rejected. Proposed names/version 1 are not deployed references.
 - **Logging unresolved:** twelve log cases returned implicit deny, including expected allowed streams. A separate single-resource check returned the same result for the full boundary and a minimal exact-resource Allow control. This does not establish the cause. No wildcard-log workaround was applied. Resolve through official tooling and live role/log-delivery verification before enabling routes.
 
-The local matcher is a small grammar-specific helper, not an IAM simulator. AWS simulation is not proof of live service authorization. cfn-lint/Guard have NOT run on this new template; earlier storage results do not cover it. No runtime change set exists.
+The local matcher is a small grammar-specific helper, not an IAM simulator. AWS simulation is not proof of live service authorization. **Subsequent approved validation is complete:** cfn-lint has zero findings; raw Guard reports three failing, nineteen passing and twelve skipped policies. See [exact template hash, raw results and treatment](enrollment-runtime-validation-2026-09-06.md). No runtime change set exists.
 
 ## Next gates
 
-1. Obtain approval to validate this new runtime template with existing isolated Docker tooling and applicable pinned IAM/Lambda/log/API Guard rules. No new installation is required. Keep raw findings visible and review any scoped exceptions.
+1. Validation approval and isolated cfn-lint/Guard checks are complete for the unchanged template. Keep the three raw policy failures visible and record their scoped treatment before deployment review; do not count skipped checks as passes.
 2. Resolve the log simulation discrepancy; validate final substituted policies and actual parameters, package/hash artifacts, then prepare a separately reviewed change set. Review costs and exact resources before executing.
 3. Choose/test the operator credential/MFA path and independently verify the fictional customer designation before attaching operator access or enabling approval. Amazon sign-in, email matching, a local grant file and service credentials do not prove repair ownership.
 4. Test real hosted pairing and rejection paths, then complete applicable separate official Alexa+ checks. Record/review the replacement demo only against verified behavior. Publication and Devpost submission remain paused for separate final confirmation.
