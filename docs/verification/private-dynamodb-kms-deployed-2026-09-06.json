@@ -1,0 +1,372 @@
+{
+  "date": "2026-09-06",
+  "status": "EXECUTED_VERIFIED",
+  "sourceCommit": "32b692e32a3c8f390743884295e477a99f0576e3",
+  "changeSet": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-private-dynamodb-kms-review-20260906/09ae0d10-a82d-439a-a9ac-1d9106f00a96",
+  "preflight": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "checkedAt": "2026-09-06T20:41:49.605055+00:00",
+      "account": "114599789754",
+      "callerArn": "arn:aws:iam::114599789754:root",
+      "templateMatches": true,
+      "stackStatus": "UPDATE_COMPLETE",
+      "changeSetStatus": "CREATE_COMPLETE",
+      "executionStatus": "AVAILABLE",
+      "changes": [
+        {
+          "LogicalResourceId": "ApprovalBoundary",
+          "Action": "Modify",
+          "ResourceType": "AWS::IAM::ManagedPolicy",
+          "Replacement": "False"
+        },
+        {
+          "LogicalResourceId": "RedemptionBoundary",
+          "Action": "Modify",
+          "ResourceType": "AWS::IAM::ManagedPolicy",
+          "Replacement": "False"
+        }
+      ],
+      "gates": {
+        "EnableApproval": "false",
+        "EnableRedemption": "false",
+        "EnableEnrollment": "true",
+        "PublishRoutes": "true",
+        "ReleaseId": "request-only-fixed-review-20260906-1727"
+      }
+    },
+    "api_calls": [
+      {
+        "service": "sts",
+        "operation": "GetCallerIdentity",
+        "status": "success"
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeChangeSet",
+        "status": "success",
+        "n_items": {
+          "Parameters": 28,
+          "NotificationARNs": 0,
+          "Capabilities": 1,
+          "Changes": 2
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "GetTemplate",
+        "status": "success",
+        "n_items": {
+          "StagesAvailable": 2
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "DescribeEvents",
+        "status": "success",
+        "n_items": {
+          "OperationEvents": 2
+        }
+      }
+    ]
+  },
+  "execution": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "executedAt": "2026-09-06T20:42:14.880609+00:00",
+      "response": {}
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "ExecuteChangeSet",
+        "status": "success"
+      }
+    ]
+  },
+  "verification": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "verifiedAt": "2026-09-06T20:45:07.042825+00:00",
+      "stackStatus": "UPDATE_COMPLETE",
+      "templateMatches": true,
+      "policies": [
+        {
+          "kind": "approval",
+          "version": "v3",
+          "allStatementsMatchIgnoringOrder": true,
+          "unchangedRequestVersion": false
+        },
+        {
+          "kind": "redemption",
+          "version": "v3",
+          "allStatementsMatchIgnoringOrder": true,
+          "unchangedRequestVersion": false
+        },
+        {
+          "kind": "request",
+          "version": "v5",
+          "allStatementsMatchIgnoringOrder": false,
+          "unchangedRequestVersion": true
+        }
+      ],
+      "functions": [
+        {
+          "kind": "request",
+          "version": "3",
+          "codeSha256": "OCL+oXzDNLN2Axvyl0dWUzr7i698S6UlIKKzQ9QQh/4=",
+          "state": "Active",
+          "gates": {
+            "FLO_ENROLLMENT_ENABLED": "true"
+          }
+        },
+        {
+          "kind": "approval",
+          "version": "3",
+          "codeSha256": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM=",
+          "state": "Active",
+          "gates": {
+            "FLO_PRIVATE_APPROVAL_ENABLED": "false"
+          }
+        },
+        {
+          "kind": "redemption",
+          "version": "3",
+          "codeSha256": "nXIUeJbldwMnzh8Mb2oMlSnp2u5JUs3GtpaAek48tlQ=",
+          "state": "Active",
+          "gates": {
+            "FLO_ENROLLMENT_ENABLED": "false"
+          }
+        }
+      ],
+      "gates": {
+        "EnableApproval": "false",
+        "EnableRedemption": "false",
+        "EnableEnrollment": "true",
+        "PublishRoutes": "true",
+        "ReleaseId": "request-only-fixed-review-20260906-1727"
+      },
+      "customerRecordsRead": false,
+      "customerLinkedByThisUpdate": false
+    },
+    "api_calls": [
+      {
+        "service": "cloudformation",
+        "operation": "DescribeStacks",
+        "status": "success",
+        "n_items": {
+          "Stacks": 1
+        }
+      },
+      {
+        "service": "cloudformation",
+        "operation": "GetTemplate",
+        "status": "success",
+        "n_items": {
+          "StagesAvailable": 2
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicy",
+        "status": "success"
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "GetFunctionConfiguration",
+        "status": "success",
+        "n_items": {
+          "Architectures": 1
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      },
+      {
+        "service": "iam",
+        "operation": "GetPolicyVersion",
+        "status": "success"
+      }
+    ]
+  },
+  "hosted": {
+    "time": "2026-09-06T20:42:58.001Z",
+    "maximumRequests": 12,
+    "actualRequests": 12,
+    "credentialFree": true,
+    "passed": true,
+    "results": [
+      {
+        "name": "existing homepage",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 487
+      },
+      {
+        "name": "pairing page",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 1111
+      },
+      {
+        "name": "pairing script",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 79
+      },
+      {
+        "name": "no customer session",
+        "expected": 401,
+        "actual": 401,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 112
+      },
+      {
+        "name": "privacy notice",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 140
+      },
+      {
+        "name": "terms",
+        "expected": 200,
+        "actual": 200,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 72
+      },
+      {
+        "name": "request without session",
+        "expected": 401,
+        "actual": 401,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 136
+      },
+      {
+        "name": "request without origin",
+        "expected": 403,
+        "actual": 403,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 71
+      },
+      {
+        "name": "request wrong content type",
+        "expected": 415,
+        "actual": 415,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 88
+      },
+      {
+        "name": "request invalid schema",
+        "expected": 400,
+        "actual": 400,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 77
+      },
+      {
+        "name": "redemption route absent",
+        "expected": 404,
+        "actual": 404,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 60
+      },
+      {
+        "name": "official Alexa authorization not configured",
+        "expected": 401,
+        "actual": 401,
+        "noStore": true,
+        "noSniff": true,
+        "contentMatches": true,
+        "passed": true,
+        "latencyMs": 73
+      }
+    ]
+  },
+  "comparisonNote": "An initial position-sensitive policy equality assertion failed. All complete statements match after sorting the statement list; each statement's actions, resources and conditions remain unchanged. The live CloudFormation template exactly matches the approved update artifact.",
+  "limitations": [
+    "No private customer approval, redemption or mapping executed.",
+    "No customer records read.",
+    "No operator MFA or least-privilege runtime success inferred from administrative connector calls.",
+    "No video publication or Devpost submission."
+  ]
+}

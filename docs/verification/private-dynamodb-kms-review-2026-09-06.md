@@ -1,6 +1,9 @@
 # Private enrollment database-key correction — ready for review
 
-September 6, 2026. **Not executed. No customer linked.**
+September 6, 2026. **Historical pre-execution review.** The exact change set was
+subsequently approved, executed and verified at 20:45 UTC; see
+[deployment evidence](private-dynamodb-kms-deployed-2026-09-06.md).
+No customer was linked. The review-time statuses below are retained as history.
 
 ## Why this is separate
 

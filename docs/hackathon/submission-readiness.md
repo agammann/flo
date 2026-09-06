@@ -5,14 +5,18 @@ Audit date: 2026-09-04
 ## Latest checkpoint — September 6, 2026
 
 **Published source checkpoint:** commit
-[`aabafec`](https://github.com/agammann/flo/commit/aabafec16037032ddfbd19ccf43df780514b60c4)
-has a fresh [green CI run](https://github.com/agammann/flo/actions/runs/34056513856),
-including verification and Docker jobs. The subsequent private-role KMS correction
-is [validated and review-ready](../verification/private-dynamodb-kms-review-2026-09-06.md),
-not deployed. Its 266 AWS simulations passed; no customer was linked.
+[`32b692e`](https://github.com/agammann/flo/commit/32b692e32a3c8f390743884295e477a99f0576e3)
+has a fresh [green CI run](https://github.com/agammann/flo/actions/runs/34057363854),
+including verification and actual Docker jobs. The private-role KMS correction
+is now [deployed and verified](../verification/private-dynamodb-kms-deployed-2026-09-06.md):
+UPDATE_COMPLETE, both live boundaries match the tested statements, all three
+published versions/code checksums are unchanged and all 12 hosted checks passed.
+Its 266 pre-deployment AWS simulations passed. Approval/redemption remain disabled;
+no customer was linked. Trusted designation and hosted private enrollment tests,
+replacement video and final submission remain open, not implied by green CI.
 
 **Fresh local release checks:** full build/typecheck/lint, 148 application tests
-(three platform skips), all 56 Node script tests and 25 Python tests passed.
+(three platform skips), all 68 Node script tests and 25 Python tests passed.
 Actual Docker Compose startup, the real HTTP/MCP demo, isolated bundle smokes and
 DynamoDB Local transaction contracts also passed. See
 [release-source evidence](../verification/release-source-checkpoint-2026-09-06.md).
