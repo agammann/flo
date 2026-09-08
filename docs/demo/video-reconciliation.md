@@ -1,6 +1,9 @@
 # Replacement-video reconciliation
 
-Status: recording plan, not a completed replacement video. Updated September 8, 2026 (UTC).
+Status: historical recording plan, superseded by the
+[rendered replacement cut](replacement-cut-2026-09-08.md), September 8, 2026 (UTC).
+The owner approved the new cut; public publication remains a separate gate.
+The plan below is retained for provenance, not as current video-production status.
 
 The hosted site has verified real Login with Amazon sign-in/sign-out, a
 signed-in/unlinked state, independently approved fictional-customer pairing, and

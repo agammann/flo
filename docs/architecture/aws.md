@@ -1,6 +1,22 @@
 # AWS deployment architecture
 
-Flo has one intentionally narrow live AWS integration and a larger future deployment design. Keeping those states separate prevents planned services from being described as implemented.
+Flo has a narrow Bedrock narrator and a separate hosted customer application, plus a larger future deployment design. Keeping those states separate prevents planned services from being described as implemented.
+
+## Customer staging checkpoint — September 8, 2026
+
+The separate HTTPS customer service runs on Lambda/API Gateway, uses Secrets
+Manager for private runtime configuration, and DynamoDB for auth/session state,
+trusted customer links, enrollment and repair projections. CloudFormation defines
+the deployment. These are not the local shop's in-memory work orders or estimates.
+See the [staging deployment](../verification/customer-staging-deployment-2026-09-05.md),
+[completed fictional pairing](../verification/fictional-a-pairing-completed-2026-09-08.md)
+and [hosted isolation test](../verification/customer-repair-fixture-live-2026-09-08.md).
+
+Real Login with Amazon establishes identity; separately authorized shop mapping
+establishes access. One fictional A identity was paired, then tested against A/B
+repair fixtures. No estimate or appointment exists in those fixtures. The hosted
+customer service is read-only for repairs and is not an authenticated Alexa MCP
+endpoint. This is dated verification, not a new account-wide AWS audit.
 
 ## Verified live integration
 
@@ -23,7 +39,7 @@ The function role restricts model invocation to the configured ARN. The deployed
 | CloudWatch | Structured tool latency, result status, work-order reference, approval transitions, and transaction metrics |
 | Secrets Manager | Provider credentials and signing material |
 
-The current in-memory business stores can later use DynamoDB and AgentCore Memory. DynamoDB is already used only for the narrator allowance; AgentCore and Secrets Manager are not deployed in the recorded implementation. The HTTP adapters provide a replacement boundary for authenticated providers. Alexa+ customer OAuth/account linking is separate from AWS SigV4 caller authentication.
+The current in-memory shop business stores can later use DynamoDB and AgentCore Memory. The table above describes that future orchestration target: it does not supersede the deployed customer storage/Secrets Manager checkpoint above. AgentCore remains undeployed. The HTTP adapters provide a replacement boundary for authenticated providers. Alexa+ customer OAuth/account linking is separate from both website Login with Amazon and AWS SigV4 caller authentication.
 
 ## Deployment gates
 

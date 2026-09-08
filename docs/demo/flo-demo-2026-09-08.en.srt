@@ -1,0 +1,204 @@
+1
+00:00:00,100 --> 00:00:03,285
+Repair work should not stop to search business
+systems.
+
+2
+00:00:04,217 --> 00:00:09,324
+Flo turns conversation into confirmation-gated
+workflows: a custom Alexa-style
+
+3
+00:00:09,338 --> 00:00:12,442
+simulation, backed by real MCP tools.
+
+4
+00:00:14,100 --> 00:00:17,017
+Our separate hosted site uses Login with
+Amazon.
+
+5
+00:00:17,948 --> 00:00:20,381
+Identity does not grant repair ownership;
+
+6
+00:00:20,582 --> 00:00:22,088
+shop verification does.
+
+7
+00:00:23,015 --> 00:00:26,792
+September eighth tests verified fictional
+customer isolation.
+
+8
+00:00:27,719 --> 00:00:30,905
+Hosted fixtures are not synchronized with the
+local shop.
+
+9
+00:00:32,600 --> 00:00:34,912
+Open work order eighteen forty-two.
+
+10
+00:00:35,843 --> 00:00:38,289
+Flo retrieves the Ford through MCP.
+
+11
+00:00:39,217 --> 00:00:40,601
+The alternator failed.
+
+12
+00:00:41,529 --> 00:00:44,916
+A real tool call records the diagnosis in the
+mock shop.
+
+13
+00:00:46,600 --> 00:00:50,619
+Find compatible replacements under three
+hundred dollars arriving tomorrow.
+
+14
+00:00:51,550 --> 00:00:54,735
+Flo checks fitment and searches simulated
+suppliers.
+
+15
+00:00:55,663 --> 00:00:58,674
+The balanced choice costs two hundred nineteen
+dollars.
+
+16
+00:00:59,601 --> 00:01:01,133
+Inspect the tool trace.
+
+17
+00:01:02,850 --> 00:01:07,487
+Best margin means gross part profit in dollars
+here, not margin percentage.
+
+18
+00:01:08,418 --> 00:01:12,289
+The two hundred eighty-nine dollar option
+earns one hundred one dollars and
+
+19
+00:01:12,303 --> 00:01:14,265
+fifteen cents of part profit.
+
+20
+00:01:16,100 --> 00:01:18,371
+Add it to the estimate and request approval.
+
+21
+00:01:19,303 --> 00:01:23,778
+Deterministic pricing totals five hundred
+sixty-one dollars and thirty-three
+
+22
+00:01:23,792 --> 00:01:26,144
+cents, matching our selected part.
+
+23
+00:01:27,850 --> 00:01:30,982
+The local owner preview hides shop costs and
+margin.
+
+24
+00:01:31,913 --> 00:01:34,480
+We explicitly simulate customer approval.
+
+25
+00:01:35,408 --> 00:01:38,875
+No real customer message is sent, and these
+are not the hosted
+
+26
+00:01:38,889 --> 00:01:39,601
+records.
+
+27
+00:01:41,350 --> 00:01:43,044
+Start a new conversation.
+
+28
+00:01:43,977 --> 00:01:45,348
+What happened with the Ford?
+
+29
+00:01:46,273 --> 00:01:48,303
+Flo resumes the approved job.
+
+30
+00:01:49,230 --> 00:01:53,975
+Shop context survives conversation changes,
+but not a service restart.
+
+31
+00:01:55,600 --> 00:01:58,853
+Order the alternator and schedule Bay two
+tomorrow morning.
+
+32
+00:01:59,784 --> 00:02:01,182
+Flo prepares a summary.
+
+33
+00:02:02,109 --> 00:02:03,346
+No purchase yet.
+
+34
+00:02:04,273 --> 00:02:07,620
+Inspect the details, confirm, or cancel.
+
+35
+00:02:09,350 --> 00:02:10,210
+Confirm.
+
+36
+00:02:11,141 --> 00:02:16,007
+The server rechecks approval, the offer and
+availability, then executes the mock
+
+37
+00:02:16,020 --> 00:02:17,297
+order and reservation.
+
+38
+00:02:18,225 --> 00:02:21,316
+Repeated confirmation cannot create another
+purchase.
+
+39
+00:02:23,100 --> 00:02:24,968
+Code owns money and authority.
+
+40
+00:02:25,899 --> 00:02:29,287
+AWS hosts customer identity and projections.
+
+41
+00:02:30,214 --> 00:02:32,002
+Bedrock narration is optional;
+
+42
+00:02:32,270 --> 00:02:33,977
+this capture uses fallback.
+
+43
+00:02:34,905 --> 00:02:39,313
+AgentCore and official Alexa linking, device
+testing and certification remain
+
+44
+00:02:39,327 --> 00:02:40,080
+incomplete.
+
+45
+00:02:41,850 --> 00:02:47,777
+Flo: MIT-licensed source, Docker setup,
+regression tests and documented limits.
+
+46
+00:02:48,709 --> 00:02:52,190
+Hands-free service operations, grounded in
+tools.

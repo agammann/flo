@@ -1,5 +1,11 @@
 # Devpost submission draft
 
+> **Historical draft — superseded September 8, 2026.** The current canonical
+> packet is [the project-root Devpost draft](../../devpost-submission.md).
+> The text below is retained for provenance, not copy-ready release material:
+> it predates completed fictional pairing/isolation and mislabels some mock tools
+> as production tools. Its old video/caption links are not the replacement demo.
+
 > Release status: working custom simulations and the separate AWS-hosted Login with Amazon website are described below. The original 2:41 video is stale and must be replaced; its current visibility is not reverified by this draft. Do not submit the old video as proof of the corrected build. Official Alexa+ account linking, certification and MCP App packaging remain unclaimed. This file is a draft, not evidence that the Devpost form is populated or submitted.
 
 > September 5 local addendum: a separate, read-only vehicle-owner preview now supports owned repair status and customer-price estimate review through three MCP tools. It has not been pushed or added to the existing video. The original shop workflow alone does not address Alexa+'s consumer-eligibility policy. See [the certification tracker](../alexa-plus-certification-plan.md); reconcile this draft and the video before any final submission. This document is not evidence that the Devpost form is complete.

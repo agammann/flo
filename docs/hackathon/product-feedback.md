@@ -1,6 +1,6 @@
 # Product feedback
 
-This feedback covers Alexa+ documentation, the MCP TypeScript SDK, custom browser simulations and the recorded AWS narrator integration. That integration uses CloudFormation, Lambda, Bedrock, API Gateway, IAM, CloudWatch and DynamoDB for a finite model-attempt allowance. It excludes hands-on claims about official Alexa+ partner tooling/devices, AgentCore, Secrets Manager and durable business-state deployment.
+Updated September 8, 2026. This feedback covers Alexa+ documentation, the MCP TypeScript SDK, custom browser simulations, the recorded AWS narrator integration and the separate customer staging implementation. AWS usage includes CloudFormation, Lambda, Bedrock, API Gateway, IAM, CloudWatch, KMS, DynamoDB and Secrets Manager. It excludes hands-on claims about official Alexa+ partner tooling/devices, AgentCore and durable shop business-state deployment. Observations below are from dated project evidence, not a fresh service audit or a claim that unavailable tooling does not exist.
 
 ## Alexa+ developer documentation and MCP Toolkit guidance
 
@@ -46,9 +46,27 @@ This feedback covers Alexa+ documentation, the MCP TypeScript SDK, custom browse
 
 **What needs work:** CloudFormation template validation did not reveal that `ReservedConcurrentExecutions: 1` would violate the account's minimum unreserved-concurrency requirement. The error appeared only during stack creation. A validation warning tied to current account quotas would reduce failed first deployments. Bedrock documentation would also benefit from a short hackathon pattern that demonstrates how to keep model output advisory while deterministic code remains authoritative.
 
-**Onboarding:** Model discovery and invocation were straightforward. The main friction was an account-level Lambda quota interaction, documented in the friction log. Removing the optional reservation preserved the function's eight-second timeout, memory cap, minimal payload, output validation, and fallback behavior.
+**Onboarding:** Model discovery and invocation were straightforward. The main initial friction was an account-level Lambda quota interaction, documented in the friction log. The optional reservation was initially removed; a later quota increase and reviewed hardening update restored a small reserved-concurrency limit. See [the dated hardening deployment](../verification/narrator-kms-deployment-2026-09-05.md), rather than interpreting the initial workaround as current configuration.
 
 **Would we build with it again?** Yes. Bedrock is useful here precisely because its role is small, observable, and replaceable rather than being treated as the source of truth.
+
+## Customer staging feedback: Login with Amazon and AWS identity/storage
+
+**What we used it for:** Login with Amazon identifies a website visitor through a server-side authorization-code flow. Lambda and API Gateway host the separate HTTPS customer service. Secrets Manager holds private runtime configuration; DynamoDB stores auth/session state, independently authorized customer links, enrollment state and customer-safe repair projections. IAM separates the private enrollment operator from the customer browser. CloudFormation, KMS and CloudWatch support deployment, scoped key access and bounded-retention operational logs. SDK calls implement these boundaries; no credential belongs in the browser bundle.
+
+**What worked well:** Actual hosted sign-in/sign-out, explicit unlinked state, private operator approval and customer redemption could be checked separately. The fictional A/B test demonstrated that successful sign-in does not select an arbitrary customer partition. Conditional database operations, explicit permissions and deployment read-back made those steps inspectable.
+
+**What needs work:** The project encountered confusing boundaries between website identity, Alexa client authorization and shop ownership. IAM policy simulation did not replace a real authorized call, and policy removal briefly propagated before a later denial was observed. KMS conditions needed to cover the intended service path precisely. A worked example showing independent identity, operator designation, redemption, revocation and negative tests would reduce integration mistakes. These are observations from this implementation, not a claim that the providers guarantee repair ownership.
+
+**Onboarding:** Website login alone was the easy milestone. Secure mapping required a separate enrollment workflow, private handoff, bounded operator authority and real denial checks. Docker and automated provider-contract tests helped before hosted testing; actual LWA browser testing remained a separate step. Secrets Manager configuration was kept private, not copied into the repository or feedback.
+
+**Would we build with it again?** Yes: LWA for identity, DynamoDB for conditional state changes, and AWS serverless hosting for an inspectable staging endpoint. We would retain independent ownership verification and test official Alexa authorization separately. The two hosted repair fixtures are not connected to local shop estimates, and AgentCore remains future work.
+
+## Supporting development tools
+
+**Use:** TypeScript/Node.js, Zod and Express provide application code and validated HTTP boundaries; pnpm manages the workspace; Docker runs isolated integration environments; GitHub Actions checks builds and regressions. Codex assisted implementation, debugging, test authoring and evidence review.
+
+**Worked well:** Typed domain boundaries and repeatable CI made transaction fixes reviewable. Linux Docker tests covered POSIX contracts skipped on Windows. **Needs work:** Runtime/action version drift and differences between Windows file permissions and POSIX need explicit checks. **Onboarding:** Workspace-local runtime paths and isolated containers resolved host constraints; no cloud account is required for the local shop demo. **Use again:** Yes, with pinned dependencies, clear platform-specific tests and source-linked verification. This does not claim Kiro, Strands or AgentCore usage.
 
 ## Feature requests
 
