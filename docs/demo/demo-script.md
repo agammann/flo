@@ -1,6 +1,6 @@
 # Flo demo script
 
-> Superseded recording plan: the script below describes the older shop-only cut and must not be followed for a new release. Use [the replacement-video reconciliation plan](video-reconciliation.md). Its corrections cover the consumer preview, gross-profit ranking, matching estimate, DynamoDB allowance and the chosen—but not yet implemented—Login with Amazon sign-in. The old video and caption track are preserved; their existing timing is not suitable for the replacement.
+> Superseded recording plan: the script below describes the older shop-only cut and must not be followed for a new release. Use [the replacement-video reconciliation plan](video-reconciliation.md), updated September 8, 2026. It distinguishes verified hosted Login with Amazon and fictional-customer isolation from the separate local shop simulation, corrects gross-profit ranking and estimate totals, and describes deployed DynamoDB use. Official Alexa+ account linking remains incomplete. The old video and caption track are preserved; their existing timing is not suitable for the replacement. All video-state claims below are historical, not a fresh YouTube verification.
 
 Recording target: under 3:00 at 1080p. Keep the MCP inspector visible only when it supports the story; use production mode for the final transaction.
 

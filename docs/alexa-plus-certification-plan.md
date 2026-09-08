@@ -1,5 +1,34 @@
 # Alexa+ requirements review and implementation tracker
 
+## September 8, 2026 checkpoint
+
+The September 5 inventory below is historical. Real hosted Login with Amazon,
+trusted fictional-customer pairing, durable linked sessions and customer repair
+isolation have since been exercised. See the [pairing evidence](verification/fictional-a-pairing-completed-2026-09-08.md)
+and [hosted repair-isolation evidence](verification/customer-repair-fixture-live-2026-09-08.md).
+The hosted A/B fixtures are independent of the local shop simulation; no estimate,
+booking, approval or purchasing workflow is exposed by the hosted customer site.
+
+This does **not** establish Alexa+ account linking or certification. The current
+[MCP quickstart](https://developer.amazon.com/docs/alexaplus/add-ons/mcp-toolkit-quickstart.html),
+[account-linking guide](https://developer.amazon.com/docs/alexaplus/add-ons/mcp-toolkit-account-linking.html)
+and [certification guidelines](https://developer.amazon.com/docs/alexaplus/add-ons/certification-guidelines.html)
+were checked again. The website cookie session is not the Alexa client's OAuth
+grant. The public customer service intentionally rejects its MCP-route candidates;
+it must not be advertised as an authenticated Alexa MCP endpoint.
+
+Remaining gates: a supported service/user OAuth implementation and its metadata,
+resource/audience and PKCE tests; official manifest/assets and remote tool setup;
+Local Inspector; Amazon Web Simulator and applicable device tests; measured
+latency; integration-route clarification before consumer booking; and Amazon's
+certification decision. No official CLI execution or AgentCore deployment is
+claimed by this documentation review. Production privacy/terms and disclosure
+accuracy must be reviewed against the actual final experience, not just the mock
+shop workflow. Hackathon simulation eligibility and production add-on approval
+remain independent gates.
+
+## Historical September 5 inventory
+
 Reviewed September 5, 2026. This is an engineering tracker, not an Amazon certification decision. All distinct pages directly supplied in the documentation list were read. Index pages were reviewed as indexes; this does not claim a recursive review of every category SPI, design chapter, or payment reference linked beneath them. Authentication and account-linking child pages were additionally read because they directly affect Flo.
 
 ## Two independent acceptance gates

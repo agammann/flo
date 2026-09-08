@@ -1,0 +1,51 @@
+{
+  "status": "REVIEW_ONLY_NOT_EXECUTED",
+  "purpose": "fictional_customer_repair_isolation",
+  "sourceCommit": "28e2d88b4511a5f8c601dc2db866ed348bfc94e2",
+  "account": "114599789754",
+  "region": "us-west-2",
+  "stack": "flo-customer-staging",
+  "logicalResource": "CustomerRepairs",
+  "tableName": "flo-customer-staging-CustomerRepairs-1TU01CXBBGKYE",
+  "operation": "TransactWriteItems",
+  "conditionOnEachPut": "attribute_not_exists(pk) AND attribute_not_exists(sk)",
+  "returnValuesOnConditionCheckFailure": "NONE",
+  "records": [
+    {
+      "pk": "customer#staging-customer-a",
+      "sk": "repair#1842",
+      "customerId": "staging-customer-a",
+      "repair": {
+        "repairNumber": "1842",
+        "vehicle": "Fictional 2019 Ford F-150 A (staging test)",
+        "status": "diagnosis",
+        "scheduledStart": null,
+        "scheduledEnd": null
+      },
+      "estimate": null
+    },
+    {
+      "pk": "customer#staging-customer-b",
+      "sk": "repair#2842",
+      "customerId": "staging-customer-b",
+      "repair": {
+        "repairNumber": "2842",
+        "vehicle": "Fictional customer B vehicle (isolation test)",
+        "status": "diagnosis",
+        "scheduledStart": null,
+        "scheduledEnd": null
+      },
+      "estimate": null
+    }
+  ],
+  "excludedWrites": [
+    "CustomerLinks",
+    "AuthState",
+    "EnrollmentRequests",
+    "EnrollmentApprovals",
+    "EnrollmentAudit",
+    "IAM",
+    "Lambda configuration",
+    "CloudFormation resources"
+  ]
+}

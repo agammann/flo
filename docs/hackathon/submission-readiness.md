@@ -4,6 +4,17 @@ Audit date: 2026-09-04
 
 ## Latest checkpoint — September 8, 2026
 
+**Hosted repair ownership check now passes:** after separate approval, exactly two
+fictional projections were inserted without overwrites and verified by strong
+read-back. The real customer-A session listed/read only repair 1842; B's repair
+2842 and an unknown number produced the same visible denial. A's absent estimate
+was reported honestly; B/unknown estimate requests were denied. Logout removed
+access, and separate no-session/synthetic-service-marker requests returned 401.
+Customer B remains unlinked. See [live fixture evidence](../verification/customer-repair-fixture-live-2026-09-08.md).
+The two records remain static staging fixtures, not synchronized shop data.
+This supersedes the empty-repair-list limitation in the preceding pairing test,
+but does not close official Alexa+ authorization or replacement-video gates.
+
 **Hosted fictional-A enrollment now works:** one real Login with Amazon session
 created a private request, the exact non-root version-4 operator approved it, and
 the customer explicitly redeemed it. The linked state survived logout and a new
