@@ -2,7 +2,26 @@
 
 Audit date: 2026-09-04
 
-## Latest checkpoint — September 6, 2026
+## Latest checkpoint — September 8, 2026
+
+**Hosted fictional-A enrollment now works:** one real Login with Amazon session
+created a private request, the exact non-root version-4 operator approved it, and
+the customer explicitly redeemed it. The linked state survived logout and a new
+Amazon login. The hosted `list_my_repairs` MCP tool returned an empty array; no
+repair fixture was seeded and hosted wrong-customer repair isolation is not yet
+proven. Temporary IAM access was removed and a subsequent actual DryRun was
+denied; the private Docker handoff and its tmpfs codes were removed. See
+[sanitized live evidence](../verification/fictional-a-pairing-completed-2026-09-08.md).
+
+Fresh application tests passed (148 pass, three platform skips), lint/typecheck
+passed, Windows script tests passed (83 pass, six POSIX skips), and the new
+handoff suites passed all 12 tests in Linux Docker. A new source push/CI result,
+hosted repair fixture/isolation verification, official Alexa+ checks and the
+replacement video remain separate release gates. Publication/submission remain
+paused. Earlier statements below that no link exists or approval/redemption are
+disabled describe their dated checkpoints, not this latest result.
+
+## Historical checkpoint — September 6, 2026
 
 **Private identity handoff completed:** the independently authorized fictional-A
 test identity was correlated to one real pending request by the exact non-root

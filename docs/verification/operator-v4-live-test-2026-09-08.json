@@ -1,0 +1,87 @@
+{
+  "status": "OPERATOR_PERMISSION_TEST_PASSED_PAIRING_NOT_STARTED",
+  "date": "2026-09-08",
+  "principal": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+  "userId": "AIDARVLVOAS5N5MWSFYR5",
+  "session": {
+    "events": [
+      {
+        "time": "2026-09-08T05:54:37Z",
+        "arn": "arn:aws:iam::114599789754:user/flo/flo-staging-operator",
+        "session": {
+          "creationDate": "2026-09-08T05:53:22Z",
+          "mfaAuthenticated": "true"
+        }
+      }
+    ]
+  },
+  "setup": {
+    "boundaryArn": "arn:aws:iam::114599789754:policy/flo/FloOperatorV4Temporary-20260908T0556Z",
+    "boundaryVerifiedBeforeGrant": true,
+    "baselineVerified": true,
+    "time": "2026-09-08T05:56:20.361013+00:00"
+  },
+  "checks": [
+    {
+      "target": "flo-customer-enrollment-approval:4",
+      "type": "DryRun",
+      "statusCode": 204
+    },
+    {
+      "target": "flo-customer-enrollment-approval:3",
+      "type": "DryRun",
+      "error": "AccessDeniedException",
+      "reason": "explicit permissions-boundary deny"
+    },
+    {
+      "target": "flo-customer-enrollment-approval",
+      "type": "DryRun",
+      "error": "AccessDeniedException",
+      "reason": "explicit permissions-boundary deny"
+    },
+    {
+      "target": "flo-customer-enrollment-redemption:4",
+      "type": "DryRun",
+      "error": "AccessDeniedException",
+      "reason": "explicit permissions-boundary deny"
+    },
+    {
+      "target": "flo-customer-enrollment-approval:4",
+      "type": "RequestResponse",
+      "payload": "{}",
+      "statusCode": 200,
+      "executedVersion": "4",
+      "response": {
+        "ok": false,
+        "status": 400
+      }
+    }
+  ],
+  "automaticRetries": 0,
+  "cleanup": {
+    "time": "2026-09-08T06:03:04.402841+00:00",
+    "boundaryAttached": false,
+    "inline": [],
+    "attached": [
+      {
+        "PolicyName": "SignInLocalDevelopmentAccess",
+        "PolicyArn": "arn:aws:iam::aws:policy/SignInLocalDevelopmentAccess"
+      }
+    ],
+    "groups": [],
+    "deletedTemporaryPolicy": "arn:aws:iam::114599789754:policy/flo/FloOperatorV4Temporary-20260908T0556Z"
+  },
+  "customer": {
+    "realLwaSignInObserved": true,
+    "observedState": "signed in; shop verification required",
+    "newPairingRequests": 0,
+    "approvalInvocationsWithRequest": 0,
+    "invitationsCreated": 0,
+    "linksCreated": 0,
+    "blocker": "Nonsecret browser-to-local clipboard handoff check did not match; no private code was transferred."
+  },
+  "release": {
+    "published": false,
+    "submitted": false
+  }
+}

@@ -1,0 +1,506 @@
+{
+  "status": "REVIEW_ONLY_NOT_EXECUTED",
+  "plan": {
+    "created": true,
+    "arn": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-fictional-a-activation-review-20260908t052523z/294cba33-4ecc-422f-b815-bf5ae020f18c",
+    "name": "flo-fictional-a-activation-review-20260908t052523z",
+    "designation_expires_at": "2026-09-08T09:25:13.430000+00:00",
+    "executed": false
+  },
+  "review": {
+    "status": "CREATE_COMPLETE",
+    "execution_status": "AVAILABLE",
+    "changes": [
+      {
+        "action": "Modify",
+        "logical_id": "ApprovalFunction",
+        "type": "AWS::Lambda::Function",
+        "replacement": "False",
+        "scope": [
+          "Properties"
+        ],
+        "details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Environment",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ParameterReference",
+            "CausingEntity": "ApprovalDesignation"
+          },
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Description",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Dynamic",
+            "ChangeSource": "DirectModification"
+          },
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Environment",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ParameterReference",
+            "CausingEntity": "EnableApproval"
+          },
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Environment",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Dynamic",
+            "ChangeSource": "DirectModification"
+          },
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Description",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ParameterReference",
+            "CausingEntity": "ReleaseId"
+          }
+        ]
+      },
+      {
+        "action": "Modify",
+        "logical_id": "ApprovalVersion",
+        "type": "AWS::Lambda::Version",
+        "replacement": "True",
+        "scope": [
+          "Properties"
+        ],
+        "details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Description",
+              "RequiresRecreation": "Always"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ParameterReference",
+            "CausingEntity": "ReleaseId"
+          },
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Description",
+              "RequiresRecreation": "Always"
+            },
+            "Evaluation": "Dynamic",
+            "ChangeSource": "DirectModification"
+          }
+        ]
+      },
+      {
+        "action": "Modify",
+        "logical_id": "PairingAssetPermission",
+        "type": "AWS::Lambda::Permission",
+        "replacement": "True",
+        "scope": [
+          "Properties"
+        ],
+        "details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "FunctionName",
+              "RequiresRecreation": "Always"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ResourceReference",
+            "CausingEntity": "RequestVersion"
+          }
+        ]
+      },
+      {
+        "action": "Modify",
+        "logical_id": "PairingIntegration",
+        "type": "AWS::ApiGatewayV2::Integration",
+        "replacement": "False",
+        "scope": [
+          "Properties"
+        ],
+        "details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "IntegrationUri",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ResourceReference",
+            "CausingEntity": "RequestVersion"
+          }
+        ]
+      },
+      {
+        "action": "Modify",
+        "logical_id": "PairingPagePermission",
+        "type": "AWS::Lambda::Permission",
+        "replacement": "True",
+        "scope": [
+          "Properties"
+        ],
+        "details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "FunctionName",
+              "RequiresRecreation": "Always"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ResourceReference",
+            "CausingEntity": "RequestVersion"
+          }
+        ]
+      },
+      {
+        "action": "Add",
+        "logical_id": "RedeemPairingPermission",
+        "type": "AWS::Lambda::Permission",
+        "scope": [],
+        "details": []
+      },
+      {
+        "action": "Add",
+        "logical_id": "RedeemPairingRoute",
+        "type": "AWS::ApiGatewayV2::Route",
+        "scope": [],
+        "details": []
+      },
+      {
+        "action": "Modify",
+        "logical_id": "RedemptionFunction",
+        "type": "AWS::Lambda::Function",
+        "replacement": "False",
+        "scope": [
+          "Properties"
+        ],
+        "details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Description",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Dynamic",
+            "ChangeSource": "DirectModification"
+          },
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Environment",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ParameterReference",
+            "CausingEntity": "EnableRedemption"
+          },
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Environment",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Dynamic",
+            "ChangeSource": "DirectModification"
+          },
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Description",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ParameterReference",
+            "CausingEntity": "ReleaseId"
+          }
+        ]
+      },
+      {
+        "action": "Modify",
+        "logical_id": "RedemptionVersion",
+        "type": "AWS::Lambda::Version",
+        "replacement": "True",
+        "scope": [
+          "Properties"
+        ],
+        "details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Description",
+              "RequiresRecreation": "Always"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ParameterReference",
+            "CausingEntity": "ReleaseId"
+          },
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Description",
+              "RequiresRecreation": "Always"
+            },
+            "Evaluation": "Dynamic",
+            "ChangeSource": "DirectModification"
+          }
+        ]
+      },
+      {
+        "action": "Modify",
+        "logical_id": "RequestBoundary",
+        "type": "AWS::IAM::ManagedPolicy",
+        "replacement": "False",
+        "scope": [
+          "Properties"
+        ],
+        "details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "PolicyDocument",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ResourceReference",
+            "CausingEntity": "RedemptionVersion"
+          }
+        ]
+      },
+      {
+        "action": "Modify",
+        "logical_id": "RequestFunction",
+        "type": "AWS::Lambda::Function",
+        "replacement": "False",
+        "scope": [
+          "Properties"
+        ],
+        "details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Description",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Dynamic",
+            "ChangeSource": "DirectModification"
+          },
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Environment",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ResourceReference",
+            "CausingEntity": "RedemptionVersion"
+          },
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Description",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ParameterReference",
+            "CausingEntity": "ReleaseId"
+          }
+        ]
+      },
+      {
+        "action": "Modify",
+        "logical_id": "RequestVersion",
+        "type": "AWS::Lambda::Version",
+        "replacement": "True",
+        "scope": [
+          "Properties"
+        ],
+        "details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Description",
+              "RequiresRecreation": "Always"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ParameterReference",
+            "CausingEntity": "ReleaseId"
+          },
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Description",
+              "RequiresRecreation": "Always"
+            },
+            "Evaluation": "Dynamic",
+            "ChangeSource": "DirectModification"
+          }
+        ]
+      },
+      {
+        "action": "Modify",
+        "logical_id": "StartPairingPermission",
+        "type": "AWS::Lambda::Permission",
+        "replacement": "True",
+        "scope": [
+          "Properties"
+        ],
+        "details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "FunctionName",
+              "RequiresRecreation": "Always"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "ResourceReference",
+            "CausingEntity": "RequestVersion"
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "key": "RedemptionArtifactVersion",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "ApprovalCodeSha256",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "RequestDynamoKeyArn",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "EnableRedemption",
+        "value": "true"
+      },
+      {
+        "key": "AuthTable",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "RequestCodeSha256",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "LwaClientId",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "LinksTable",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "ExistingApiId",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "StateSecretArn",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "RedemptionArtifactKey",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "ApprovalDesignation",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "LambdaEnvironmentKeyArn",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "ApprovalArtifactKey",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "RequestsTable",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "AuditTable",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "PrivateDynamoKeyArn",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "ReleaseId",
+        "value": "flo-fictional-a-activation-review-20260908t052523z"
+      },
+      {
+        "key": "EnableApproval",
+        "value": "true"
+      },
+      {
+        "key": "ApprovalsTable",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "RequestArtifactKey",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "ArtifactBucket",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "ApprovalArtifactVersion",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "EnableEnrollment",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "PublishRoutes",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "RedemptionCodeSha256",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "PublicOrigin",
+        "value": "NOT_DISPLAYED"
+      },
+      {
+        "key": "RequestArtifactVersion",
+        "value": "NOT_DISPLAYED"
+      }
+    ]
+  },
+  "validation": {
+    "event_count": 2,
+    "response_keys": [
+      "OperationEvents"
+    ],
+    "events": [
+      {
+        "EventType": "STACK_EVENT",
+        "Timestamp": "2026-09-08T05:25:35.021000+00:00"
+      },
+      {
+        "EventType": "STACK_EVENT",
+        "Timestamp": "2026-09-08T05:25:24.109000+00:00"
+      }
+    ],
+    "noValidationErrors": true
+  },
+  "templateSha256": "3ea203684f5d20da8ecacee902623de5c127a447b362a119ace6ddc132645bbc",
+  "privateDesignationValue": "OMITTED"
+}

@@ -1,0 +1,631 @@
+{
+  "status": "DEPLOYED_VERIFIED_WITHIN_RECORDED_SCOPE",
+  "changeSet": {
+    "created": true,
+    "arn": "arn:aws:cloudformation:us-west-2:114599789754:changeSet/flo-fictional-a-activation-review-20260908t052523z/294cba33-4ecc-422f-b815-bf5ae020f18c",
+    "name": "flo-fictional-a-activation-review-20260908t052523z",
+    "designation_expires_at": "2026-09-08T09:25:13.430000+00:00",
+    "executed": false
+  },
+  "execution": {
+    "execution_requested": true,
+    "response": {},
+    "requested_at": "2026-09-08T05:33:50.187850+00:00"
+  },
+  "stack": {
+    "status": "UPDATE_COMPLETE",
+    "outputs": [
+      {
+        "OutputKey": "RequestVersionArn",
+        "OutputValue": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request:4",
+        "Description": "Exact numeric published version; not a grant to invoke it"
+      },
+      {
+        "OutputKey": "RedemptionVersionArn",
+        "OutputValue": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:4",
+        "Description": "Exact numeric published version; not a grant to invoke it"
+      },
+      {
+        "OutputKey": "ApprovalVersionArn",
+        "OutputValue": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:4",
+        "Description": "Exact numeric published version; not a grant to invoke it"
+      }
+    ]
+  },
+  "verification": {
+    "snapshots": {
+      "flo-customer-enrollment": [
+        {
+          "id": "ApprovalBaseline",
+          "physical": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-ApprovalBaseline-mm9JMQgkjTr2",
+          "type": "AWS::IAM::ManagedPolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "ApprovalBoundary",
+          "physical": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-ApprovalBoundary-plkn3LDorvXU",
+          "type": "AWS::IAM::ManagedPolicy",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "ApprovalFunction",
+          "physical": "flo-customer-enrollment-approval",
+          "type": "AWS::Lambda::Function",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "ApprovalLogs",
+          "physical": "/aws/lambda/flo-customer-enrollment-approval",
+          "type": "AWS::Logs::LogGroup",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "ApprovalRole",
+          "physical": "flo-customer-enrollment-ApprovalRole-wvLVawLnTqSU",
+          "type": "AWS::IAM::Role",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "ApprovalVersion",
+          "physical": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:4",
+          "type": "AWS::Lambda::Version",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "PairingAssetPermission",
+          "physical": "flo-customer-enrollment-PairingAssetPermission-yM4wm4YABAtR",
+          "type": "AWS::Lambda::Permission",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "PairingAssetRoute",
+          "physical": "kh8uktm",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "PairingIntegration",
+          "physical": "ie1vc3g",
+          "type": "AWS::ApiGatewayV2::Integration",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "PairingPagePermission",
+          "physical": "flo-customer-enrollment-PairingPagePermission-WNXt1kFMuGxr",
+          "type": "AWS::Lambda::Permission",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "PairingPageRoute",
+          "physical": "wpa3o10",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "RedeemPairingPermission",
+          "physical": "flo-customer-enrollment-RedeemPairingPermission-e2WLnvcIMZpl",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "RedeemPairingRoute",
+          "physical": "g87ly6m",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "RedemptionBaseline",
+          "physical": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RedemptionBaseline-AXxjCf1CAWy7",
+          "type": "AWS::IAM::ManagedPolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "RedemptionBoundary",
+          "physical": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RedemptionBoundary-fbazc5gSTyOD",
+          "type": "AWS::IAM::ManagedPolicy",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "RedemptionFunction",
+          "physical": "flo-customer-enrollment-redemption",
+          "type": "AWS::Lambda::Function",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "RedemptionLogs",
+          "physical": "/aws/lambda/flo-customer-enrollment-redemption",
+          "type": "AWS::Logs::LogGroup",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "RedemptionRole",
+          "physical": "flo-customer-enrollment-RedemptionRole-MYVEkFY2DErc",
+          "type": "AWS::IAM::Role",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "RedemptionVersion",
+          "physical": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:4",
+          "type": "AWS::Lambda::Version",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "RequestBaseline",
+          "physical": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RequestBaseline-TyMclGrvfSRT",
+          "type": "AWS::IAM::ManagedPolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "RequestBoundary",
+          "physical": "arn:aws:iam::114599789754:policy/flo-customer-enrollment-RequestBoundary-ZRxKvHtuLqmA",
+          "type": "AWS::IAM::ManagedPolicy",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "RequestFunction",
+          "physical": "flo-customer-enrollment-request",
+          "type": "AWS::Lambda::Function",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "RequestLogs",
+          "physical": "/aws/lambda/flo-customer-enrollment-request",
+          "type": "AWS::Logs::LogGroup",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "RequestRole",
+          "physical": "flo-customer-enrollment-RequestRole-LPnqKCZ2cZSK",
+          "type": "AWS::IAM::Role",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "RequestVersion",
+          "physical": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request:4",
+          "type": "AWS::Lambda::Version",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "StartPairingPermission",
+          "physical": "flo-customer-enrollment-StartPairingPermission-wc4ud19UEdlp",
+          "type": "AWS::Lambda::Permission",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "StartPairingRoute",
+          "physical": "q12o9e1",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        }
+      ],
+      "flo-customer-enrollment-state": [
+        {
+          "id": "EnrollmentApprovals",
+          "physical": "flo-customer-enrollment-state-EnrollmentApprovals-ML6AAB8VPSMT",
+          "type": "AWS::DynamoDB::Table",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "EnrollmentAudit",
+          "physical": "flo-customer-enrollment-state-EnrollmentAudit-1P1MOJ6CMERH3",
+          "type": "AWS::DynamoDB::Table",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "EnrollmentRequests",
+          "physical": "flo-customer-enrollment-state-EnrollmentRequests-1DISWL19S1ZRK",
+          "type": "AWS::DynamoDB::Table",
+          "status": "CREATE_COMPLETE"
+        }
+      ],
+      "flo-customer-staging": [
+        {
+          "id": "AccessLogs",
+          "physical": "flo-customer-staging-AccessLogs-cLu3brPSgZes",
+          "type": "AWS::Logs::LogGroup",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "AuthState",
+          "physical": "flo-customer-staging-AuthState-17UXOCYCV0R2C",
+          "type": "AWS::DynamoDB::Table",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "CustomerApi",
+          "physical": "i4ceh4qpdg",
+          "type": "AWS::ApiGatewayV2::Api",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "CustomerFunction",
+          "physical": "flo-customer-staging-http",
+          "type": "AWS::Lambda::Function",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "id": "CustomerIntegration",
+          "physical": "qfwnq4s",
+          "type": "AWS::ApiGatewayV2::Integration",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "CustomerInvokePermission",
+          "physical": "flo-customer-staging-CustomerInvokePermission-kXP5P9ZXMeor",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "CustomerLinks",
+          "physical": "flo-customer-staging-CustomerLinks-RL0X18FE6W9W",
+          "type": "AWS::DynamoDB::Table",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "CustomerRepairs",
+          "physical": "flo-customer-staging-CustomerRepairs-1TU01CXBBGKYE",
+          "type": "AWS::DynamoDB::Table",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "CustomerRole",
+          "physical": "flo-customer-staging-CustomerRole-F3EBVfIp3zcy",
+          "type": "AWS::IAM::Role",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "CustomerRoute",
+          "physical": "9v2n2sm",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "CustomerRuntimePolicy",
+          "physical": "arn:aws:iam::114599789754:policy/flo-customer-staging-CustomerRuntimePolicy-N49ZPkj65PYz",
+          "type": "AWS::IAM::ManagedPolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "CustomerStage",
+          "physical": "$default",
+          "type": "AWS::ApiGatewayV2::Stage",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "FunctionLogs",
+          "physical": "/aws/lambda/flo-customer-staging-http",
+          "type": "AWS::Logs::LogGroup",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "id": "StateEncryptionKey",
+          "physical": "arn:aws:secretsmanager:us-west-2:114599789754:secret:StateEncryptionKey-mGZvNejXxrn2-nqgYZa",
+          "type": "AWS::SecretsManager::Secret",
+          "status": "CREATE_COMPLETE"
+        }
+      ]
+    },
+    "data_and_customer_site_resource_ids_unchanged": true,
+    "functions": [
+      {
+        "kind": "request",
+        "version": "4",
+        "state": "Active",
+        "code_sha256": "OCL+oXzDNLN2Axvyl0dWUzr7i698S6UlIKKzQ9QQh/4=",
+        "code_matches_retained_v3": true,
+        "reserved_concurrency": 1,
+        "memory": 256,
+        "timeout": 20,
+        "old_v3_retained": true,
+        "enrollment_enabled": "true",
+        "request_redemption_target": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:4"
+      },
+      {
+        "kind": "redemption",
+        "version": "4",
+        "state": "Active",
+        "code_sha256": "nXIUeJbldwMnzh8Mb2oMlSnp2u5JUs3GtpaAek48tlQ=",
+        "code_matches_retained_v3": true,
+        "reserved_concurrency": 1,
+        "memory": 256,
+        "timeout": 10,
+        "old_v3_retained": true,
+        "enrollment_enabled": "true"
+      },
+      {
+        "kind": "approval",
+        "version": "4",
+        "state": "Active",
+        "code_sha256": "mLliFC/rg/nKjkoD3RihLAwZjo7RWg4yGkFIQs/GDTM=",
+        "code_matches_retained_v3": true,
+        "reserved_concurrency": 1,
+        "memory": 256,
+        "timeout": 10,
+        "old_v3_retained": true,
+        "private_approval_enabled": "true"
+      }
+    ],
+    "routes": [
+      {
+        "key": "$default",
+        "target": "integrations/qfwnq4s",
+        "authorization_type": "NONE"
+      },
+      {
+        "key": "POST /enrollment/redeem",
+        "target": "integrations/ie1vc3g",
+        "authorization_type": "NONE"
+      },
+      {
+        "key": "GET /pairing.js",
+        "target": "integrations/ie1vc3g",
+        "authorization_type": "NONE"
+      },
+      {
+        "key": "POST /enrollment/request",
+        "target": "integrations/ie1vc3g",
+        "authorization_type": "NONE"
+      },
+      {
+        "key": "GET /pairing",
+        "target": "integrations/ie1vc3g",
+        "authorization_type": "NONE"
+      }
+    ],
+    "integrations": [
+      {
+        "id": "ie1vc3g",
+        "uri": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request:4"
+      },
+      {
+        "id": "qfwnq4s",
+        "uri": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-staging-http"
+      }
+    ],
+    "request_v4_policy": {
+      "Version": "2012-10-17",
+      "Id": "default",
+      "Statement": [
+        {
+          "Sid": "flo-customer-enrollment-RedeemPairingPermission-e2WLnvcIMZpl",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "apigateway.amazonaws.com"
+          },
+          "Action": "lambda:InvokeFunction",
+          "Resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request:4",
+          "Condition": {
+            "StringEquals": {
+              "AWS:SourceAccount": "114599789754"
+            },
+            "ArnLike": {
+              "AWS:SourceArn": "arn:aws:execute-api:us-west-2:114599789754:i4ceh4qpdg/$default/POST/enrollment/redeem"
+            }
+          }
+        },
+        {
+          "Sid": "flo-customer-enrollment-PairingAssetPermission-yM4wm4YABAtR",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "apigateway.amazonaws.com"
+          },
+          "Action": "lambda:InvokeFunction",
+          "Resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request:4",
+          "Condition": {
+            "StringEquals": {
+              "AWS:SourceAccount": "114599789754"
+            },
+            "ArnLike": {
+              "AWS:SourceArn": "arn:aws:execute-api:us-west-2:114599789754:i4ceh4qpdg/$default/GET/pairing.js"
+            }
+          }
+        },
+        {
+          "Sid": "flo-customer-enrollment-StartPairingPermission-wc4ud19UEdlp",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "apigateway.amazonaws.com"
+          },
+          "Action": "lambda:InvokeFunction",
+          "Resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request:4",
+          "Condition": {
+            "StringEquals": {
+              "AWS:SourceAccount": "114599789754"
+            },
+            "ArnLike": {
+              "AWS:SourceArn": "arn:aws:execute-api:us-west-2:114599789754:i4ceh4qpdg/$default/POST/enrollment/request"
+            }
+          }
+        },
+        {
+          "Sid": "flo-customer-enrollment-PairingPagePermission-WNXt1kFMuGxr",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "apigateway.amazonaws.com"
+          },
+          "Action": "lambda:InvokeFunction",
+          "Resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-request:4",
+          "Condition": {
+            "StringEquals": {
+              "AWS:SourceAccount": "114599789754"
+            },
+            "ArnLike": {
+              "AWS:SourceArn": "arn:aws:execute-api:us-west-2:114599789754:i4ceh4qpdg/$default/GET/pairing"
+            }
+          }
+        }
+      ]
+    },
+    "operator_inline_policies": []
+  },
+  "boundary": {
+    "defaultVersion": "v6",
+    "target": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:4",
+    "logs": [
+      {
+        "name": "/aws/lambda/flo-customer-enrollment-approval",
+        "retention_days": 7
+      },
+      {
+        "name": "/aws/lambda/flo-customer-enrollment-redemption",
+        "retention_days": 7
+      },
+      {
+        "name": "/aws/lambda/flo-customer-enrollment-request",
+        "retention_days": 7
+      }
+    ],
+    "simulation": {
+      "evaluations": [
+        {
+          "action": "lambda:InvokeFunction",
+          "aggregate_decision": "explicitDeny",
+          "resources": [
+            {
+              "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:4",
+              "decision": "allowed"
+            },
+            {
+              "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption:3",
+              "decision": "explicitDeny"
+            },
+            {
+              "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-redemption",
+              "decision": "explicitDeny"
+            },
+            {
+              "resource": "arn:aws:lambda:us-west-2:114599789754:function:flo-customer-enrollment-approval:4",
+              "decision": "explicitDeny"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "http": {
+    "checkedAt": "2026-09-08T05:37:51.954Z",
+    "checks": [
+      {
+        "path": "/",
+        "method": "GET",
+        "status": 200,
+        "variant": "ordinary",
+        "requestId": "DXXMdghxPHcEMkQ=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/privacy",
+        "method": "GET",
+        "status": 200,
+        "variant": "ordinary",
+        "requestId": "DXXMyicmPHcEMWQ=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/terms",
+        "method": "GET",
+        "status": 200,
+        "variant": "ordinary",
+        "requestId": "DXXM-gVhvHcEMDw=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/pairing",
+        "method": "GET",
+        "status": 200,
+        "variant": "ordinary",
+        "requestId": "DXXNJiJ4PHcEMaw=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/pairing.js",
+        "method": "GET",
+        "status": 200,
+        "variant": "ordinary",
+        "requestId": "DXXNiixYvHcEMHQ=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/auth/session",
+        "method": "GET",
+        "status": 401,
+        "variant": "ordinary",
+        "requestId": "DXXNuiFzvHcEMYQ=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/enrollment/request",
+        "method": "POST",
+        "status": 401,
+        "variant": "ordinary",
+        "requestId": "DXXN6h5uvHcEMbQ=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/enrollment/redeem",
+        "method": "POST",
+        "status": 401,
+        "variant": "ordinary",
+        "requestId": "DXXOHg64PHcEM4w=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/enrollment/redeem",
+        "method": "POST",
+        "status": 403,
+        "variant": "synthetic-header",
+        "requestId": "DXXOTi5wPHcEMrg=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/enrollment/redeem",
+        "method": "POST",
+        "status": 401,
+        "variant": "synthetic-header",
+        "requestId": "DXXOfiKUvHcEMuw=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/enrollment/redeem",
+        "method": "POST",
+        "status": 401,
+        "variant": "synthetic-header",
+        "requestId": "DXXOrj72PHcEMnQ=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/api/customer/command",
+        "method": "POST",
+        "status": 401,
+        "variant": "ordinary",
+        "requestId": "DXXO8jDDvHcEMHQ=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/api/customer/command",
+        "method": "POST",
+        "status": 401,
+        "variant": "synthetic-header",
+        "requestId": "DXXPIiV9PHcEMhA=",
+        "securityHeaders": "pass"
+      },
+      {
+        "path": "/alexa/mcp",
+        "method": "GET",
+        "status": 401,
+        "variant": "ordinary",
+        "requestId": "DXXPUg4fvHcEMtg=",
+        "securityHeaders": "pass"
+      }
+    ],
+    "credentialFree": true,
+    "realAccountLinkingTest": false
+  },
+  "notTested": [
+    "Real non-root operator approval of fresh authenticated request",
+    "Customer invitation redemption",
+    "Hosted linked customer A allowed and customer B rejected",
+    "Official Alexa+ account linking/device/certification"
+  ],
+  "noCustomerLinkingPerformed": true
+}
