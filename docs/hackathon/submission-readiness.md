@@ -2,7 +2,26 @@
 
 Audit date: 2026-09-04
 
-## Latest checkpoint — September 8, 2026
+## Latest release checkpoint — September 8, 2026
+
+The [replacement video](https://www.youtube.com/watch?v=5BxqSCW_XNc) is Public after
+separate owner approval. It shows the corrected local workflow with English audio
+and captions; watch-page playback/captions were checked in the signed-in browser.
+The owner retained the automatic YouTube thumbnail. Release commit `c63121b` has
+[green verification and actual Docker CI jobs](https://github.com/agammann/flo/actions/runs/34201132288).
+Fresh local checks passed: 148 application tests, zero failures, three platform
+skips, plus lint and typecheck.
+
+The [Devpost portfolio page](https://devpost.com/software/flo-yozfdv) now contains
+the core write-up, technologies and new video. The API save published that page;
+it did not finalize the event entry. Live event status remains DRAFT with no
+submission timestamp. The three required user declarations were confirmed in
+chat; event answers are prepared in [the current packet](../../devpost-submission.md)
+and [feedback draft](devpost-feedback-answers.md). Final entry needs separate
+approval. Official Alexa host/account-linking/device/certification and AgentCore
+remain incomplete, not implied by the allowed hackathon simulation route.
+
+## Earlier technical checkpoint — September 8, 2026
 
 **Hosted repair ownership check now passes:** after separate approval, exactly two
 fictional projections were inserted without overwrites and verified by strong

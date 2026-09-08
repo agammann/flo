@@ -19,7 +19,7 @@
     "codex_usage": ""
   },
   "current_stage": "prepare-submission",
-  "completed_stages": ["start-hackathon", "review"],
+  "completed_stages": ["start-hackathon", "review", "prepare-submission"],
   "rules_acknowledged": true,
   "learning": {
     "status": "not-started",
@@ -32,5 +32,5 @@
     "draft_file": "devpost-submission.md",
     "status": "drafting"
   },
-  "next_command": "prepare-submission"
+  "next_command": "submit-project"
 }

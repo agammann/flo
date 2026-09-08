@@ -236,8 +236,10 @@ Read `SECURITY.md` and `docs/architecture/security.md`. The current local mode i
 ## Hackathon material
 
 - `docs/demo/demo-script.md` — under-three-minute walkthrough
-- `docs/demo/flo-demo.en.vtt` — reviewed English captions for the [2:41 demo video](https://youtu.be/ZjROvjL2smo)
-- `docs/hackathon/devpost-submission.md` — evidence-conscious submission draft
+- [Public 2:54 replacement demo](https://www.youtube.com/watch?v=5BxqSCW_XNc) — corrected comparison/estimate workflow, original Ryan voice and English captions
+- [Replacement captions and verification](docs/demo/replacement-cut-2026-09-08.md) — the original September 4 video is historical
+- [Current submission packet](devpost-submission.md) and [Devpost project page](https://devpost.com/software/flo-yozfdv) — publishing the portfolio page does not complete the hackathon entry
+- [Five prepared feedback answers](docs/hackathon/devpost-feedback-answers.md)
 - `docs/hackathon/friction-log.md` — constructive development friction log
 - `docs/hackathon/product-feedback.md` — completion feedback draft
 - [Public source repository](https://github.com/agammann/flo)

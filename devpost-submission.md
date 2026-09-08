@@ -1,9 +1,14 @@
 # Flo
 
-Local working draft, September 8, 2026. These updates have not been sent to Devpost.
+Local working packet, September 8, 2026. The core project details and replacement
+video link have been saved with owner approval and read-back. Devpost's update
+operation published the project portfolio page; its separate hackathon entry is
+still DRAFT with no event submission timestamp. This save was not a private-only
+operation, despite our earlier expectation. The hackathon entry is not finalized.
 This replaces the historical draft in `docs/hackathon/devpost-submission.md`.
-The replacement video is rendered and its cut approved by the owner; public video
-publication and user-only declarations remain separate release gates.
+The replacement video is Public following the owner's separate approval. Its watch
+page playback and English captions were verified in the signed-in browser. User-only
+declarations were confirmed by the owner; final Devpost entry approval remains separate.
 
 ## One-line Summary
 
@@ -145,7 +150,7 @@ requires a separately designated test identity and authorization.
 
 Evidence: [hosted pairing](docs/verification/fictional-a-pairing-completed-2026-09-08.md),
 [hosted A/B isolation](docs/verification/customer-repair-fixture-live-2026-09-08.md),
-and [CI for source 10c65fb](https://github.com/agammann/flo/actions/runs/34197470959).
+and [CI for release source c63121b](https://github.com/agammann/flo/actions/runs/34201132288).
 That CI run proves the named source, not future changes or official Alexa testing.
 
 ## Public Demo Link
@@ -161,8 +166,12 @@ https://github.com/agammann/flo — MIT license; GitHub username `agammann`.
 
 ## Demo Video
 
-**Replacement rendered; owner approved the cut. Public publication is pending.**
-Final public URL: **pending publication and public watch-page verification**.
+**Public replacement video, published with separate owner approval:**
+https://www.youtube.com/watch?v=5BxqSCW_XNc
+
+YouTube saved Public visibility. Watch-page playback and the uploaded English
+caption track were checked after publication. This was a signed-in browser check;
+an independent web fetch was throttled, so signed-out playback is not claimed.
 
 `Flo-demo-2026-09-08.mp4` is 2:53.99, with the original Ryan narration voice and
 46 English caption cues. It records the real local MCP workflow and corrected
@@ -174,9 +183,8 @@ The original `ZjROvjL2smo` cut and its caption track are historical. Do not past
 that URL into the final form as proof of the corrected release. Use the
 [replacement plan](docs/demo/video-reconciliation.md) and
 [historical narration draft](docs/demo/replacement-narration.md).
-Keep
-"not made for kids" as instructed. Review the rendered audio, captions, title,
-thumbnail and description before separate publication approval.
+"Not made for kids" remains selected. The owner declined a custom thumbnail;
+YouTube's automatic thumbnail is retained. The original video is unchanged.
 
 ## Screenshot Shot List
 
@@ -195,9 +203,12 @@ No authenticated hosted screenshot is claimed; its dated test report is separate
 The local packet is now reconciled to dated pairing/isolation evidence. The
 recorded application source is checkpoint `10c65fb` plus estimate display fix
 `578fdcd8677d1411106d2a4730c210e6bbfaaf4e`. Local compilation, tests, lint and typecheck passed after that fix.
-The final pushed documentation/source commit needs a fresh green CI result.
+Release commit `c63121b73ec12d64fbc7e7edc92cffb463aac4e3` has a verified green CI
+run (both verify and docker-demo jobs). A fresh local regression run on September 8
+reported 148 passed, zero failures and three platform-specific skips.
 The old video cannot establish the corrected ranking or hosted identity flow.
-This draft does not certify rule eligibility or constitute a Devpost form write.
+The public core project page is https://devpost.com/software/flo-yozfdv (project 1416486).
+Core project details are distinct from event-specific custom answers and final entry.
 
 ## Known Limitations
 
@@ -216,7 +227,8 @@ This draft does not certify rule eligibility or constitute a Devpost form write.
 ## TODO Official Form Fields
 
 Mapped from the live September 8 Devpost form; re-read it before final entry.
-These are draft answers, not accepted legal declarations or remote form state.
+These are prepared answers, not a claim that event-specific fields are saved remotely.
+The owner explicitly confirmed the three displayed declarations on September 8, 2026.
 
 | Field ID | Field | Draft answer / remaining input |
 | --- | --- | --- |
@@ -238,8 +250,8 @@ These are draft answers, not accepted legal declarations or remote form state.
 | 28300 | Feature Requests, optional | See product-feedback.md; distinguish requested tools from tools not yet tested |
 | 28301 | Friction Log, optional | https://github.com/agammann/flo/blob/main/docs/hackathon/friction-log.md |
 | 28302 | Testing Link, optional | Hosted customer URL above, with limitations and local setup fallback |
-| 28303–28307 | Five product-feedback answers | Source: docs/hackathon/product-feedback.md; reshape by question before form entry |
-| 28308–28310 | Age, jurisdiction, employee declarations | Owner must explicitly attest to the actual checkbox text; rules acknowledgment does not prefill these |
+| 28303–28307 | Five product-feedback answers | Ready in docs/hackathon/devpost-feedback-answers.md, based on product-feedback.md |
+| 28308–28310 | Age, jurisdiction, employee declarations | Owner explicitly confirmed all three actual declarations on September 8, 2026; not yet transmitted as event answers |
 
 The current official form does not request a Codex session ID; none is included.
 

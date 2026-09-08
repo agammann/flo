@@ -1,8 +1,12 @@
 # Flo replacement cut — September 8, 2026
 
-The owner approved the rendered cut for continued release preparation. Upload,
-public visibility, a final watch-page check and Devpost publication are separate
-steps. This file does not claim any of those steps are complete.
+The owner separately approved the rendered cut, private upload and Public release.
+The [replacement video](https://www.youtube.com/watch?v=5BxqSCW_XNc) is Public.
+Studio saved that status; the watch page played and displayed the uploaded English
+caption track in the signed-in browser. An independent web fetch was throttled,
+so signed-out playback is not claimed. YouTube's automatic thumbnail is retained
+at the owner's request. The Devpost portfolio page is public, but the event entry
+still has no submission timestamp as of this checkpoint.
 
 ## Asset identity
 
@@ -59,10 +63,11 @@ plugin was unavailable. The page/title, nonblank content and work-order interact
 were checked; no page exceptions occurred. A missing `/favicon.ico` caused a
 non-blocking console 404. Mobile and official Alexa surfaces were not tested here.
 
-Before release: verify a fresh green source CI, review thumbnail/title/description,
-confirm applicable asset permissions, obtain final public-release approval, verify
-the public watch page and update the Devpost draft with that real URL. Preserve
-the owner's “not made for kids” audience selection.
+Release source `c63121b` passed [CI verification and Docker jobs](https://github.com/agammann/flo/actions/runs/34201132288).
+The owner approved publication after cut review. Title, description, English
+subtitle track and “not made for kids” were saved. No custom thumbnail was requested
+for the final release. The new video URL is saved on [Flo's Devpost page](https://devpost.com/software/flo-yozfdv).
+Final hackathon submission remains a separate approval and verified action.
 
 ## Actual local UI shots
 
