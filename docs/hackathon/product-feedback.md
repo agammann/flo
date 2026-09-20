@@ -64,7 +64,7 @@ Updated September 8, 2026. This feedback covers Alexa+ documentation, the MCP Ty
 
 ## Supporting development tools
 
-**Use:** TypeScript/Node.js, Zod and Express provide application code and validated HTTP boundaries; pnpm manages the workspace; Docker runs isolated integration environments; GitHub Actions checks builds and regressions. Codex assisted implementation, debugging, test authoring and evidence review.
+**Use:** TypeScript/Node.js, Zod and Express provide application code and validated HTTP boundaries; pnpm manages the workspace; Docker runs isolated integration environments; GitHub Actions checks builds and regressions.
 
 **Worked well:** Typed domain boundaries and repeatable CI made transaction fixes reviewable. Linux Docker tests covered POSIX contracts skipped on Windows. **Needs work:** Runtime/action version drift and differences between Windows file permissions and POSIX need explicit checks. **Onboarding:** Workspace-local runtime paths and isolated containers resolved host constraints; no cloud account is required for the local shop demo. **Use again:** Yes, with pinned dependencies, clear platform-specific tests and source-linked verification. This does not claim Kiro, Strands or AgentCore usage.
 
