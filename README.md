@@ -255,4 +255,4 @@ Read `SECURITY.md` and `docs/architecture/security.md`. The current local mode i
 
 ## Open source
 
-Flo is licensed under the [MIT License](LICENSE). Contributions should keep adapter boundaries industry-neutral and preserve the rule that deterministic systems—not a model—own money, compatibility, authorization, inventory, approvals, and transaction state.
+Flo is licensed under the [MIT License](LICENSE). Project creator: [agammann](https://github.com/agammann). Contributions should keep adapter boundaries industry-neutral and preserve the rule that deterministic systems—not a model—own money, compatibility, authorization, inventory, approvals, and transaction state.
