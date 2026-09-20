@@ -62,13 +62,13 @@ model, owns part choice, fitment, money, permissions, approval and transaction
 state. Bedrock is not used to decide repair ownership. Official Alexa+ account
 linking, host integration, MCP App packaging and certification remain incomplete.
 
-## How We Used Codex
+## Implementation and verification
 
-Codex assisted the TypeScript implementation, deterministic engine and permission
-tests, transaction-integrity debugging, Docker/CI checks, AWS deployment review,
-and reconciliation of release claims with recorded results. The owner handled
-account sign-in and approved scoped cloud changes. Tests and service read-backs,
-not generated explanations alone, are the evidence for implementation claims.
+The TypeScript implementation, deterministic engine, permission tests,
+transaction-integrity debugging, Docker/CI checks and AWS deployment review
+were reconciled with recorded results. The owner handled account sign-in and
+approved scoped cloud changes. Tests and service read-backs are the evidence
+for implementation claims.
 No Kiro Crew or Strands usage is claimed.
 
 ## Key Features
