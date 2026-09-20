@@ -23,9 +23,8 @@ IAM, KMS and finite-retention CloudWatch logs support deployment and authority
 boundaries. Hosted customer fixtures are separate from local shop state.
 
 TypeScript/Node.js, Zod and Express implement application and validation code;
-pnpm manages the monorepo; Docker and GitHub Actions run repeatable checks. Codex
-assisted implementation, debugging, tests and release-evidence review. No AgentCore,
-Kiro Crew, Strands or official Alexa device/toolkit execution is claimed.
+pnpm manages the monorepo; Docker and GitHub Actions run repeatable checks. No
+AgentCore, Kiro Crew, Strands or official Alexa device/toolkit execution is claimed.
 
 ## 28304 — For each tool, API, or SDK used in your project, what worked well?
 
@@ -46,7 +45,7 @@ and operational boundaries reviewable.
 
 TypeScript, Zod and Express made domain/HTTP contracts explicit. pnpm organized
 shared packages. Docker and GitHub Actions reproduced tests outside the Windows
-host; Codex helped turn observed transaction failures into regression tests.
+host; observed transaction failures informed regression tests.
 
 ## 28305 — For each tool, API, or SDK used in your project, what needs work?
 
@@ -70,7 +69,7 @@ Secrets Manager permissions required deliberate payload/credential minimization.
 
 For TypeScript/Node.js, Zod, Express and pnpm we encountered integration and
 configuration work rather than a confirmed provider defect. Windows/POSIX
-differences required Docker tests; CI and Codex-generated changes still needed
+differences required Docker tests; CI and code changes still needed
 source review and real execution evidence.
 
 ## 28306 — For each tool, API, or SDK used in your project, how was onboarding?
@@ -94,8 +93,8 @@ LWA website login was easier than safe customer mapping: the latter required
 separate enrollment, private operator authority, customer redemption and actual
 denial checks. TypeScript/Node.js, Zod, Express and pnpm were familiar building
 blocks. Workspace-local tooling and Docker addressed Windows host constraints;
-GitHub Actions supplied Linux coverage. Codex accelerated iteration, while tests
-and user-approved hosted operations remained necessary verification steps.
+GitHub Actions supplied Linux coverage. Tests and user-approved hosted
+operations remained necessary verification steps.
 
 ## 28307 — Would you build with these devices and services again?
 
@@ -112,7 +111,7 @@ permissions, encryption and logs. We would preserve the distinction between
 website login and official Alexa service/user authorization. Costs and recovery
 policies still need workload-specific review; throttles are not a dollar cap.
 
-Yes to TypeScript/Node.js, Zod, Express, pnpm, Docker, GitHub Actions and Codex,
+Yes to TypeScript/Node.js, Zod, Express, pnpm, Docker and GitHub Actions,
 with pinned dependencies, platform-specific tests and evidence-linked release
 claims. We have no hands-on conclusion about AgentCore, Kiro Crew, Strands or
 Alexa devices because those are not implemented/tested parts of this project.
