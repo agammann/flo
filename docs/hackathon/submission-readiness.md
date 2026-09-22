@@ -1,8 +1,42 @@
 # Hackathon submission readiness
 
-Audit date: 2026-09-04
+Latest audit: September 21, 2026 (Pacific).
 
-## Latest release checkpoint — September 8, 2026
+## Current release checkpoint — September 21, 2026
+
+Flo is submitted to the Build, Ship, Shape: Amazon Developer Hackathon. Fresh
+Devpost read-back confirms the event's submission timestamp
+`2026-09-08T04:21:41.880-04:00`, the public project page and the replacement video.
+The live deadline remains October 23, 2026 at noon Pacific. The September 16
+rules update still permits the simulated Alexa+ path and requires runnable source;
+the public repository remains MIT licensed. Final eligibility is the organizers'
+decision, not established merely by submission acceptance.
+
+Public source `6c336924add011848762c7d7c16970d344d82c0b` has successful
+[verification and Docker CI jobs](https://github.com/agammann/flo/actions/runs/35490467082).
+Its changes since the prior release are documentation-only. Fresh application,
+script, build, lint, typecheck, Docker workflow and database-contract checks
+passed; see [the full results and limitations](../verification/release-recheck-2026-09-21.md).
+
+The AWS customer site's home, privacy and terms pages return 200; an anonymous
+session returns 401 without repair data. A fresh AWS Core read-only review found
+all five Flo stacks complete, seven-day log retention, configured concurrency
+limits, encrypted active tables and the expected backup settings. The selected
+seven-day window reported 25 customer-service invocations, zero Lambda errors,
+zero throttles and zero API 5xx responses; enrollment and narrator had no reported
+invocation datapoints. The model-attempt allowance remained 98 available/2 used.
+No AWS resources or permissions were changed. Real sign-in and linked-customer
+results remain dated September 8 evidence, not freshly repeated results.
+
+Official Alexa+ service/user account linking, host/device tests, certification
+and AgentCore remain incomplete. The AWS customer site and local shop simulator
+are separate; there is no claim that the full shop workflow is deployed on AWS.
+
+## Historical pre-submission checkpoint — September 8, 2026
+
+The paragraphs below describe the state before the final event submission later
+that day. Their draft, unsubmitted and pending-publication statements are historical,
+not the current release status. The current checkpoint above supersedes them.
 
 The [replacement video](https://www.youtube.com/watch?v=5BxqSCW_XNc) is Public after
 separate owner approval. It shows the corrected local workflow with English audio

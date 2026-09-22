@@ -5,8 +5,10 @@ The [replacement video](https://www.youtube.com/watch?v=5BxqSCW_XNc) is Public.
 Studio saved that status; the watch page played and displayed the uploaded English
 caption track in the signed-in browser. An independent web fetch was throttled,
 so signed-out playback is not claimed. YouTube's automatic thumbnail is retained
-at the owner's request. The Devpost portfolio page is public, but the event entry
-still has no submission timestamp as of this checkpoint.
+at the owner's request. The event entry was subsequently submitted with separate
+owner approval on September 8 at `2026-09-08T04:21:41.880-04:00`; fresh Devpost
+read-back on September 21 still returns that submission timestamp. The dated
+recording and verification details below describe the September 8 release.
 
 ## Asset identity
 
@@ -67,7 +69,8 @@ Release source `c63121b` passed [CI verification and Docker jobs](https://github
 The owner approved publication after cut review. Title, description, English
 subtitle track and “not made for kids” were saved. No custom thumbnail was requested
 for the final release. The new video URL is saved on [Flo's Devpost page](https://devpost.com/software/flo-yozfdv).
-Final hackathon submission remains a separate approval and verified action.
+The later final hackathon submission is complete; it did not establish official
+Alexa+ account linking, device validation or certification.
 
 ## Actual local UI shots
 

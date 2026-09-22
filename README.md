@@ -10,6 +10,22 @@ Flo connects conversational commands to structured repair information and servic
 
 For the current competition evidence and remaining external release gates, see [`docs/hackathon/submission-readiness.md`](docs/hackathon/submission-readiness.md).
 
+## Try Flo
+
+| Experience | Where to try it | What it demonstrates |
+| --- | --- | --- |
+| Complete shop workflow | Run `docker compose up --build`, then open [the local shop](http://127.0.0.1:4200/shop) | Real MCP calls across four simulated services, comparison, estimates, approval, confirmation and scheduling; no AWS credentials required |
+| Local vehicle-owner preview | [Local customer preview](http://127.0.0.1:4200/) after the same startup | Customer-safe status and estimate projections from the local demo |
+| Hosted customer staging | [AWS HTTPS site](https://i4ceh4qpdg.execute-api.us-west-2.amazonaws.com/) | Real Login with Amazon and separately authorized fictional customer access; not the full shop demo |
+| Recorded walkthrough | [Public 2:54 video](https://www.youtube.com/watch?v=5BxqSCW_XNc) | Corrected complete local workflow and clearly dated hosted evidence |
+
+Run the Docker command from a clone of this repository with Docker Desktop's
+Linux engine or Docker Engine/Compose running. Wait for the simulator's listening
+message. The demo is deliberately bound to loopback; do not expose the mock shop
+services publicly. Follow the [shop workflow](#shop-demonstration-workflow) below.
+The hosted site does not automatically enroll judges or synchronize with these
+local records. Do not share private test-account credentials.
+
 ## The problem
 
 Technicians often work with gloves, tools, lifts, machinery, and dirty parts. Looking up a job in one system, checking stock in another, comparing suppliers, rebuilding an estimate, contacting a customer, and then scheduling the repair forces repeated context switching at exactly the wrong moment.
@@ -43,7 +59,7 @@ Open `http://127.0.0.1:4200/shop` for the original operational simulation. It is
 9. Flo returns a transaction summary and executes nothing.
 10. “Confirm.” Flo revalidates authorization, approval, offer, and schedule availability; then it places the order, reserves the bay, updates the work order, and writes audit records.
 
-The integration test at `tests/integration/demo-workflow.test.ts` exercises the stateful workflow using the balanced recommendation and separately verifies gross-profit sorting. The local “best margin” command explicitly interprets margin as gross part profit in dollars, not percentage: it selects the $289 option with $101.15 gross part profit, not the balanced $219 option. The existing video predates this correction and must be reconciled before release. The transport test negotiates `2025-11-25` and invokes real MCP tools.
+The integration test at `tests/integration/demo-workflow.test.ts` exercises the stateful workflow using the balanced recommendation and separately verifies gross-profit sorting. The local “best margin” command explicitly interprets margin as gross part profit in dollars, not percentage: it selects the $289 option with $101.15 gross part profit, not the balanced $219 option. The [September 8 replacement video](https://www.youtube.com/watch?v=5BxqSCW_XNc) shows this corrected ranking and the matching $561.33 estimate; the earlier video is historical. The transport test negotiates `2025-11-25` and invokes real MCP tools.
 
 ## Architecture
 
@@ -238,7 +254,8 @@ Read `SECURITY.md` and `docs/architecture/security.md`. The current local mode i
 - `docs/demo/demo-script.md` — under-three-minute walkthrough
 - [Public 2:54 replacement demo](https://www.youtube.com/watch?v=5BxqSCW_XNc) — corrected comparison/estimate workflow, original Ryan voice and English captions
 - [Replacement captions and verification](docs/demo/replacement-cut-2026-09-08.md) — the original September 4 video is historical
-- [Current submission packet](devpost-submission.md) and [Devpost project page](https://devpost.com/software/flo-yozfdv) — publishing the portfolio page does not complete the hackathon entry
+- [Submission packet](devpost-submission.md) and [Devpost project page](https://devpost.com/software/flo-yozfdv) — event submission recorded September 8 and independently rechecked September 21; portfolio publication and event submission are separate actions
+- [September 21 release recheck](docs/verification/release-recheck-2026-09-21.md) — fresh tests, current rules, read-only AWS configuration/metrics and explicit verification limits
 - [Five prepared feedback answers](docs/hackathon/devpost-feedback-answers.md)
 - `docs/hackathon/friction-log.md` — constructive development friction log
 - `docs/hackathon/product-feedback.md` — completion feedback draft

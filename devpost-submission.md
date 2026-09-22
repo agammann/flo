@@ -1,14 +1,17 @@
 # Flo
 
-Local working packet, September 8, 2026. The core project details and replacement
-video link have been saved with owner approval and read-back. Devpost's update
-operation published the project portfolio page; its separate hackathon entry is
-still DRAFT with no event submission timestamp. This save was not a private-only
-operation, despite our earlier expectation. The hackathon entry is not finalized.
+Submission reference packet, rechecked September 21, 2026 (Pacific). After the
+owner's explicit final approval, the separate hackathon entry was submitted on
+September 8 at `2026-09-08T04:21:41.880-04:00`. A fresh Devpost project read-back
+still returns that event submission timestamp and the replacement video URL.
+Portfolio publication and event submission were separate actions; both are complete.
 This replaces the historical draft in `docs/hackathon/devpost-submission.md`.
-The replacement video is Public following the owner's separate approval. Its watch
-page playback and English captions were verified in the signed-in browser. User-only
-declarations were confirmed by the owner; final Devpost entry approval remains separate.
+The replacement video is Public following the owner's separate approval. Its
+watch page was rechecked for playback, visible English subtitles and 2:54 duration.
+Later edits to this local packet do not automatically change the Devpost entry.
+See [the dated recheck](docs/verification/release-recheck-2026-09-21.md) for scope
+and the distinction between refreshed AWS metadata, historical hosted sign-in
+evidence and the unfinished official Alexa+ certification path.
 
 ## One-line Summary
 
@@ -224,7 +227,13 @@ Core project details are distinct from event-specific custom answers and final e
 - Throttles and finite model-attempt allowance are not an account-wide dollar cap.
 - Production consumer booking requires integration-route review with Amazon.
 
-## TODO Official Form Fields
+## Official form reference
+
+The saved September 8 submission payload contains answers for all 26 current
+form fields; the September 21 requirements comparison found no newly missing
+required field IDs. This is a comparison with the saved payload, not a fresh
+read-back of each answer from the event form. The table below remains reference
+copy; changing it does not modify the submitted entry.
 
 Mapped from the live September 8 Devpost form; re-read it before final entry.
 These are prepared answers, not a claim that event-specific fields are saved remotely.

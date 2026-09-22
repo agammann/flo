@@ -1,8 +1,10 @@
-# Flo — official feedback field drafts
+# Flo — feedback field reference
 
 Prepared September 8, 2026 from `product-feedback.md` for live Devpost fields
-28303–28307. These are local drafts, not a form submission. Observations refer to
-dated project tests, not a new AWS audit or unperformed official Alexa testing.
+28303–28307. The event entry was submitted September 8; these are editable local
+reference copies, not a live view of the submitted answers. Subsequent repository
+edits do not automatically update Devpost. Observations refer to dated project
+tests, not a new AWS audit or unperformed official Alexa testing.
 
 ## 28303 — Which developer tools, APIs, and SDKs did you use and for what?
 
