@@ -4,6 +4,9 @@ import { resolve } from "node:path";
 import { describe, it } from "node:test";
 import { isDemoModeEnabled } from "@flo/mcp";
 
+const readNarratorTemplate = async (): Promise<string> =>
+  (await readFile(resolve("infra/aws/bedrock-narrator/template.yaml"), "utf8")).replace(/\r\n/g, "\n");
+
 describe("Flo runtime configuration", () => {
   it("requires an explicit opt-in to expose demo tools in a production runtime", () => {
     assert.equal(isDemoModeEnabled({ NODE_ENV: "production" }), false);
@@ -32,7 +35,7 @@ describe("Flo runtime configuration", () => {
     assert.doesNotMatch(example, /^ALLOWED_ORIGINS=/m);
   });
   it("keeps finite narrator log retention in source and documents the existing-group import gate", async () => {
-    const template = await readFile(resolve("infra/aws/bedrock-narrator/template.yaml"), "utf8");
+    const template = await readNarratorTemplate();
     const block = template.split("  NarratorLogGroup:")[1]?.split("  NarratorFunction:")[0];
     assert.ok(block);
     assert.match(block, /Type: AWS::Logs::LogGroup/);
@@ -45,7 +48,7 @@ describe("Flo runtime configuration", () => {
   });
 
   it("encrypts finite operational logs without recording customer data or credentials", async () => {
-    const template = await readFile(resolve("infra/aws/bedrock-narrator/template.yaml"), "utf8");
+    const template = await readNarratorTemplate();
     for (const name of ["NarratorLogGroup", "NarratorAccessLogGroup"]) {
       const block = template.split(`  ${name}:\n`)[1]!.split(/\n {2}[A-Za-z]+:\n/)[0]!;
       assert.match(block, /RetentionInDays: 7/);
@@ -60,7 +63,7 @@ describe("Flo runtime configuration", () => {
   });
 
   it("scopes narrator log-key caller access and separates metadata from crypto context", async () => {
-    const template = await readFile(resolve("infra/aws/bedrock-narrator/template.yaml"), "utf8");
+    const template = await readNarratorTemplate();
     const key = template.split("  NarratorLogsKey:\n")[1]!.split("  NarrationAllowanceKey:")[0]!.replace(/^\s*#.*$/gm, "");
     const crypto = key.split("- Sid: NarratorLogCryptoViaCloudWatch\n")[1]?.split("- Sid:")[0];
     const metadata = key.split("- Sid: NarratorLogKeyMetadataViaCloudWatch\n")[1]?.split("- Sid:")[0];
@@ -89,7 +92,7 @@ describe("Flo runtime configuration", () => {
   });
 
   it("keeps a positive bounded concurrency reservation and preserves narrow runtime actions", async () => {
-    const template = await readFile(resolve("infra/aws/bedrock-narrator/template.yaml"), "utf8");
+    const template = await readNarratorTemplate();
     assert.match(template, /^ {6}ReservedConcurrentExecutions: 2(?: #.*)?$/m);
     assert.doesNotMatch(template, /NarratorReservedConcurrency/);
     const role = template.split("  NarratorRole:\n")[1]!.split("  NarratorRuntimePolicy:")[0]!;
@@ -104,7 +107,7 @@ describe("Flo runtime configuration", () => {
   });
 
   it("backs up the allowance without granting runtime restore or general KMS access", async () => {
-    const template = await readFile(resolve("infra/aws/bedrock-narrator/template.yaml"), "utf8");
+    const template = await readNarratorTemplate();
     const table = template.split("  NarrationAllowance:\n")[1]!.split("  NarratorRole:")[0]!;
     assert.match(table, /KMSMasterKeyId: !GetAtt NarrationAllowanceKey.Arn/);
     assert.match(table, /SSEType: KMS/);
@@ -128,7 +131,7 @@ describe("Flo runtime configuration", () => {
     assert.equal(exception.resource, "NarratorFunction");
     assert.deepEqual(exception.exceptions.map(value => value.rule).sort(), ["LAMBDA_DLQ_CHECK", "LAMBDA_INSIDE_VPC"]);
     assert.ok(Date.parse(exception.reviewBy) > Date.now(), "Policy exceptions need owner re-review after their review date");
-    const template = await readFile(resolve("infra/aws/bedrock-narrator/template.yaml"), "utf8");
+    const template = await readNarratorTemplate();
     assert.match(template, /AuthorizationType: AWS_IAM/);
     assert.match(template, /RouteKey: POST \/narrate/);
     assert.doesNotMatch(template, /AWS::Lambda::(Url|EventSourceMapping|EventInvokeConfig)|AWS::Events::Rule|AWS::SNS::Subscription/);

@@ -4,6 +4,8 @@
 
 Flo connects conversational commands to structured repair information and service workflows through MCP. The vehicle-owner preview reviews repair status and customer estimates. The separate shop demo covers diagnostics, compatible parts, supplier availability, approvals, purchasing and scheduling. Both are custom simulations, not a deployed Alexa+ add-on. The adapter boundaries remain extensible beyond automotive repair.
 
+![Flo shop demo showing the selected part, a $561.33 estimate and pending customer approval](docs/demo/release-2026-09-08/estimate.jpg)
+
 > Project status, September 8, 2026: local deterministic engines, four simulated APIs, shop workflow, transaction controls, MCP transport and a read-only vehicle-owner preview are implemented. `/mcp` exposes 28 shop tools in demo mode (25 otherwise); `/customer/mcp` exposes three separate read-only tools only in demo mode and returns 401 otherwise. A separate AWS-hosted customer website supports real Login with Amazon and durable sessions. One independently approved fictional customer completed private approval/redemption and can read its own hosted repair fixture but not another customer's fixture. Sign-in alone never grants repair ownership. These static hosted records are not synchronized with the local shop demo and contain no estimate or schedule. The narrow Bedrock narrator has recorded live verification. Official Alexa+ account linking, add-on deployment, certification, MCP App packaging, AgentCore and durable shop business state remain incomplete.
 
 **Certification is a separate gate from the hackathon.** Alexa+ policy excludes exclusively internal/B2B add-ons. The vehicle-owner preview is the first consumer-facing increment, not a certification-ready release. See the [complete documentation review and implementation tracker](docs/alexa-plus-certification-plan.md).
@@ -169,7 +171,7 @@ flo/
 
 ## Requirements
 
-- Node.js 22 or newer
+- Node.js 22.13 or newer (required by pnpm 11)
 - pnpm 11
 
 No AWS account, commercial supplier key, or private repair-shop integration is needed for the local demo.
@@ -177,8 +179,10 @@ No AWS account, commercial supplier key, or private repair-shop integration is n
 ## Local setup
 
 ```bash
+git clone https://github.com/agammann/flo.git
+cd flo
 cp .env.example .env
-pnpm install
+pnpm install --frozen-lockfile
 pnpm build
 pnpm test
 pnpm dev
@@ -200,6 +204,12 @@ Service endpoints:
 
 In local demo mode, MCP requests can set `x-flo-role` to `technician`, `service_advisor`, `manager`, or `administrator`. Production mode must authenticate identities and must not trust a caller-selected role header.
 
+The shop accepts typed commands even when speech recognition is unavailable or
+blocked. If microphone or speech-service access is refused, the status beside
+the command field explains how to continue by typing. Successful speech input
+depends on the browser and its recognition service; the local workflow does not
+require microphone permission.
+
 ## Commands
 
 ```bash
@@ -207,6 +217,7 @@ pnpm build              # compile every workspace package
 pnpm test               # run compiled unit and integration tests
 pnpm test:unit
 pnpm test:integration
+pnpm test:e2e           # complete HTTP/MCP workflow and transport checks
 pnpm typecheck
 pnpm lint
 pnpm dev:services       # start mock APIs and MCP
@@ -233,11 +244,42 @@ The suite covers:
 Run the same quality gates used by CI:
 
 ```bash
+pnpm install --frozen-lockfile
+pnpm audit --audit-level=low
+pnpm build
+pnpm build:customer
+pnpm build:enrollment
 pnpm lint
 pnpm typecheck
-pnpm build
 pnpm test
+pnpm test:e2e
+node --test scripts/*.test.mjs
+python -m unittest discover -s scripts -p 'test_*.py' -v
 ```
+
+Build before lint and type checking in a fresh checkout: workspace imports resolve
+through the generated declaration files. `pnpm test:e2e` starts disposable HTTP
+services on random loopback ports and exercises the diagnosis-to-schedule flow
+and real MCP negotiation. It needs no running demo, Docker or AWS account. The
+Python checks use Python 3.13 in CI; use `python3` if that is your installed command.
+
+For the container startup and database transaction checks, run:
+
+```bash
+docker compose up --build -d
+node scripts/docker-smoke.mjs
+docker compose -p flo-customer-test -f docker-compose.customer-test.yml up --abort-on-container-exit --exit-code-from customer-contract
+docker compose -p flo-customer-test -f docker-compose.customer-test.yml down --volumes --remove-orphans
+docker compose down --volumes --remove-orphans
+```
+
+The HTTP smoke resets the local demo before checking approval, confirmed ordering
+and scheduling, resumed context and customer-only estimates. Run it only against
+a disposable local demo. The database suite uses DynamoDB Local in an isolated
+network with synthetic identities; it does not verify live AWS IAM or Amazon
+sign-in. Platform-specific filesystem tests run on Linux; Windows refusal tests
+run on Windows. CI checks both platforms. Hosted AWS observations above remain
+dated September evidence.
 
 ## Adding an integration
 

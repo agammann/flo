@@ -143,10 +143,26 @@ $("#reset").addEventListener("click", async () => {
 const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (Recognition) {
   const recognition = new Recognition(); recognition.lang = "en-US"; recognition.interimResults = false;
-  recognition.addEventListener("start", () => talk.classList.add("listening"));
-  recognition.addEventListener("end", () => talk.classList.remove("listening"));
+  let recognizing = false;
+  const voiceNote = $("#voiceNote");
+  recognition.addEventListener("start", () => { talk.classList.add("listening"); voiceNote.textContent = "Listening… Speak a shop command."; });
+  recognition.addEventListener("end", () => {
+    recognizing = false; talk.classList.remove("listening");
+    if (voiceNote.textContent.startsWith("Listening")) voiceNote.textContent = "Voice input uses your browser’s speech recognition when available.";
+  });
+  recognition.addEventListener("error", (event) => {
+    voiceNote.textContent = ["not-allowed", "service-not-allowed"].includes(event.error)
+      ? "Voice input is blocked by the browser or speech service. Type a command to continue."
+      : event.error === "no-speech" ? "No speech was detected. Try again or type a command."
+        : "Voice input could not finish. Try again or type a command.";
+  });
   recognition.addEventListener("result", (event) => { const command = event.results[0][0].transcript; input.value = command; void runCommand(command); });
-  talk.addEventListener("click", () => recognition.start());
+  talk.addEventListener("click", () => {
+    if (recognizing) return;
+    recognizing = true;
+    try { recognition.start(); }
+    catch { recognizing = false; voiceNote.textContent = "Voice input could not start. Try again or type a command."; }
+  });
 } else { talk.hidden = true; $("#voiceNote").textContent = "Type a command to run the voice-first demo workflow."; }
 
 fetch("/api/health").then(async (response) => {
