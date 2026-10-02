@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@11.19.0",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.13.0"
   },
   "scripts": {
     "build": "node scripts/compile-workspaces.mjs",
@@ -16,7 +16,7 @@
     "test": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs",
     "test:unit": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs packages",
     "test:integration": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs tests",
-    "test:e2e": "node scripts/compile-workspaces.mjs && node scripts/run-tests.mjs tests/e2e",
+    "test:e2e": "node scripts/compile-workspaces.mjs && node --test tests/dist/integration/demo-workflow.test.js tests/dist/integration/mcp-transport.test.js",
     "typecheck": "node scripts/compile-workspaces.mjs --noEmit",
     "lint": "eslint . --max-warnings=0",
     "demo:reset": "node scripts/reset-demo.mjs",

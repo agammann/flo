@@ -6,7 +6,14 @@ on:
 
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -16,13 +23,17 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
       - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --audit-level=low
       # Type-aware ESLint resolves workspace packages through their generated
       # declaration files, so a clean runner must build before lint/typecheck.
       - run: pnpm build
       - run: pnpm build:customer
       - run: pnpm build:enrollment
-      - run: python3 -m unittest discover -s scripts -p 'test_*.py' -v
+      - run: python -m unittest discover -s scripts -p 'test_*.py' -v
       - run: node scripts/check-enrollment-state-plan.mjs
       # Historical evidence integrity only. Current retention template requires
       # fresh cfn-lint/Guard review; the default checker deliberately rejects it.
@@ -31,6 +42,7 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+      - run: pnpm test:e2e
 
   docker-demo:
     runs-on: ubuntu-latest
