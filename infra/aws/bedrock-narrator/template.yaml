@@ -236,8 +236,8 @@ Resources:
                 }
                 throw new Error("Narration allowance unavailable");
               }
-              const qualityTier = body.qualityTier;
-              const prompt = `Write one calm sentence of at most twelve words explaining that comparing ${body.optionCount} ${qualityTier} service-part options helps a technician choose confidently. Do not use digits, prices, dates, supplier names, part numbers, claims of completion, or markdown.`;
+              const comparisonContext = { optionCount: body.optionCount, recommendedQualityTier: body.qualityTier };
+              const prompt = `Write one calm sentence of at most twelve words explaining that comparing service-part options helps a technician choose confidently. Mention the total option count in words; do not describe the options' quality tiers. Context: ${JSON.stringify(comparisonContext)}. optionCount counts all eligible options. recommendedQualityTier describes only the recommended option, not every option. Do not use digits, prices, dates, supplier names, part numbers, claims of completion, or markdown.`;
               const command = new ConverseCommand({
                 modelId: process.env.MODEL_ID,
                 messages: [{ role: "user", content: [{ text: prompt }] }],

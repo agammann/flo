@@ -12,8 +12,10 @@ const traceItems = $("#traceItems");
 const contextList = $("#contextList");
 const send = form.querySelector(".send");
 const talk = $("#talk");
+const awsStatus = $("#awsStatus");
 const state = { workOrder: null, asset: null, approval: "Not requested", pending: "None" };
 let lastResult = null;
+let lastNarrationOk = null;
 
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]);
 const dollars = (cents) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(cents ?? 0) / 100);
@@ -39,6 +41,14 @@ function renderTrace(items = []) {
   $("#traceCount").textContent = `${items.length} call${items.length === 1 ? "" : "s"}`;
   traceItems.innerHTML = items.length ? items.map((item, index) => `
     <div class="trace-item"><code>${index + 1}. ${escapeHtml((item.kind ?? "mcp").toUpperCase())} · ${escapeHtml(item.tool)}</code><div class="trace-meta"><span>${item.ok ? "SUCCESS" : "FAILED"}</span><span>${escapeHtml(item.durationMs)} ms</span></div></div>`).join("") : `<p class="muted">No tools invoked in this turn.</p>`;
+}
+
+function renderNarrationStatus(configured = false) {
+  if (!awsStatus) return;
+  const label = lastNarrationOk === true ? "Bedrock · last narration succeeded"
+    : lastNarrationOk === false ? "Local fallback · last Bedrock attempt failed"
+      : configured ? "Bedrock configured · awaiting first result" : "AWS optional";
+  awsStatus.innerHTML = `<i class="dot ${lastNarrationOk === true ? "live" : ""}"></i>${label}`;
 }
 
 function offersFrom(data) {
@@ -111,6 +121,11 @@ async function runCommand(command) {
     const response = await browserRequest("/api/command", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ command }) });
     const result = await response.json();
     lastResult = result;
+    const narration = result.invocations?.findLast((item) => item.tool === "amazon_bedrock_narration" && item.kind === "aws" && typeof item.ok === "boolean");
+    if (narration) {
+      lastNarrationOk = narration.ok;
+      renderNarrationStatus();
+    }
     addMessage("assistant", result.voice); renderTrace(result.invocations); render(result.view, result.data);
     return { ok: result.ok, voice: result.voice, view: result.view, tools: result.invocations?.map((item) => item.tool) ?? [] };
   } catch (error) {
@@ -169,8 +184,7 @@ fetch("/api/health").then(async (response) => {
   const health = await response.json();
   connection.className = `connection ${response.ok ? "ready" : "offline"}`;
   connection.innerHTML = `<i></i>${response.ok ? `MCP ${escapeHtml(health.protocol)} · ${health.toolCount} tools` : "MCP unavailable"}`;
-  const awsStatus = $("#awsStatus");
-  if (awsStatus) awsStatus.innerHTML = `<i class="dot ${health.bedrockNarration ? "live" : ""}"></i>${health.bedrockNarration ? "Amazon Bedrock narration" : "AWS optional"}`;
+  renderNarrationStatus(response.ok && health.bedrockNarration === true);
 }).catch(() => { connection.className = "connection offline"; connection.innerHTML = "<i></i>MCP unavailable"; });
 
 const modelContext = document.modelContext;

@@ -13,12 +13,14 @@ const valid = { requestContext: { authorizer: { iam: { userArn: "arn:aws:iam::12
 
 const harness = (state: Ledger, modelFails = false, configured = true) => {
   let calls = 0;
+  const modelInputs: Record<string, unknown>[] = [];
   const result = { handler: undefined as unknown as (event: unknown) => Promise<Result> };
   class Command { constructor(readonly input: Record<string, unknown>) {} }
   class Bedrock {
     constructor(options: { maxAttempts: number }) { assert.equal(options.maxAttempts, 1); }
-    async send() {
+    async send(command: Command) {
       calls++;
+      modelInputs.push(command.input);
       if (modelFails) throw new Error("timeout after possible charge");
       return { output: { message: { content: [{ text: "Comparing quality options helps technicians choose confidently." }] } } };
     }
@@ -46,10 +48,24 @@ const harness = (state: Ledger, modelFails = false, configured = true) => {
       ? { DynamoDBClient: Dynamo, UpdateItemCommand: Command }
       : { BedrockRuntimeClient: Bedrock, ConverseCommand: Command }
   });
-  return { invoke: result.handler, calls: () => calls };
+  return { invoke: result.handler, calls: () => calls, modelInputs };
 };
 
 describe("deployed narrator authentication and lifetime allowance", () => {
+  it("keeps the total option count separate from the recommendation's quality tier", async () => {
+    for (const qualityTier of ["budget", "standard", "premium", "oem"]) {
+      const h = harness({ remaining: 1, used: 0 });
+      const response = await h.invoke({ ...valid, body: JSON.stringify({ task: "part-comparison-lead", optionCount: 4, qualityTier }) });
+      assert.equal(response.statusCode, 200); assert.equal(h.calls(), 1);
+      const messages = h.modelInputs[0]!.messages as { role: string; content: { text: string }[] }[];
+      const prompt = messages[0]!.content[0]!.text;
+      const context = /Context: (\{[^\n]+?\})\./.exec(prompt);
+      assert.ok(context, "Model input must label comparison context");
+      assert.deepEqual(JSON.parse(context[1]!), { optionCount: 4, recommendedQualityTier: qualityTier });
+      assert.match(prompt, /recommendedQualityTier describes only the recommended option, not every option/);
+      assert.match(prompt, /do not describe the options' quality tiers/);
+    }
+  });
   it("bounds a stalled credential signer and never accepts credential-leaking destinations", async () => {
     const source = readFileSync(new URL("../../../apps/alexa-simulator/src/aws-narrator-auth.ts", import.meta.url), "utf8");
     const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
