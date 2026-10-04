@@ -35,8 +35,9 @@ The source correction labels the outgoing model context as `optionCount` and
 `recommendedQualityTier`, explicitly restricts the tier to the recommendation,
 and requests a tier-neutral lead. A regression inspects the actual Converse
 input for each allowed tier through the existing local Lambda test harness.
-This source correction has not yet been deployed or verified by another real
-browser request; the historical output above remains unchanged.
+This correction was deployed as recorded below. No further paid model request
+was made for this deployment-only follow-up, so the corrected production lead
+remains unverified; the historical output above remains unchanged.
 
 The lead also has 13 words. It satisfies the runtime's limit of 16 words and its
 no-digits/no-prices display contract, but exceeds the prompt's request for at
@@ -86,3 +87,19 @@ cleanup passed. These cases used local fixture responses, including a synthetic
 success trace; they are display tests, separate from the single real AWS request
 above. The focused permanent regression is
 `tests/integration/narration-status-ui.test.ts`.
+
+## Deployment-only follow-up — October 4, 2026
+
+At 06:04:49 UTC, `flo-bedrock-narrator` was observed in `UPDATE_COMPLETE` and
+change set `flo-narration-context-20261003T0304Z` in `EXECUTE_COMPLETE`. The
+deployed template exactly matched the reviewed candidate
+`2c297e9ea1802c135730126e9fe4f19b7cf1a8ef`; comparison with the previous template
+found only `NarratorFunction.Properties.Code.ZipFile` changed. CloudFormation
+also recorded a dependent integration URI update; neither resource was replaced.
+
+The function reported `Active` and `Successful`. Configured model, runtime name,
+IAM role, memory and timeout, plus stack parameters and outputs, were unchanged.
+The allowance remained 96 remaining / 4 used. Existing local and CI results are
+retained; no additional Invoke grant or paid model request was made. The corrected
+production lead was not resampled, so this deployment does not establish improved
+model accuracy or prompt compliance.
