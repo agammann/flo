@@ -92,6 +92,8 @@ The simulator can call a deployed AWS Lambda function that invokes Amazon Bedroc
 
 The [recorded September 4 deployment verification](docs/verification/aws-protection-2026-09-04.md) documents `flo-bedrock-narrator` reaching `UPDATE_COMPLETE` in `us-west-2`, successful signed narration, rejected unsigned/invalid requests, seven-day log retention and a retained DynamoDB model-attempt allowance. Caller authentication is IAM/SigV4; a build marker is not authentication. The allowance and throttling are not an account-wide dollar cap. The shop simulator needs an authorized server-side AWS identity for optional narration and otherwise falls back locally. The vehicle-owner preview never calls Bedrock. No AWS credentials belong in browser code.
 
+The [October 3 browser-path verification](docs/verification/browser-narration-2026-10-03.md) exercised one real shop comparison through the simulator's signer to AWS and back to the visible response, within the unchanged 2.5-second deadline. The route worked, but the lead incorrectly applied the recommended option's quality tier to every option; narration accuracy remains an open verification gap. The record also retains an earlier authorization failure and a prompt-concision deviation. The narration badge now distinguishes configuration awaiting a result, the last accepted narration, and local fallback after a failed attempt; configuration alone does not show success.
+
 ### Intended full AWS deployment
 
 ```mermaid
@@ -278,8 +280,9 @@ and scheduling, resumed context and customer-only estimates. Run it only against
 a disposable local demo. The database suite uses DynamoDB Local in an isolated
 network with synthetic identities; it does not verify live AWS IAM or Amazon
 sign-in. Platform-specific filesystem tests run on Linux; Windows refusal tests
-run on Windows. CI checks both platforms. Hosted AWS observations above remain
-dated September evidence.
+run on Windows. CI checks both platforms. Hosted AWS observations are dated in
+their linked records; the October 3 narrator check covers one browser request,
+not general Alexa+ deployment or model quality.
 
 ## Adding an integration
 
