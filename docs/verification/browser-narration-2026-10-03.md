@@ -28,16 +28,16 @@ sends `comparison.ranked.length` together with
 `comparison.recommendation.part.qualityTier`; the Lambda prompt incorrectly
 applies the recommendation's tier to every option. Saying “four premium” therefore
 mischaracterizes the comparison. The tier composition was checked against the
-same source and command, without another paid request. Narration accuracy remains
-an open verification gap.
+same source and command, without another paid request. At that checkpoint,
+narration accuracy remained an open verification gap.
 
 The source correction labels the outgoing model context as `optionCount` and
 `recommendedQualityTier`, explicitly restricts the tier to the recommendation,
 and requests a tier-neutral lead. A regression inspects the actual Converse
 input for each allowed tier through the existing local Lambda test harness.
-This correction was deployed as recorded below. No further paid model request
-was made for this deployment-only follow-up, so the corrected production lead
-remains unverified; the historical output above remains unchanged.
+This correction was deployed as recorded below. The deployment-only follow-up
+did not resample the lead; the later October 4 sample is recorded separately.
+The historical output above remains unchanged.
 
 The lead also has 13 words. It satisfies the runtime's limit of 16 words and its
 no-digits/no-prices display contract, but exceeds the prompt's request for at
@@ -103,3 +103,34 @@ The allowance remained 96 remaining / 4 used. Existing local and CI results are
 retained; no additional Invoke grant or paid model request was made. The corrected
 production lead was not resampled, so this deployment does not establish improved
 model accuracy or prompt compliance.
+
+## Corrected production sample — October 4, 2026
+
+At 22:35 UTC, one comparison using source
+`a6afb34fbee38350702a91bd9e457978e157b8fb` completed the visible browser →
+local simulator → signed AWS HTTP → browser path with the deployed correction
+and `amazon.nova-lite-v1:0`. The first response returned HTTP 200 in 1,470 ms;
+the AWS narration invocation recorded `ok: true` in 1,805.6 ms, within the
+unchanged 2,500 ms deadline. It displayed:
+
+> Comparing four service-part options helps a technician choose confidently.
+
+The nine-word lead passed all seven frozen criteria for this fixture: the count
+is four in words, tiers remain neutral, the sentence is calm and grammatical,
+it stays within twelve words, contains no digits/prices/dates, adds no unsupported
+claims, and uses no markdown. The actual four offers remained mixed-tier, and
+the deterministic comparison suffix was unchanged. This single sample does not
+establish general model accuracy, repeated-request reliability or Alexa+ support.
+
+Two earlier attempts that day remain part of the record: one stopped at credential
+resolution because an explicit cache override selected stale credentials; after
+removing that override, another returned AWS HTTP 403 in 250 ms. Both displayed
+local fallback and left the allowance at 96 remaining / 4 used. The cause of that
+403 was not established; the successful sample does not prove a propagation cause.
+
+The successful sample changed the allowance once, to 95 remaining / 5 used. The
+temporary route permission was removed afterward; the caller again had no inline
+policies, retained only its existing sign-in policy, and route simulation returned
+implicit denial. All six local services and the isolated browser closed, with no
+page errors or external browser requests. No purchase, scheduling, customer
+approval or monetary calculation was delegated to the model.
