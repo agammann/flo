@@ -6,7 +6,8 @@ import { pathToFileURL } from "node:url";
 export function operatorBoundary(functionArn, principalArn) {
   const target = /^arn:aws:lambda:(us-(?:east|west)-[12]):(\d{12}):function:([A-Za-z0-9_-]{1,64}):([1-9][0-9]*)$/.exec(functionArn);
   assert.ok(target, "Exact numeric published function version required");
-  assert.ok(new RegExp(`^arn:aws:iam::${target[2]}:user/[A-Za-z0-9+=,.@_/-]+$`).test(principalArn), "Same-account IAM user required; actual credential MFA context must be verified separately");
+  const principal = /^arn:aws:iam::(\d{12}):user\/[A-Za-z0-9+=,.@_/-]+$/.exec(principalArn);
+  assert.ok(principal && principal[1] === target[2], "Same-account IAM user required; actual credential MFA context must be verified separately");
   const action = "lambda:InvokeFunction";
   return { Version: "2012-10-17", Statement: [
     { Sid: "MaximumExactVersionWithFreshMfa", Effect: "Allow", Action: action, Resource: functionArn,
