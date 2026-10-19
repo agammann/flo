@@ -5,6 +5,7 @@ import type { Actor } from "@flo/shared-types";
 import { FloError } from "@flo/shared-types";
 import { toolOutputSchemas } from "./output-schemas.js";
 import { isDemoModeEnabled } from "./runtime-config.js";
+import { MCP_MAX_TOOL_INPUT_ELEMENTS } from "./mcp-limits.js";
 
 const readOnly: ToolAnnotations = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
 const internalMutation: ToolAnnotations = { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false };
@@ -48,6 +49,7 @@ export const createFloMcpServer = (orchestrator: FloOrchestrator, actor: Actor, 
   const server = new McpServer(
     { name: "flo", version: "0.1.0" },
     {
+      maxToolInputElements: MCP_MAX_TOOL_INPUT_ELEMENTS,
       instructions: "Flo is a hands-free operations layer. Use tools for all work-order, part, estimate, approval, purchase, and scheduling state. Never assert a transaction succeeded unless confirm_transaction returns success."
     }
   );

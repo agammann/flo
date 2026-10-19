@@ -19,6 +19,7 @@ If private vulnerability reporting is not available, open a minimal issue at <ht
 - Customer approval is server state, never a model assertion, and is bound to an immutable fingerprint of the exact estimate contents.
 - Money, compatibility, inventory, and schedule checks use deterministic code.
 - Streamable HTTP deployments validate `Host` and `Origin`, authenticate remote callers, rate-limit requests, and avoid customer PII in logs.
+- MCP HTTP input is capped at 64 KiB before buffering or JSON parsing, the SDK limits batches to 100 messages, and each tool call is capped at 1,000 combined array elements and object keys before schema validation.
 - Secrets are supplied through environment variables or AWS Secrets Manager.
 - The AWS narrator requires IAM/SigV4, not a public build marker. Its retained DynamoDB allowance reserves every model attempt atomically before execution, never refunds uncertain failures, and fails closed on missing/exhausted/unavailable state. The handler only conditionally decrements an existing allowance. The role's UpdateItem permission does not itself prevent initialization or refill by different or compromised code. This bounds model attempts, not all AWS charges.
 

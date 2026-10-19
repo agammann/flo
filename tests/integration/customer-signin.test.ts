@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 import type { Server } from "node:http";
-import { CustomerWebsiteAuth, CustomerAuthError } from "@flo/agent";
+import { CustomerWebsiteAuth, CustomerAuthError, CustomerExperience } from "@flo/agent";
+import type * as CustomerHttpModule from "../../services/flo-mcp/dist/customer-http.js";
 import { createCustomerWebsite } from "@flo/mcp";
 import { createShopApi } from "@flo/mock-shop-api";
 import { createHttpAdapters } from "@flo/adapters";
@@ -54,6 +55,26 @@ describe("customer website sign-in and MCP authorization (simulated Amazon provi
     assert.equal(data.data.data.repairNumber, "1842");
     assert.doesNotMatch(JSON.stringify(data), /"(?:customerId|vin|margin|diagnosis|accessToken)":/i);
     assert.equal((await post("/api/customer/command", { command: "Show my repairs", customerId: "customer-002" }, cookie)).status, 400);
+  });
+
+  it("bounds the shared customer MCP handler before parsing and schema validation", async () => {
+    const { createCustomerHttp } = await import(new URL("../../../services/flo-mcp/dist/customer-http.js", import.meta.url).href) as typeof CustomerHttpModule;
+    const handler = createCustomerHttp({ auth, experience: new CustomerExperience(adapters.shop) });
+    const cookie = await login("owner-one");
+    const headers = { Origin: config.publicOrigin, Authorization: `Bearer ${cookie.split("=")[1]}`, "Content-Type": "application/json", Accept: "application/json, text/event-stream", "mcp-protocol-version": "2025-11-25" };
+    const post = (body: unknown) => handler(new Request(`${config.publicOrigin}/website/mcp`, { method: "POST", headers, body: JSON.stringify(body) }), "192.0.2.1");
+    assert.equal((await post({ jsonrpc: "2.0", id: 1, method: "ping", params: { padding: "x".repeat(64 * 1024) } })).status, 413);
+    const batch = (count: number) => Array.from({ length: count }, () => ({ jsonrpc: "2.0", method: "notifications/initialized" }));
+    assert.equal((await post(batch(100))).status, 202);
+    assert.equal((await post(batch(101))).status, 400);
+    const client = new Client({ name: "customer-input-bound", version: "1" }, { versionNegotiation: { mode: "legacy" } });
+    try {
+      await client.connect(new StreamableHTTPClientTransport(new URL(`${config.publicOrigin}/website/mcp`), { requestInit: { headers }, fetch: (input, init) => handler(new Request(input, init), "192.0.2.1") }));
+      const excessive = await client.callTool({ name: "list_my_repairs", arguments: { values: Array(1000).fill(0) } });
+      assert.equal(excessive.isError, true);
+      assert.match(JSON.stringify(excessive.content), /1000|elements/i);
+      assert.notEqual((await client.callTool({ name: "list_my_repairs", arguments: {} })).isError, true);
+    } finally { await client.close(); }
   });
   it("isolates two signed-in customers, including internal job IDs, and refuses identity header overrides", async () => {
     const cookies = await Promise.all([login("owner-one"), login("owner-two")]);
