@@ -18,7 +18,7 @@
     "demo:reset": "tsx src/reset.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.1127.0",
+    "@aws-sdk/client-dynamodb": "^3.1152.0",
     "@aws-sdk/client-lambda": "3.1127.0",
     "@aws-sdk/client-sts": "3.1127.0",
     "@aws-sdk/lib-dynamodb": "^3.1127.0",
