@@ -2,10 +2,12 @@ import { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
 import { customerRepairSchema, customerEstimateSchema, type CustomerExperience, type CustomerPrincipal } from "@flo/agent";
 import { FloError } from "@flo/shared-types";
+import { MCP_MAX_TOOL_INPUT_ELEMENTS } from "./mcp-limits.js";
 
 export type CustomerRepairService = Pick<CustomerExperience, "listRepairs" | "getRepair" | "getEstimate">;
 export const createCustomerMcpServer = (experience: CustomerRepairService, principal: CustomerPrincipal, revalidate?: () => Promise<void>): McpServer => {
   const server = new McpServer({ name: "flo-customer", version: "0.2.0" }, {
+    maxToolInputElements: MCP_MAX_TOOL_INPUT_ELEMENTS,
     instructions: "Vehicle-owner repair status and estimate review. Read only. Never claim approval, payment, booking, or cancellation occurred. Never request contact details or a VIN by voice. Ask which repair when more than one matches."
   });
   const register = <I extends z.ZodRawShape, O extends z.ZodType>(name: string, description: string, inputSchema: z.ZodObject<I>, output: O, operation: (input: z.infer<z.ZodObject<I>>) => Promise<z.infer<O>>, summarize: (data: z.infer<O>) => string) => {

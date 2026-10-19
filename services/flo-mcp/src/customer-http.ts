@@ -5,6 +5,7 @@ import { Client, StreamableHTTPClientTransport } from "@modelcontextprotocol/cli
 import { CustomerAuthError, type CustomerWebsiteIdentity } from "@flo/agent";
 import { z } from "zod";
 import { createCustomerMcpServer, type CustomerRepairService } from "./customer-tools.js";
+import { MCP_MAX_REQUEST_BYTES } from "./mcp-limits.js";
 
 const sessionCookie = "__Host-flo-session";
 const stateCookie = "__Host-flo-lwa-state";
@@ -70,7 +71,7 @@ export const createCustomerHttp = (options: CustomerHttpOptions) => {
         const current = await auth.principal(bearer);
         if (current.subject !== principal.subject || current.customerId !== principal.customerId) throw new CustomerAuthError(401, "SIGN_IN_REQUIRED");
       };
-      const handler = createMcpHandler(() => createCustomerMcpServer(options.experience, principal, revalidate), { legacy: "stateless" });
+      const handler = createMcpHandler(() => createCustomerMcpServer(options.experience, principal, revalidate), { legacy: "stateless", maxRequestBodySize: MCP_MAX_REQUEST_BYTES });
       try {
         const response = await handler.fetch(request);
         return new Response(await response.arrayBuffer(), { status: response.status, headers: response.headers });

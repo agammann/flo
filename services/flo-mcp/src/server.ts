@@ -8,6 +8,7 @@ import type { Actor, Role } from "@flo/shared-types";
 import { isDemoModeEnabled } from "./runtime-config.js";
 import { createFloMcpServer } from "./tools.js";
 import { createCustomerMcpServer } from "./customer-tools.js";
+import { MCP_MAX_REQUEST_BYTES } from "./mcp-limits.js";
 
 export { isDemoModeEnabled } from "./runtime-config.js";
 export { createCustomerWebsite } from "./customer-website.js";
@@ -50,14 +51,14 @@ export const createFloHttpServer = (options: FloServerOptions = {}): { server: H
   const adapters = options.adapters ?? defaultAdapters();
   const orchestrator = new FloOrchestrator(adapters, new InMemoryJobMemoryStore(), options.clock);
   const demoMode = options.demoMode ?? isDemoModeEnabled();
-  const handler = createMcpHandler(({ requestInfo }) => createFloMcpServer(orchestrator, actorFromRequest(requestInfo), { demoMode }), { legacy: "stateless" });
-  const nodeHandler = toNodeHandler(handler);
+  const handler = createMcpHandler(({ requestInfo }) => createFloMcpServer(orchestrator, actorFromRequest(requestInfo), { demoMode }), { legacy: "stateless", maxRequestBodySize: MCP_MAX_REQUEST_BYTES });
+  const nodeHandler = toNodeHandler(handler, { maxRequestBodySize: MCP_MAX_REQUEST_BYTES });
   const customerExperience = new CustomerExperience(adapters.shop);
   // Synthetic identity is fixed server-side. Production stays closed until verified
   // OAuth account linking is implemented, including distinct service/user tokens.
   const customerHandler = createMcpHandler(() => createCustomerMcpServer(customerExperience,
-    { subject: "demo-owner", customerId: "customer-001" }), { legacy: "stateless" });
-  const customerNodeHandler = toNodeHandler(customerHandler);
+    { subject: "demo-owner", customerId: "customer-001" }), { legacy: "stateless", maxRequestBodySize: MCP_MAX_REQUEST_BYTES });
+  const customerNodeHandler = toNodeHandler(customerHandler, { maxRequestBodySize: MCP_MAX_REQUEST_BYTES });
   const validateHost = options.allowedHostnames === undefined ? localhostHostValidation() : hostHeaderValidation(options.allowedHostnames);
   const validateOrigin = options.allowedOriginHostnames === undefined ? localhostOriginValidation() : originValidation(options.allowedOriginHostnames);
 
