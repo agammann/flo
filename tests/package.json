@@ -8,7 +8,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@modelcontextprotocol/client": "^2.0.0",
+    "@modelcontextprotocol/client": "^2.2.0",
     "@flo/adapters": "workspace:*",
     "@flo/agent": "workspace:*",
     "@flo/domain": "workspace:*",
