@@ -12,6 +12,17 @@ import type { Actor } from "@flo/shared-types";
 
 const iso = (date: Date): string => date.toISOString();
 const dateOnly = (date: Date): string => date.toISOString().slice(0, 10);
+const shopDateTime = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/Los_Angeles",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  hourCycle: "h23"
+});
+
+const shopParts = (date: Date): Record<string, string> =>
+  Object.fromEntries(shopDateTime.formatToParts(date).map(({ type, value }) => [type, value]));
 
 const addDays = (date: Date, days: number): Date => {
   const result = new Date(date);
@@ -28,12 +39,14 @@ export interface DemoDates {
 }
 
 export const createDemoDates = (now = new Date()): DemoDates => {
-  const todayStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  const today = shopParts(now);
+  const todayStart = new Date(Date.UTC(Number(today.year), Number(today.month) - 1, Number(today.day)));
   const tomorrowStart = addDays(todayStart, 1);
   const tomorrowMorningStart = new Date(tomorrowStart);
+  // 16:00 UTC is 08:00 or 09:00 in Los Angeles, including DST change days.
   tomorrowMorningStart.setUTCHours(16, 0, 0, 0);
-  const tomorrowMorningEnd = new Date(tomorrowMorningStart);
-  tomorrowMorningEnd.setUTCHours(18, 0, 0, 0);
+  tomorrowMorningStart.setUTCHours(16 + 9 - Number(shopParts(tomorrowMorningStart).hour));
+  const tomorrowMorningEnd = new Date(tomorrowMorningStart.getTime() + 2 * 60 * 60 * 1000);
 
   return {
     today: dateOnly(todayStart),
