@@ -8,4 +8,4 @@ allowBuilds:
   esbuild: false
 
 overrides:
-  'hono@>=4.13.0 <4.13.7': 4.13.7
+  hono: 4.13.11
