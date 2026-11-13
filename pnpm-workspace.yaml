@@ -13,3 +13,7 @@ overrides:
   # not enable allowDefaultProject (the parser's only minimatch use). Remove
   # this override when typescript-estree supports a patched minimatch version.
   '@typescript-eslint/typescript-estree>minimatch': 11.0.8
+  # ESLint 10 and config-array also declare vulnerable minimatch 10. Both use
+  # the Minimatch constructor and match method; remove when they support a fix.
+  'eslint>minimatch': 11.0.8
+  '@eslint/config-array>minimatch': 11.0.8
