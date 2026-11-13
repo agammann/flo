@@ -175,6 +175,7 @@ flo/
 
 - Node.js 22.13 or newer (required by pnpm 11)
 - pnpm 11
+- Docker demo image: Node.js 26 LTS (the local Node.js minimum remains 22.13)
 
 No AWS account, commercial supplier key, or private repair-shop integration is needed for the local demo.
 
