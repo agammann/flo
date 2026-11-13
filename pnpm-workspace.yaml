@@ -8,4 +8,5 @@ allowBuilds:
   esbuild: false
 
 overrides:
-  hono: 4.13.11
+  hono: 4.13.18
+  '@typescript-eslint/typescript-estree>minimatch': 11.0.8
