@@ -9,4 +9,7 @@ allowBuilds:
 
 overrides:
   hono: 4.13.18
+  # Upstream declares ^10, which has no patched release; our lint config does
+  # not enable allowDefaultProject (the parser's only minimatch use). Remove
+  # this override when typescript-estree supports a patched minimatch version.
   '@typescript-eslint/typescript-estree>minimatch': 11.0.8
