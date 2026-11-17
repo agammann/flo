@@ -27,7 +27,7 @@
     "@eslint/js": "^10.0.1",
     "@modelcontextprotocol/client": "^2.4.0",
     "@types/node": "^24.10.0",
-    "concurrently": "^9.2.5",
+    "concurrently": "^10.0.7",
     "esbuild": "^0.28.2",
     "eslint": "^10.14.0",
     "tsx": "^4.23.13",
