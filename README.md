@@ -92,7 +92,7 @@ The simulator can call a deployed AWS Lambda function that invokes Amazon Bedroc
 
 The [recorded September 4 deployment verification](docs/verification/aws-protection-2026-09-04.md) documents `flo-bedrock-narrator` reaching `UPDATE_COMPLETE` in `us-west-2`, successful signed narration, rejected unsigned/invalid requests, seven-day log retention and a retained DynamoDB model-attempt allowance. Caller authentication is IAM/SigV4; a build marker is not authentication. The allowance and throttling are not an account-wide dollar cap. The shop simulator needs an authorized server-side AWS identity for optional narration and otherwise falls back locally. The vehicle-owner preview never calls Bedrock. No AWS credentials belong in browser code.
 
-The [October 3 browser-path verification](docs/verification/browser-narration-2026-10-03.md) exercised one real shop comparison through the simulator's signer to AWS and back to the visible response, within the unchanged 2.5-second deadline. The route worked, but the lead incorrectly applied the recommended option's quality tier to every option; narration accuracy remains an open verification gap. The record also retains an earlier authorization failure and a prompt-concision deviation. The narration badge now distinguishes configuration awaiting a result, the last accepted narration, and local fallback after a failed attempt; configuration alone does not show success.
+The [browser-path verification](docs/verification/browser-narration-2026-10-03.md) retains the October 3 authorization failure, incorrect tier scope and prompt-concision deviation. After the scoped correction, the October 4 production sample passed all seven frozen criteria for that mixed-tier fixture within the unchanged 2.5-second deadline. This single corrected sample does not establish general model accuracy or repeated-request reliability. The narration badge distinguishes configuration awaiting a result, the last accepted narration, and local fallback after a failed attempt; configuration alone does not show success.
 
 ### Intended full AWS deployment
 
@@ -115,7 +115,7 @@ This diagram is the larger deployment target, not a deployed architecture. Dynam
 
 Voice is useful here because the operator’s hands and attention are occupied. Short spoken responses communicate the recommendation or pending state; visual surfaces should carry detailed part comparisons, estimates, approvals, schedule conflicts, and timelines. Flo never reports a transactional action as complete until the service confirms it.
 
-MCP Toolkit is the current prototype route for bespoke repair information. A future consumer booking feature also requires evaluating Category Action Local Booking with Amazon. The transport test checks MCP `2025-11-25` over Streamable HTTP. Neither Flo browser interface is Amazon's official Web Simulator or an MCP App resource. See the [certification tracker](docs/alexa-plus-certification-plan.md) for the current route decision and remaining gates.
+MCP Toolkit is the current integration route for bespoke repair information. A future consumer booking feature also requires evaluating Category Action Local Booking with Amazon. The transport test checks MCP `2025-11-25` over Streamable HTTP. Neither Flo browser interface is Amazon's official Web Simulator or an MCP App resource. See the [certification tracker](docs/alexa-plus-certification-plan.md) for the current route decision and remaining gates.
 
 The visual simulator follows the Alexa+ design guidance in the areas that can be validated locally: large arm’s-length typography, a low-density work card, 48-pixel touch targets, light and dark themes, voice/text parity, a three-item horizontal comparison pattern, and a customer-controlled expanded view. Alexa+ itself will generate its spoken response from MCP structured output; the wording shown by the local simulator is explicitly a simulated response generated from the same structured result.
 
@@ -184,12 +184,36 @@ No AWS account, commercial supplier key, or private repair-shop integration is n
 ```bash
 git clone https://github.com/agammann/flo.git
 cd flo
-cp .env.example .env
 pnpm install --frozen-lockfile
 pnpm build
 pnpm test
+FLO_DEMO_MODE=true BEDROCK_NARRATOR_URL= LWA_ENABLED=false pnpm dev
+```
+
+The final command uses POSIX shell syntax and explicitly keeps the local demo's
+optional AWS narrator and separate real sign-in disabled. In PowerShell, run:
+
+```powershell
+$env:FLO_DEMO_MODE = 'true'
+$env:BEDROCK_NARRATOR_URL = ''
+$env:LWA_ENABLED = 'false'
 pnpm dev
 ```
+
+`.env.example` is a configuration reference; the scripts do **not** automatically
+load a copied `.env` file. Supply custom settings through your shell or reviewed
+runtime configuration. Do not enable narration or real Login with Amazon merely
+to run the local demo. Wait for the MCP and simulator listening messages, then
+check `http://127.0.0.1:4200/api/health` for `mcp: "connected"` and `toolCount: 28`
+before starting the shop workflow. A rendered page alone does not establish that
+the MCP service is ready.
+
+The combined launchers use the built MCP server to avoid a reproduced Windows
+stall when its source watcher starts alongside the other watchers. Run
+`pnpm build` and restart the combined demo after changing MCP or shared workspace
+code. The standalone `pnpm --filter @flo/mcp dev` source watcher remains available
+for isolated MCP development; no watcher or dependency change is required in that
+package.
 
 Service endpoints:
 
@@ -212,6 +236,17 @@ blocked. If microphone or speech-service access is refused, the status beside
 the command field explains how to continue by typing. Successful speech input
 depends on the browser and its recognition service; the local workflow does not
 require microphone permission.
+
+### Optional browser page tools
+
+In a browser with native WebMCP and an agent that can discover page tools, the
+shop page also registers `run_flo_command` and `get_flo_session_summary`. These
+are two browser wrappers around the same visible command form and tab summary,
+separate from the 28 backend Streamable HTTP MCP tools. The command wrapper can
+change the local simulated shop state, including an explicit `Confirm`; it is
+not read-only. The server still enforces approval and prepare/confirm checks.
+Neither wrapper is an official Alexa+ integration or available on every browser.
+Registrations withdraw when leaving the page and reconnect after a cached return.
 
 ## Commands
 

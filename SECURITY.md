@@ -8,7 +8,7 @@ Security fixes are applied to the current `main` branch until a formal release p
 
 Please do not disclose vulnerability details in a public issue. Use GitHub's **Report a vulnerability** flow at <https://github.com/agammann/flo/security/advisories/new> when that option is available. Include the affected component and version or commit, reproduction steps or a minimal proof of concept, expected impact, and any suggested mitigation.
 
-If private vulnerability reporting is not available, open a minimal issue at <https://github.com/agammann/flo/issues/new> that asks the maintainers to establish a private reporting channel. Do not include exploit details, secrets, customer data, or other sensitive evidence in that public issue. No response-time or disclosure deadline is promised while the project is pre-release; reporters and maintainers should agree on disclosure timing after establishing private contact.
+If private vulnerability reporting is not available, open a minimal issue at <https://github.com/agammann/flo/issues/new> that asks the maintainers to establish a private reporting channel. Do not include exploit details, secrets, customer data, or other sensitive evidence in that public issue. No response-time or disclosure deadline is promised; reporters and maintainers should agree on disclosure timing after establishing private contact.
 
 ## Security properties
 

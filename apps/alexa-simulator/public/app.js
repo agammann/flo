@@ -189,10 +189,16 @@ fetch("/api/health").then(async (response) => {
 
 const modelContext = document.modelContext;
 if (modelContext?.registerTool) {
-  const lifecycle = new AbortController();
-  const reportRegistrationError = (error) => console.warn("Flo WebMCP registration failed", error);
+  let lifecycle;
+  const registerTools = () => {
+  if (lifecycle && !lifecycle.signal.aborted) return;
+  const controller = new AbortController();
+  lifecycle = controller;
+  const reportRegistrationError = (error) => {
+    if (!controller.signal.aborted) console.warn("Flo WebMCP registration failed", error);
+  };
   const register = (tool) => {
-    try { void Promise.resolve(modelContext.registerTool(tool, { signal: lifecycle.signal })).catch(reportRegistrationError); }
+    try { void Promise.resolve(modelContext.registerTool(tool, { signal: controller.signal })).catch(reportRegistrationError); }
     catch (error) { reportRegistrationError(error); }
   };
   register({
@@ -229,5 +235,8 @@ if (modelContext?.registerTool) {
       };
     }
   });
-  window.addEventListener("pagehide", () => lifecycle.abort(), { once: true });
+  };
+  registerTools();
+  window.addEventListener("pagehide", () => { lifecycle?.abort(); lifecycle = undefined; });
+  window.addEventListener("pageshow", (event) => { if (event.persisted) registerTools(); });
 }
