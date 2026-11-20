@@ -168,8 +168,8 @@ importers:
         specifier: 3.1168.0
         version: 3.1168.0
       '@aws-sdk/lib-dynamodb':
-        specifier: ^3.1165.0
-        version: 3.1165.0(@aws-sdk/client-dynamodb@3.1170.0)
+        specifier: ^3.1170.0
+        version: 3.1170.0(@aws-sdk/client-dynamodb@3.1170.0)
       '@flo/adapters':
         specifier: workspace:*
         version: link:../../packages/adapters
@@ -442,11 +442,11 @@ packages:
     resolution: {integrity: sha512-8q1ICxcDjHId3bBryuu/j+1L9y5/3uQnwzLDt5j2ElcjZSoWmFtymdJy7OjLrluSMe0Z4mq5bcH4fxBXvlEHfw==}
     engines: {node: '>=20.0.0'}
 
-  '@aws-sdk/lib-dynamodb@3.1165.0':
-    resolution: {integrity: sha512-nkzZbXGXt094gATjekSOWZDB2q1qNVIMIfqJh8/kBV1peq80UbyDZ671sTcYE9wATll7VTjzLxmO57y3IGCQGg==}
+  '@aws-sdk/lib-dynamodb@3.1170.0':
+    resolution: {integrity: sha512-Wp6LdmrHFcBvZLb/fsYApShFmcy826yQbkerT1lS/mBSyxdzU9mplKYUdFx3Hg9EDwChEh1yPhgJxN3QvJGnnQ==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
-      '@aws-sdk/client-dynamodb': ^3.1165.0
+      '@aws-sdk/client-dynamodb': ^3.1170.0
 
   '@aws-sdk/middleware-endpoint-discovery@3.972.39':
     resolution: {integrity: sha512-AtZS+UK7CciPbdiszPoG08A23kUojFxFnWIv155uPieSPcHR9D9Sovtp19U0j5qmD2DzHpG9OI7mb0Kiyvf3mA==}
@@ -1709,7 +1709,7 @@ snapshots:
       '@aws-sdk/core': 3.981.0
       '@aws-sdk/nested-clients': 3.997.44
       '@aws-sdk/types': 3.975.1
-      '@smithy/core': 3.40.0
+      '@smithy/core': 3.41.0
       '@smithy/types': 4.20.0
       tslib: 2.9.1
 
@@ -1816,12 +1816,12 @@ snapshots:
       mnemonist: 0.38.3
       tslib: 2.9.1
 
-  '@aws-sdk/lib-dynamodb@3.1165.0(@aws-sdk/client-dynamodb@3.1170.0)':
+  '@aws-sdk/lib-dynamodb@3.1170.0(@aws-sdk/client-dynamodb@3.1170.0)':
     dependencies:
       '@aws-sdk/client-dynamodb': 3.1170.0
       '@aws-sdk/core': 3.981.0
       '@aws-sdk/util-dynamodb': 3.996.9(@aws-sdk/client-dynamodb@3.1170.0)
-      '@smithy/core': 3.40.0
+      '@smithy/core': 3.41.0
       '@smithy/types': 4.20.0
       tslib: 2.9.1
 
@@ -1838,7 +1838,7 @@ snapshots:
       '@aws-sdk/core': 3.981.0
       '@aws-sdk/signature-v4-multi-region': 3.996.52
       '@aws-sdk/types': 3.975.1
-      '@smithy/core': 3.40.0
+      '@smithy/core': 3.41.0
       '@smithy/fetch-http-handler': 5.8.1
       '@smithy/node-http-handler': 4.14.2
       '@smithy/types': 4.20.0
@@ -1867,7 +1867,7 @@ snapshots:
       '@aws-sdk/core': 3.981.0
       '@aws-sdk/nested-clients': 3.997.44
       '@aws-sdk/types': 3.975.1
-      '@smithy/core': 3.40.0
+      '@smithy/core': 3.41.0
       '@smithy/types': 4.20.0
       tslib: 2.9.1
 
