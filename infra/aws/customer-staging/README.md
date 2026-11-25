@@ -65,6 +65,20 @@ Start once an approved Amazon test account is linked to fictional customer A (`s
 - [ ] If a second authorized, linked test account is available, confirm it sees its own staging repair **2842**. Requests for **1842** and an unknown repair such as **9999** should return the same generic denial with no appointment details. Leave this live check pending if only one account is available.
 - [ ] Sign out and confirm the portal clears the repair details and requires sign-in again. Record the reviewed plan and the results without saving credentials or session cookies.
 
+### Local dry run, November 24, 2026
+
+The rehearsal used the source tree from `85c8fc8`, two simulated linked customers, and Flo's staging Lambda handler backed by disposable DynamoDB Local tables. The review plan came from a successful local shop confirmation. Its SHA-256 is `2f5c1e148cf3a42b49c768919b3b9ddbbaa8b0c7c52bf12e8d1f0b17bfe496fb`.
+
+| Check | Local result |
+| --- | --- |
+| Before the update | Customer A saw only **1842**, in `diagnosis` with no appointment. Strongly consistent reads confirmed the baseline repair records and both active simulated links. |
+| Conditional update | One DynamoDB Local write applied the reviewed request to the disposable repair table. A strongly consistent read matched `expectedAfter` for **1842**, and **2842** matched its baseline. |
+| Fresh customer A session | **1842** showed `scheduled` for **November 25, 2026, 17:00–19:00 UTC**. The portal reported that no estimate was ready. |
+| Customer B isolation | Customer B could open its own repair **2842**. Requests for **1842** and unknown repair **9999** returned the same generic denial with no appointment details. |
+| Sign-out | The portal cleared repair details and required sign-in after reload. |
+
+The dry run stayed local. Live checks above are pending until an approved Amazon test account is linked to fictional customer A.
+
 ## Proposed infrastructure and review gates
 
 `template.yaml` describes one HTTP API, one Lambda, three on-demand DynamoDB tables with throughput ceilings, one generated state-encryption secret, a narrow role/managed policy, and two seven-day log groups. **Live Lambda reservation is 3**, matching the reviewed and separately approved template. The [concurrency review](../../../docs/verification/customer-concurrency-review-2026-09-05.md) and [execution evidence](../../../docs/verification/customer-concurrency-deployment-2026-09-05.md) record the validation and live verification. It does not invoke Bedrock, expose mock-service ports, grant link/repair writes or alter the narrator.
