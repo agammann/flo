@@ -48,7 +48,22 @@ node scripts/prepare-staging-repair-1842-update.mjs local-confirm-response.json
 
 The offline generator emits a review document with the recorded staging target, the expected row before and after the update, and one DynamoDB `UpdateItem` request. It accepts a successful shop confirmation with matching UTC times on the work order and booked slot. The request sets status and appointment times for `staging-customer-a` / `1842`. It preserves the staging vehicle label and null estimate. The conditional write requires the existing key, owner, original repair map and null estimate to match. The customer portal continues to read the projection under the existing owner checks.
 
-For a future approved staging test, regenerate the plan from a fresh fictional appointment, resolve `CustomerRepairs` from `flo-customer-staging` in `us-west-2`, and verify the account, table, active fictional owner link and exact baseline row with a strongly consistent read. Apply the reviewed request only from a separately authorized writer. If a write is uncertain or rejected, strongly read the same key to distinguish the expected result from a conflict before deciding how to proceed. A fresh linked customer session should see repair 1842 and both UTC times. A separate linked fictional customer should see only their own repair and receive the generic unavailable response for 1842. Record that second live check only when a second authorized identity is available. The September fixture insert approval covered those original records. Any later update requires its own review and approval.
+### Live staging checklist
+
+Start once an approved Amazon test account is linked to fictional customer A (`staging-customer-a`).
+
+#### Before the update
+
+- [ ] Sign in to the staging portal. Run `Show my repairs` and confirm it lists only **1842**. Run `Show repair 1842` and confirm it shows `diagnosis` with no appointment. [Staging portal](https://i4ceh4qpdg.execute-api.us-west-2.amazonaws.com/)
+- [ ] Confirm a fresh fictional Bay 2 appointment in the local shop simulator. Regenerate the review plan from that confirmation and check that the request changes only the status and the two UTC appointment times.
+- [ ] Verify the staging account and resolve the current `CustomerRepairs` table from `flo-customer-staging` in `us-west-2`. Verify the active fictional owner link and strongly read the exact **1842** row. Stop if the row differs from `expectedBefore`.
+
+#### Apply and verify
+
+- [ ] After the exact update is approved, have the authorized writer apply the single conditional update. The September fixture approval covered the original inserts. Strongly read the same row and compare it with `expectedAfter`. If the write is rejected or its outcome is uncertain, read the row before retrying.
+- [ ] Start a fresh customer A session. Confirm **1842** shows `scheduled` with the exact planned start and end times in **UTC**. Run `Show estimate 1842` and confirm the portal reports that no estimate is ready.
+- [ ] If a second authorized, linked test account is available, confirm it sees its own staging repair **2842**. Requests for **1842** and an unknown repair such as **9999** should return the same generic denial with no appointment details. Leave this live check pending if only one account is available.
+- [ ] Sign out and confirm the portal clears the repair details and requires sign-in again. Record the reviewed plan and the results without saving credentials or session cookies.
 
 ## Proposed infrastructure and review gates
 
