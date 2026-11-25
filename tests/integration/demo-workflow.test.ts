@@ -5,8 +5,9 @@ import type { Express } from "express";
 import { createHttpAdapters } from "@flo/adapters";
 import type { AdapterSet } from "@flo/adapters";
 import { FloError } from "@flo/shared-types";
-import { FloOrchestrator, InMemoryJobMemoryStore } from "@flo/agent";
+import { CustomerWebsiteAuth, FloOrchestrator, InMemoryJobMemoryStore, type CustomerRepair } from "@flo/agent";
 import { demoActors } from "@flo/domain";
+import { createCustomerWebsite } from "@flo/mcp";
 import { createShopApi } from "@flo/mock-shop-api";
 import { createInventoryApi } from "@flo/mock-inventory-api";
 import { createSupplierApi } from "@flo/mock-supplier-api";
@@ -15,7 +16,7 @@ import { createCustomerApi } from "@flo/mock-customer-api";
 const fixedNow = new Date("2026-09-03T12:00:00.000Z");
 const clock = (): Date => new Date(fixedNow);
 
-const listen = async (app: Express): Promise<{ server: Server; url: string }> => new Promise((resolve, reject) => {
+const listen = async (app: Express | Server): Promise<{ server: Server; url: string }> => new Promise((resolve, reject) => {
   const server = app.listen(0, "127.0.0.1", () => {
     const address = server.address();
     if (address === null || typeof address === "string") {
@@ -62,7 +63,7 @@ describe("Flo end-to-end demo workflow", () => {
     assert.ok(profit.ranked.every(item => item.landedCostCents <= 30000 && item.offer.deliveryDate <= "2026-09-04"));
   });
 
-  it("executes work order, diagnosis, parts, estimate, approval, memory, purchase, and scheduling", async () => {
+  it("executes work order, diagnosis, parts, estimate, approval, memory, purchase, and scheduling", async (context) => {
     const actor = demoActors.technician;
     const opened = await orchestrator.getWorkOrder(actor, "1842");
     assert.equal(opened.assetId, "asset-f150-2019");
@@ -118,5 +119,63 @@ describe("Flo end-to-end demo workflow", () => {
       resumedAgent.confirmTransaction(actor, prepared.confirmationToken),
       (error: unknown) => error instanceof FloError && error.code === "CONFIRMATION_ALREADY_USED"
     );
+
+    await context.test("only the linked owner can see scheduled repair 1842 and its appointment", async (appointmentTest) => {
+      const publicOrigin = "https://flo.example";
+      const links = new Map([["repair-owner", "customer-001"], ["other-owner", "customer-002"]]);
+      const auth = new CustomerWebsiteAuth(
+        { clientId: "appointment-test", clientSecret: "synthetic-test-only", publicOrigin },
+        { exchange: async code => ({ accessToken: code, subject: code, expiresIn: 60 }), subject: async token => token },
+        { findCustomer: async (_client, subject) => links.get(subject) },
+        () => fixedNow.getTime()
+      );
+      const site = await listen(createCustomerWebsite({ auth, shop: adapters.shop }));
+      appointmentTest.after(() => close(site.server));
+
+      // Use Flo's session logic with a simulated Amazon provider, without an external redirect.
+      const signIn = async (subject: string): Promise<string> => {
+        const { authorizationUrl, browserNonce } = auth.begin("127.0.0.1");
+        const state = new URL(authorizationUrl).searchParams.get("state");
+        assert.ok(state);
+        return `__Host-flo-session=${await auth.finish(state, browserNonce, subject)}`;
+      };
+      const ask = async (cookie: string, command: string) => {
+        const response = await fetch(`${site.url}/api/customer/command`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Origin: publicOrigin, Cookie: cookie },
+          body: JSON.stringify({ command })
+        });
+        assert.equal(response.status, 200);
+        return await response.json() as { ok: boolean; voice: string; tools: string[]; data: { data: CustomerRepair | CustomerRepair[] } | null };
+      };
+
+      const owner = await signIn("repair-owner");
+      const ownerView = await ask(owner, "Show repair 1842");
+      assert.equal(ownerView.ok, true);
+      assert.deepEqual(ownerView.tools, ["get_my_repair"]);
+      const ownerRepair = ownerView.data?.data;
+      assert.ok(ownerRepair && !Array.isArray(ownerRepair));
+      assert.equal(ownerRepair.repairNumber, "1842");
+      assert.equal(ownerRepair.status, "scheduled");
+      assert.equal(ownerRepair.scheduledStart, slot.start);
+      assert.equal(ownerRepair.scheduledEnd, slot.end);
+      assert.match(ownerView.voice, /repair 1842: scheduled\. Service starts .* UTC and ends .* UTC\./);
+
+      const other = await signIn("other-owner");
+      const otherList = await ask(other, "Show my repairs");
+      assert.equal(otherList.ok, true);
+      const listedRepairs = otherList.data?.data;
+      assert.ok(Array.isArray(listedRepairs));
+      assert.deepEqual(listedRepairs.map(repair => repair.repairNumber), ["1843"]);
+
+      const denied = await ask(other, "Show repair 1842");
+      assert.equal(denied.ok, false);
+      assert.equal(denied.data, null);
+      assert.match(denied.voice, /not available for your account/);
+      assert.deepEqual(denied, await ask(other, "Show repair 9999"));
+      const otherResponses = JSON.stringify([otherList, denied]);
+      assert.doesNotMatch(otherResponses, /1842|F-150|UTC/i);
+      assert.ok(!otherResponses.includes(slot.start) && !otherResponses.includes(slot.end));
+    });
   });
 });
