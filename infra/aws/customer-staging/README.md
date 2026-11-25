@@ -38,6 +38,18 @@ On a Windows host that blocks esbuild's child-process launch, invoke the install
 - Customer repair projections are queried by the authenticated customer's partition, with ownership and repair-number checks on every returned record. Runtime cannot write these projections. This is not a live synchronization integration with a commercial shop.
 - Website sessions never authorize the closed `/alexa/mcp` route. AWS execution credentials, narrator credentials and raw Amazon tokens are not customer sessions.
 
+## Prepare the fictional repair 1842 update
+
+Complete the local shop workflow for repair 1842, including the explicit **Confirm** step for the simulated Bay 2 appointment. Save the JSON response body from that local `POST /api/command` in a temporary file. Keep the confirmation local and use only the seeded fictional shop data.
+
+```sh
+node scripts/prepare-staging-repair-1842-update.mjs local-confirm-response.json
+```
+
+The offline generator emits a review document with the recorded staging target, the expected row before and after the update, and one DynamoDB `UpdateItem` request. It accepts a successful shop confirmation with matching UTC times on the work order and booked slot. The request sets status and appointment times for `staging-customer-a` / `1842`. It preserves the staging vehicle label and null estimate. The conditional write requires the existing key, owner, original repair map and null estimate to match. The customer portal continues to read the projection under the existing owner checks.
+
+For a future approved staging test, regenerate the plan from a fresh fictional appointment, resolve `CustomerRepairs` from `flo-customer-staging` in `us-west-2`, and verify the account, table, active fictional owner link and exact baseline row with a strongly consistent read. Apply the reviewed request only from a separately authorized writer. If a write is uncertain or rejected, strongly read the same key to distinguish the expected result from a conflict before deciding how to proceed. A fresh linked customer session should see repair 1842 and both UTC times. A separate linked fictional customer should see only their own repair and receive the generic unavailable response for 1842. Record that second live check only when a second authorized identity is available. The September fixture insert approval covered those original records. Any later update requires its own review and approval.
+
 ## Proposed infrastructure and review gates
 
 `template.yaml` describes one HTTP API, one Lambda, three on-demand DynamoDB tables with throughput ceilings, one generated state-encryption secret, a narrow role/managed policy, and two seven-day log groups. **Live Lambda reservation is 3**, matching the reviewed and separately approved template. The [concurrency review](../../../docs/verification/customer-concurrency-review-2026-09-05.md) and [execution evidence](../../../docs/verification/customer-concurrency-deployment-2026-09-05.md) record the validation and live verification. It does not invoke Bedrock, expose mock-service ports, grant link/repair writes or alter the narrator.
