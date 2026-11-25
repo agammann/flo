@@ -159,8 +159,8 @@ importers:
   services/flo-mcp:
     dependencies:
       '@aws-sdk/client-dynamodb':
-        specifier: ^3.1170.0
-        version: 3.1170.0
+        specifier: ^3.1173.0
+        version: 3.1173.0
       '@aws-sdk/client-lambda':
         specifier: 3.1165.0
         version: 3.1165.0
@@ -169,7 +169,7 @@ importers:
         version: 3.1168.0
       '@aws-sdk/lib-dynamodb':
         specifier: ^3.1170.0
-        version: 3.1170.0(@aws-sdk/client-dynamodb@3.1170.0)
+        version: 3.1170.0(@aws-sdk/client-dynamodb@3.1173.0)
       '@flo/adapters':
         specifier: workspace:*
         version: link:../../packages/adapters
@@ -354,8 +354,8 @@ packages:
   '@aws-crypto/util@5.2.0':
     resolution: {integrity: sha512-4RkU9EsI6ZpBve5fseQlGNUWKMa1RLPQ1dnjnQoe07ldfIzcsGb5hC5W0Dm7u423KWzawlrpbjXBrXCEv9zazQ==}
 
-  '@aws-sdk/client-dynamodb@3.1170.0':
-    resolution: {integrity: sha512-wg/UTlI2OYKdn9LUIOWAliTewoCdQa8HCVsJcZwf9XxO1ChsT8ZvRc4DEJVhwIkGS/JTlWW0Sv77qxn9Fy5YJQ==}
+  '@aws-sdk/client-dynamodb@3.1173.0':
+    resolution: {integrity: sha512-CX5LUH6FlPpiRaw9bQmfQ+1PMDyDussTOvIgikjBaoQYFi5Y5St4d3FHbUowl1XrRiidAnATl7QT3IicYyM2tg==}
     engines: {node: '>=20.0.0'}
 
   '@aws-sdk/client-lambda@3.1165.0':
@@ -1549,7 +1549,7 @@ snapshots:
       '@smithy/util-utf8': 2.3.0
       tslib: 2.9.1
 
-  '@aws-sdk/client-dynamodb@3.1170.0':
+  '@aws-sdk/client-dynamodb@3.1173.0':
     dependencies:
       '@aws-sdk/core': 3.981.0
       '@aws-sdk/credential-provider-node': 3.972.97
@@ -1692,11 +1692,11 @@ snapshots:
       mnemonist: 0.38.3
       tslib: 2.9.1
 
-  '@aws-sdk/lib-dynamodb@3.1170.0(@aws-sdk/client-dynamodb@3.1170.0)':
+  '@aws-sdk/lib-dynamodb@3.1170.0(@aws-sdk/client-dynamodb@3.1173.0)':
     dependencies:
-      '@aws-sdk/client-dynamodb': 3.1170.0
+      '@aws-sdk/client-dynamodb': 3.1173.0
       '@aws-sdk/core': 3.981.0
-      '@aws-sdk/util-dynamodb': 3.996.9(@aws-sdk/client-dynamodb@3.1170.0)
+      '@aws-sdk/util-dynamodb': 3.996.9(@aws-sdk/client-dynamodb@3.1173.0)
       '@smithy/core': 3.41.0
       '@smithy/types': 4.20.0
       tslib: 2.9.1
@@ -1746,9 +1746,9 @@ snapshots:
       '@smithy/types': 4.20.0
       tslib: 2.9.1
 
-  '@aws-sdk/util-dynamodb@3.996.9(@aws-sdk/client-dynamodb@3.1170.0)':
+  '@aws-sdk/util-dynamodb@3.996.9(@aws-sdk/client-dynamodb@3.1173.0)':
     dependencies:
-      '@aws-sdk/client-dynamodb': 3.1170.0
+      '@aws-sdk/client-dynamodb': 3.1173.0
       tslib: 2.9.1
 
   '@aws-sdk/xml-builder@3.972.43':
